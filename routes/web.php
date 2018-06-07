@@ -14,3 +14,15 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::match(['get', 'post'], '/test', function () {
+    return view("test");
+});
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::match(['get', 'post'], '/order', function () {
+    return view("order");
+});
