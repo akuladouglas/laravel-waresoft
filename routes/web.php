@@ -23,6 +23,11 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::match(['get', 'post'], '/order', function () {
-    return view("order");
+
+Route::group(array('prefix' => 'order'), function () {
+  
+  Route::match(['get', 'post'], '/sync', 'OrderController@syncOrders');
+  
+  Route::get('restaurants/crop-gallery-thumb/{restid}/{id}', 'ManagerRestaurantController@getEditGalleryImage');
+  
 });
