@@ -14,7 +14,7 @@
                     <div class="card">
                       
                       <div class="header">
-                        <h2> Deliveries  <a href="#" class="btn btn-primary btn-xs pull-right"> View More </a> </h2>
+                        <h2> Reports </h2>
                       </div>
                       
                         <div class="body">

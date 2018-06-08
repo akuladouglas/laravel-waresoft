@@ -122,25 +122,25 @@
                     </li>
                     
                     <li class="<?php echo Request::segment(1) == "report" ? "active" : "" ; ?>" >
-                        <a href="{{ url('report') }}" class="menu-toggle">
+                        <a href="#" class="menu-toggle">
                             <i class="material-icons">vertical_split</i>
                             <span>Reports</span>
                         </a>
                         <ul class="ml-menu">
                             <li>
-                                <a href="#">
+                                <a href="{{ url('report') }}">
                                     <i class="material-icons col-light-green">donut_large</i>
                                     <span>Report 1</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="#">
+                                <a href="{{ url('report') }}">
                                     <i class="material-icons col-light-green">donut_large</i>
                                     <span>Report 2</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="#">
+                                <a href="{{ url('report') }}">
                                     <i class="material-icons col-light-green">donut_large</i>
                                     <span>Report 3</span>
                                 </a>
