@@ -10,4 +10,12 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class ProductController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    
+    function getProducts() {
+      $data[] = '';
+      
+      return view("product/home", $data);
+    }
+    
+    
 }

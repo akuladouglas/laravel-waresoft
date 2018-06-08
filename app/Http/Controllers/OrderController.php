@@ -12,6 +12,13 @@ class OrderController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     
+    
+    function getOrders() {
+      $data[] = '';
+      
+      return view("order/home", $data);
+    }
+    
     function syncOrders() {
       
       $get_url = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders.json?status=any";

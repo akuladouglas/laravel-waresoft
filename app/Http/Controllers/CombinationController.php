@@ -10,4 +10,11 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class CombinationController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    
+    function getCombinations() {
+      $data[] = '';
+      
+      return view("combination/home", $data);
+    }
+    
 }

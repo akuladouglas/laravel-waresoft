@@ -10,4 +10,12 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class StockController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    
+    function getStocks() {
+      $data[] = '';
+      
+      return view("stock/home", $data);
+    }
+    
+    
 }
