@@ -19,26 +19,40 @@
                       
                         <div class="body">
                             <div class="table-responsive">
-                                <table class="table table-hover table-bordered dashboard-task-infos">
+                                <table id="ordersTable" class="table table-hover table-bordered dashboard-task-infos">
                                     <thead>
                                         <tr>
                                             <th>#</th>
                                             <th>Customer</th>
                                             <th>Amount</th>
                                             <th>Date Made</th>
+                                            <th> </th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                       @foreach($orders as $order)
                                         <tr>
-                                            <td>1</td>
-                                            <td>John Doe</td>
-                                            <td><?php echo "150";?></td>
-                                            <td><?php echo date("Y-m-d"); ?></td>
+                                            <td> {{ $order->id }} </td>
+                                            <td> {{ $order->number }} </td>
+                                            <td> {{ $order->email }} </td>
+                                            <td> {{ $order->shopify_created_at }} </td>
+                                            <td> <a href="#" class="btn btn-xs btn-primary">View More</a> </td>
                                         </tr>
+                                       @endforeach
                                     </tbody>
                                 </table>
+                              
+                              <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                  {{ $orders->links() }}
+                                </ul>
+                              </nav>
+                              
                             </div>
                         </div>
+                      
+                      
+                      
                     </div>
                   
                 </div>

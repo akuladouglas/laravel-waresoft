@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Order;
+use App\Models\Lineitems;
 
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
@@ -14,7 +15,7 @@ class OrderController extends BaseController
     
     
     function getOrders() {
-      $data[] = '';
+      $data["orders"] = Order::orderby("id","desc")->paginate(15);
       
       return view("order/home", $data);
     }
@@ -23,9 +24,19 @@ class OrderController extends BaseController
       
       $get_url = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders.json?status=any";
       
-      $get_url_timestamp = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders.json?since_id=489330737209";
+      $get_url_timestamp = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders.json?since_id=496237740090";
       
       $contents = file_get_contents($get_url_timestamp);
+      
+      /*maneuvres*/
+//      $results = json_decode($contents);
+//      echo "<pre>";
+//      print_r($results->orders[0]);
+//      echo "</pre>";
+//      exit();
+      /*end maneuvres*/
+      
+      
       
       $shopify_orders = json_decode($contents);
       
@@ -80,7 +91,47 @@ class OrderController extends BaseController
         $order->tags = $shopify_order->tags;
         $order->contact_email = $shopify_order->contact_email;
         $order->order_status_url = $shopify_order->order_status_url;
+        $order_id = $shopify_order->id;
+        $ordersline_items = $shopify_order->line_items;
+        
         $order->save();
+        
+        //save line item
+        if($ordersline_items){
+          
+          foreach ($ordersline_items as $key => $order_line_item) {
+              $line_item = new Lineitems();
+              $line_item->id = $order_line_item->id;
+              $line_item->order_id = $order_id;
+              $line_item->variant_id = $order_line_item->variant_id;
+              $line_item->title = $order_line_item->title;
+              $line_item->quantity = $order_line_item->quantity;
+              $line_item->price = $order_line_item->price;
+              $line_item->sku = $order_line_item->sku;
+              $line_item->variant_title = $order_line_item->variant_title;
+              $line_item->vendor = $order_line_item->vendor;
+              $line_item->fulfillment_service = $order_line_item->fulfillment_service;
+              $line_item->product_id = $order_line_item->product_id;
+              $line_item->requires_shipping = $order_line_item->requires_shipping;
+              $line_item->taxable = $order_line_item->taxable;
+              $line_item->gift_card = $order_line_item->gift_card;
+              $line_item->name = $order_line_item->name;
+              $line_item->variant_inventory_management = $order_line_item->variant_inventory_management;
+              $line_item->properties = "";
+              $line_item->product_exists = $order_line_item->product_exists;
+              $line_item->fulfillable_quantity = $order_line_item->fulfillable_quantity;
+              $line_item->grams = $order_line_item->grams;
+              $line_item->total_discount = $order_line_item->total_discount;
+              $line_item->fulfillment_status = $order_line_item->fulfillment_status;
+              $line_item->discount_allocations = "";
+              $line_item->admin_graphql_api_id = $order_line_item->admin_graphql_api_id;
+              $line_item->tax_lines = "";
+            
+              $line_item->save();
+              
+          }
+          
+        }
         
 //        exit();
         

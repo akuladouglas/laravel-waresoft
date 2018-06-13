@@ -13,3 +13,4 @@ yarn-error.log
 .env
 /nbproject/private/
 nbproject/*
+_ide_helper.php
