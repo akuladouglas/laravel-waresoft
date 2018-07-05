@@ -42,11 +42,9 @@
                                     </tbody>
                                 </table>
                               
-                              <nav aria-label="Page navigation example">
-                                <ul class="pagination">
+                                <ul class="pagination-sm text-center">
                                   {{ $orders->links() }}
                                 </ul>
-                              </nav>
                               
                             </div>
                         </div>
