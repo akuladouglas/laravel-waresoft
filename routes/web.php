@@ -48,3 +48,21 @@ Route::group(array('prefix' => 'stock'), function () {
 Route::group(array('prefix' => 'report'), function () {
   Route::match(['get', 'post'], '/', 'ReportController@getReports');
 });
+
+Route::group(array('prefix' => 'customer'), function () {
+  Route::match(['get', 'post'], '/', 'CustomerController@getCustomers');
+  Route::match(['get', 'post'], '/sync-customer', 'CustomerController@syncCustomers');
+});
+
+Route::group(array('prefix' => 'reward'), function () {
+  Route::match(['get', 'post'], '/customers', 'RewardController@getCustomers');
+  Route::match(['get', 'post'], '/activitys', 'RewardController@getActivitys');
+  Route::match(['get', 'post'], '/sms', 'RewardController@getSms');
+  Route::match(['get', 'post'], '/sync-customers', 'RewardController@syncCustomers');
+  Route::match(['get', 'post'], '/sync-activitys', 'RewardController@syncActivitys');
+  Route::match(['get', 'post'], '/queue-points-sms', 'RewardController@queuePointsBalanceSms');
+});
+
+Route::group(array('prefix' => 'queues'), function () {
+  Route::match(['get', 'post'], '/rewards-sms', 'QueuesController@rewardsSmsQueue');
+});

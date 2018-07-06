@@ -1,0 +1,220 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\RewardCustomer;
+use App\Models\RewardActivity;
+use App\Models\RewardSms;
+use App\Models\Customer;
+use App\Models\Reward;
+
+class RewardController extends Controller
+{
+  public $link = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders.json";
+  
+  public $api_base_link = "https://first.collectapps.io/api/v1";
+  private $authetication = "Apikey 495993e27b695496030f6394c7200ae4";
+  private $headers = array("Authorization: Apikey 495993e27b695496030f6394c7200ae4");
+  
+  
+  function get_data($url,$headers) {
+    
+    $ch = curl_init();
+    $timeout = 5;
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+    $data = curl_exec($ch);
+    curl_close($ch);
+    return $data;
+    
+  }
+  
+  
+  function syncCustomers() {
+    
+    //https://first.collectapps.io/api/v1/customers?PageNumber=page_number&PageSize=page_size&CreatedAfter=created_after&CreatedBefore=created_before
+    
+    $link = "https://first.collectapps.io/api/v1/customers?PageNumber=3&PageSize=100";
+    
+    $link = $this->api_base_link."/customers?PageNumber=9&PageSize=100";        
+    
+    $response = $this->get_data($link, $this->headers);
+    
+    $decoded = json_decode($response);
+    
+    echo "<pre>";
+    print_r(count($decoded->Customers));
+    echo "</pre>";
+    
+    echo "<pre>";
+    print_r($decoded->Customers);
+    echo "</pre>";
+    
+    //save info in db
+    exit();
+    
+    foreach ($decoded->Customers as $key => $customer) {
+      
+      $reward_customer = new RewardCustomer();
+      $reward_customer->customerId = $customer->CustomerId;
+      $reward_customer->accountId = $customer->AccountId;
+      $reward_customer->createdAt = $customer->CreatedAt; 
+      $reward_customer->updatedAt = $customer->UpdatedAt;
+      $reward_customer->totalSpent = $customer->TotalSpent;
+      $reward_customer->totalOrders = $customer->TotalOrders;
+      $reward_customer->avgSpentPerOrder = $customer->AvgSpentPerOrder;
+      $reward_customer->lastVisited = $customer->LastVisited;
+      $reward_customer->pointsBalance = $customer->PointsBalance;
+      $reward_customer->tags = "";
+      $reward_customer->emailAddress = $customer->EmailAddress;
+      $reward_customer->firstName = $customer->FirstName;
+      $reward_customer->lastName = $customer->LastName;
+      $reward_customer->birthDate = $customer->BirthDate; 
+      $reward_customer->gender = $customer->Gender;
+      
+      $reward_customer->Save();
+           
+    }
+    
+    
+  }
+  
+  function syncActivitys() {
+    
+    $customer_data = RewardCustomer::where("totalSpent", ">", 0)->where("activity_synced", 0)->get()->take(10);
+    
+    foreach ($customer_data as $key => $customer) {
+     
+      $link = "https://first.collectapps.io/api/v1/activities?CustomerId=$customer->customerId";
+      
+      $activity_data = $this->get_data($link, $this->headers);
+      
+      $decoded_results = json_decode($activity_data);
+      
+      foreach ($decoded_results->Activities as $key => $activity) {
+        
+        $activity_obj = new RewardActivity();
+        $activity_obj->id = $activity->Id;
+        $activity_obj->accountId = $activity->AccountId;
+        $activity_obj->customerId = $activity->CustomerId;
+        $activity_obj->createdAt = $activity->CreatedAt;
+        $activity_obj->actionedAt = $activity->ActionedAt;
+        $activity_obj->type = $activity->Type;
+        $activity_obj->description = $activity->Description;
+        $activity_obj->orderId = $activity->OrderId;
+        $activity_obj->orderSourceId = $activity->OrderSourceId;
+        $activity_obj->apiOrderId = $activity->ApiOrderId;
+        $activity_obj->rewardId = $activity->RewardId;
+        $activity_obj->title = $activity->Title;
+        $activity_obj->points = $activity->Points;
+        $activity_obj->couponId = $activity->CouponId;
+          
+        $activity_obj->save();
+        
+        $customer_obj = RewardCustomer::where("customerId", $activity->CustomerId )->get()->first();
+        $customer_obj->activity_synced = 1;
+        $customer_obj->save();
+        
+      }
+      
+      
+    }    
+    
+  }
+  
+  function computePointsBalance($points) {
+    
+    switch ($points) {
+      
+      case ($points > 0 && $points < 1000):
+        $results = [
+          "next_price" => "Kshs 1,000 Off",
+          "points_balance_due" => number_format(1000 - $points)
+        ];
+        break;
+      
+      case ($points >= 1000 && $points < 2500):
+        $results = [
+          "next_price" => "Kshs 2,500 Off",
+          "points_balance_due" => number_format(2500 - $points)
+        ];
+        break;
+      
+      case ($points >= 2500 && $points < 5000):
+        $results = [
+          "next_price" => "Kshs 5,000 Off",
+          "points_balance_due" => number_format(5000 - $points)
+        ];
+        break;
+      
+      case ($points >= 5000 && $points < 10000):
+        $results = [
+          "next_price" => "Kshs 10,000 Off",
+          "points_balance_due" => number_format(10000 - $points)
+        ];
+        break;
+      
+      default:
+        $results = [
+          "next_price" => "Kshs 1,000 Off",
+          "points_balance_due" => number_format(1000 - $points)
+        ];
+        break;
+    }
+   
+    return $results;
+    
+  }
+  
+  
+  function queuePointsBalanceSms() {
+    
+    $activity_id = 7;
+    
+    $activity_obj = RewardActivity::join("rewards_customers","rewards_customers.customerId","rewards_activitys.customerId")->where("rewards_activity_id", $activity_id)->get()->first();
+    
+    $shopify_customer_obj = Customer::where("email", trim($activity_obj->emailAddress))->get()->first();
+    
+    $points_results = $this->computePointsBalance($activity_obj->points);
+    
+    $customer_points = number_format($activity_obj->points);
+    
+    if($shopify_customer_obj){
+      
+      $message = "Hi $shopify_customer_obj->first_name, You currently have $customer_points points. Shop at beautyclick.co.ke to earn {$points_results["points_balance_due"]} points for a guaranteed {$points_results["next_price"]}";
+
+      $sms_obj = new RewardSms;
+      $sms_obj->text = $message;
+      $sms_obj->phone = $shopify_customer_obj->phone;
+      $sms_obj->save();
+      
+    }
+    
+    
+  }
+  
+  function getCustomers() {
+    
+    $data["customers"] = RewardCustomer::orderby("rewards_customer_id","desc")->paginate(15);
+      
+    return view("reward/customer", $data);
+    
+  }
+  
+  
+  function getSms() {
+    $data["sms"] = RewardSms::orderby("rewards_sms_id", "DESC")->paginate(15);
+      
+    return view("reward/sms", $data);
+  }
+  
+  function getActivitys() {
+    $data["activities"] = RewardActivity::join("rewards_customers","rewards_customers.customerId","rewards_activitys.customerId")->orderby("rewards_activity_id","desc")->paginate(15);
+      
+    return view("reward/activity", $data);
+  }
+  
+}

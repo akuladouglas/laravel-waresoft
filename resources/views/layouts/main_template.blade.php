@@ -82,12 +82,41 @@
             <div class="menu">
                 <ul class="list">
                     <li class="header"> Navigation </li>
+                    
                     <li class="<?php echo Request::segment(1) == "home" ? "active" : "" ; ?>" >
                         <a href="{{ url('home') }}">
                             <i class="material-icons">home</i>
                             <span>Home</span>
                         </a>
                     </li>
+                    
+                    <li class="<?php echo Request::segment(1) == "reward" ? "active" : "" ; ?>" >
+                        <a href="#" class="menu-toggle">
+                            <i class="material-icons">view_comfy</i>
+                            <span> Loyalty & Rewards </span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li>
+                                <a href="{{ url('reward/customers') }}">
+                                    <i class="material-icons col-light-green">group</i>
+                                    <span>Rewards Customers</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url('reward/activitys') }}">
+                                    <i class="material-icons col-light-green">view_headline</i>
+                                    <span>Rewards Activities</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ url('reward/sms') }}">
+                                    <i class="material-icons col-light-green">notifications_active</i>
+                                    <span>Rewards Sms Outbox</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                                        
                     <li class="<?php echo Request::segment(1) == "order" ? "active" : "" ; ?>" >
                         <a href="{{ url('order') }}">
                             <i class="material-icons">view_headline</i>
