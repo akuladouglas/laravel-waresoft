@@ -55,18 +55,23 @@
     <!-- #END# Overlay For Sidebars -->
     <nav class="navbar">
         <div class="container-fluid">
+          
             <div class="navbar-header">
                 <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
                 <a href="javascript:void(0);" class="bars"></a>
                 <a class="navbar-brand" href="#"> BeautyClick Management Portal </a>
             </div>
+          
             <div class="collapse navbar-collapse" id="navbar-collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    
-                    <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="material-icons">more_vert</i></a></li>
-                
-                </ul>
+              <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="{{ url('logout') }}">
+                        Logout
+                    </a>
+                </li>
+              </ul>
             </div>
+          
         </div>
     </nav>
     <!-- #Top Bar -->
@@ -83,7 +88,7 @@
                 <ul class="list">
                     <li class="header"> Navigation </li>
                     
-                    <li class="hidden <?php echo Request::segment(1) == "home" ? "active" : "" ; ?>" >
+                    <li class="<?php echo Request::segment(1) == "home" ? "active" : "" ; ?>" >
                         <a href="{{ url('home') }}">
                             <i class="material-icons">home</i>
                             <span>Home</span>
