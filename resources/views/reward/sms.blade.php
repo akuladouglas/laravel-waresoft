@@ -18,6 +18,11 @@
                       </div>
                       
                         <div class="body">
+                          
+                          <ul class="pagination-sm text-center">
+                                  {{ $sms->links() }}
+                          </ul>
+                          
                             <div class="table-responsive">
                                 <table id="ordersTable" class="table table-hover table-bordered dashboard-task-infos">
                                     <thead>
@@ -44,9 +49,12 @@
                                 </ul>
                               
                             </div>
+                          
+                          <ul class="pagination-sm text-center">
+                                  {{ $sms->links() }}
+                          </ul>
+                          
                         </div>
-                      
-                      
                       
                     </div>
                   

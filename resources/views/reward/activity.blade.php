@@ -18,21 +18,32 @@
                       </div>
                       
                         <div class="body">
+                          
+                          <ul class="pagination-sm text-center">
+                                  {{ $activities->links() }}
+                          </ul>
+                          
                             <div class="table-responsive">
                                 <table id="ordersTable" class="table table-hover table-bordered dashboard-task-infos">
                                     <thead>
                                         <tr>
+                                            <th> # </th>
                                             <th>Customer</th>
+                                            <th>Email</th>
+                                            <th>Activity <br> Description</th>
                                             <th>Date Created </th>
                                             <th>Amount</th>
                                             <th>Orders Made</th>
-                                            <th> Points Earned</th>
+                                            <th>Points Earned</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                           @foreach($activities as $activity)
                                            <tr>
+                                               <td> {{ $activity->rewards_activity_id }} </td>
                                                <td> {{ $activity->firstName }}  {{ $activity->lastName }} </td>
+                                               <td> {{ $activity->emailAddress }} </td>
+                                               <th> {{ $activity->description }} </th>
                                                <td> {{ date("Y-m-d", strtotime($activity->createdAt)) }} </td>
                                                <td> {{ $activity->totalSpent }} </td>
                                                <td> {{ $activity->totalOrders }} </td>
