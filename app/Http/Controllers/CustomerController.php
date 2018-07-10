@@ -21,7 +21,7 @@ class CustomerController extends BaseController
     
     function syncCustomers() {
       
-      $get_url = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/customers.json?since_id=677362925625&limit=250"; //449367507001
+      $get_url = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/customers.json?since_id=737853341753&limit=250"; //449367507001
 
 //    $get_url_timestamp = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders.json?since_id=496237740090";
       

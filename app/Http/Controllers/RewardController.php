@@ -54,7 +54,7 @@ class RewardController extends Controller
     echo "</pre>";
     
     //save info in db
-    exit();
+//    exit();
     
     foreach ($decoded->Customers as $key => $customer) {
       
@@ -84,7 +84,7 @@ class RewardController extends Controller
   
   function syncActivitys() {
     
-    $customer_data = RewardCustomer::where("totalSpent", ">", 0)->where("activity_synced", 0)->get()->take(10);
+    $customer_data = RewardCustomer::where("totalSpent", ">", 0)->where("activity_synced", 0)->get()->take(25);
     
     foreach ($customer_data as $key => $customer) {
      
@@ -169,14 +169,28 @@ class RewardController extends Controller
     
   }
   
-  
   function queuePointsBalanceSms() {
     
-    $activity_id = 7;
+    $activities = RewardActivity::join("rewards_customers","rewards_customers.customerId","rewards_activitys.customerId")->where("sms_queued",0)->get()->take(80);
+     
+    foreach ($activities as $key => $activity) {
+      $this->createSms($activity->rewards_activity_id);
+      
+      $activity_obj = RewardActivity::where("rewards_activity_id",$activity->rewards_activity_id)->get()->first();
+      $activity_obj->sms_queued = 1;
+      $activity_obj->save();
+    }
+    
+  }
+  
+  
+  function createSms($activity_id) {
     
     $activity_obj = RewardActivity::join("rewards_customers","rewards_customers.customerId","rewards_activitys.customerId")->where("rewards_activity_id", $activity_id)->get()->first();
     
     $shopify_customer_obj = Customer::where("email", trim($activity_obj->emailAddress))->get()->first();
+    
+    $customer_total_points = number_format(RewardActivity::where("customerId",$activity_obj->customerId)->sum("points"));
     
     $points_results = $this->computePointsBalance($activity_obj->points);
     
@@ -184,7 +198,9 @@ class RewardController extends Controller
     
     if($shopify_customer_obj){
       
-      $message = "Hi $shopify_customer_obj->first_name, You currently have $customer_points points. Shop at beautyclick.co.ke to earn {$points_results["points_balance_due"]} points for a guaranteed {$points_results["next_price"]}";
+//      $message = "Hi $shopify_customer_obj->first_name, thank you for shoping at BeautyClick. You have $customer_points points. Shop more to earn {$points_results["points_balance_due"]} points for a guaranteed {$points_results["next_price"]}";
+
+      $message = "Thank you for shoping at BeautyClick. You just earned $customer_points points. Your points balance is $customer_total_points." ;
 
       $sms_obj = new RewardSms;
       $sms_obj->text = $message;
