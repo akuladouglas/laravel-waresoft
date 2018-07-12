@@ -163,7 +163,7 @@ class RewardController extends Controller
   
   function queuePointsBalanceSms() {
     
-    $activities = RewardActivity::join("rewards_customers","rewards_customers.customerId","rewards_activitys.customerId")->where("sms_queued",0)->get()->take(80);
+    $activities = RewardActivity::join("rewards_customers","rewards_customers.customerId","rewards_activitys.customerId")->where("points",">=", 1)->where("sms_queued",0)->get()->take(10);
      
     foreach ($activities as $key => $activity) {
       $this->createSms($activity->rewards_activity_id);
