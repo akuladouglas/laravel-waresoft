@@ -37,24 +37,16 @@ class RewardController extends Controller
     
     //https://first.collectapps.io/api/v1/customers?PageNumber=page_number&PageSize=page_size&CreatedAfter=created_after&CreatedBefore=created_before
     
-    $link = "https://first.collectapps.io/api/v1/customers?PageNumber=3&PageSize=100";
+    $last_reward_customer = RewardCustomer::orderBy("rewards_customer_id", "desc")->get()->take(1)->first();
     
-    $link = $this->api_base_link."/customers?PageNumber=9&PageSize=100";        
+    $created_after = $last_reward_customer->createdAt;
+    $created_before = "";
+    
+    $link = "https://first.collectapps.io/api/v1/customers?PageNumber=1&PageSize=100&CreatedAfter=$created_after&CreatedBefore=$created_before";
     
     $response = $this->get_data($link, $this->headers);
     
     $decoded = json_decode($response);
-    
-    echo "<pre>";
-    print_r(count($decoded->Customers));
-    echo "</pre>";
-    
-    echo "<pre>";
-    print_r($decoded->Customers);
-    echo "</pre>";
-    
-    //save info in db
-//    exit();
     
     foreach ($decoded->Customers as $key => $customer) {
       
