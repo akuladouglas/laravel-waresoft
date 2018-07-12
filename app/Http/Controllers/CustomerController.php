@@ -21,23 +21,13 @@ class CustomerController extends BaseController
     
     function syncCustomers() {
       
-      $get_url = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/customers.json?since_id=737853341753&limit=250"; //449367507001
-
-//    $get_url_timestamp = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders.json?since_id=496237740090";
+      $last_customer = Customer::orderBy("id", "desc")->get()->take(1)->first();
       
+      $get_url = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/customers.json?since_id=$last_customer->customerid&limit=250"; //449367507001
+
       $contents = file_get_contents($get_url);
       
       $results = json_decode($contents);
-      
-      echo "<pre>";
-      print_r(count($results->customers));
-      echo "</pre>";
-      
-      echo "<pre>";
-//      print_r($results->customers);
-      echo "</pre>";
-//      exit();
-      
       
       $shopify_customers = json_decode($contents);
       
