@@ -76,7 +76,7 @@ class RewardController extends Controller
   
   function syncActivitys() {
     
-    $customer_data = RewardCustomer::where("pointsBalance", ">", 0)->where("activity_synced", 0)->get()->take(25);
+    $customer_data = RewardCustomer::where("pointsBalance", ">=", 0)->where("activity_synced", 0)->get()->take(25);
     
     foreach ($customer_data as $key => $customer) {
      
