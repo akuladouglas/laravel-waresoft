@@ -14,12 +14,11 @@ class QueuesController extends Controller
      */
     public function __construct()
     {
-      
     }
 
     
-    function sendSms($phonenumber, $message) {
-
+    public function sendSms($phonenumber, $message)
+    {
         $url = 'https://isms.infosky.co.ke/sms2/api/v1/send-sms';
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
@@ -57,15 +56,11 @@ class QueuesController extends Controller
         $sms_queue = RewardSms::where("sent", 0)->get()->take(5);
         
         foreach ($sms_queue as $key => $queue) {
+            $this->sendSms($queue->phone, $queue->text);
           
-          $this->sendSms($queue->phone, $queue->text);
-          
-          $sms_obj = RewardSms::where("rewards_sms_id", $queue->rewards_sms_id)->get()->first();
-          $sms_obj->sent = 1;
-          $sms_obj->save();
-          
+            $sms_obj = RewardSms::where("rewards_sms_id", $queue->rewards_sms_id)->get()->first();
+            $sms_obj->sent = 1;
+            $sms_obj->save();
         }
-        
     }
-    
 }

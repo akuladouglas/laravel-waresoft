@@ -11,11 +11,10 @@ class StockController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     
-    function getStocks() {
-      $data[] = '';
+    public function getStocks()
+    {
+        $data[] = '';
       
-      return view("stock/home", $data);
+        return view("stock/home", $data);
     }
-    
-    
 }

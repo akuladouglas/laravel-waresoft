@@ -8,11 +8,10 @@ class DeliveryController extends Controller
 {
     //
   
-  function getDeliverys() {
-    
-      $data[] = '';
+    public function getDeliverys()
+    {
+        $data[] = '';
       
-      return view("delivery/home", $data);
-  }
-  
+        return view("delivery/home", $data);
+    }
 }

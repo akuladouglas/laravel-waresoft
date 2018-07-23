@@ -8,10 +8,10 @@ class ReportController extends Controller
 {
     //
   
-  function getReports() {
-      $data[] = '';
+    public function getReports()
+    {
+        $data[] = '';
       
-      return view("reports/home", $data);
+        return view("reports/home", $data);
     }
-    
 }

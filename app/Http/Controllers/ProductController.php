@@ -11,11 +11,10 @@ class ProductController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     
-    function getProducts() {
-      $data[] = '';
+    public function getProducts()
+    {
+        $data[] = '';
       
-      return view("product/home", $data);
+        return view("product/home", $data);
     }
-    
-    
 }

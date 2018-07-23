@@ -11,10 +11,10 @@ class CombinationController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
     
-    function getCombinations() {
-      $data[] = '';
+    public function getCombinations()
+    {
+        $data[] = '';
       
-      return view("combination/home", $data);
+        return view("combination/home", $data);
     }
-    
 }
