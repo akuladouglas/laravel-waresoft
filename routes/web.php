@@ -29,6 +29,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::group(array('prefix' => 'order'), function () {
   Route::match(['get', 'post'], '/', 'OrderController@getOrders');
   Route::match(['get', 'post'], '/sync', 'OrderController@syncOrders');
+  Route::match(['get', 'post'], '/sync-updated', 'OrderController@syncUpdatedOrders');
+  Route::match(['get', 'post'], '/test', 'OrderController@getDashboard');
 });
 
 Route::group(array('prefix' => 'delivery'), function () {
