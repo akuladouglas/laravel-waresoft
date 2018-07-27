@@ -24,24 +24,23 @@ class OrderController extends BaseController
     
     public function syncOrders()
     {
-        $get_url = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders.json?status=any";
       
-        $get_url_timestamp = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders.json?since_id=496237740090";
+        $last_order = Order::orderBy("id","desc")->take(1)->get()->first();
+        
+        echo "<pre>";
+        print_r($last_order->id);
+        echo "</pre>";
+        
+        echo "<pre>";
+        print_r($last_order->shopify_created_at);
+        echo "</pre>";
+        
+        $get_url_timestamp = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders.json?since_id=$last_order->id";
       
         $contents = file_get_contents($get_url_timestamp);
-      
-        /*maneuvres*/
-        //      $results = json_decode($contents);
-        //      echo "<pre>";
-        //      print_r($results->orders[0]);
-        //      echo "</pre>";
-        //      exit();
-        /*end maneuvres*/
-      
-      
-      
+        
         $shopify_orders = json_decode($contents);
-      
+        
         foreach ($shopify_orders->orders as $key => $shopify_order) {
             $order = new Order();
             $order->id = $shopify_order->id;
