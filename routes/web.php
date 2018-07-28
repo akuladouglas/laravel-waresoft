@@ -33,6 +33,23 @@ Route::group(array('prefix' => 'order'), function () {
   Route::match(['get', 'post'], '/test', 'OrderController@getDashboard');
 });
 
+Route::group(array('prefix' => 'dashboard'), function () {
+  
+  Route::match(['get', 'post'], '/fullfillment', 'DashboardController@fullfillmentRate');
+  Route::match(['get', 'post'], '/paidsalesamount', 'DashboardController@paidSalesAmount');
+  Route::match(['get', 'post'], '/averagebasket', 'DashboardController@averageBasketExVat');
+  Route::match(['get', 'post'], '/deliveredorders', 'DashboardController@deliveredOrders');
+  Route::match(['get', 'post'], '/revenuedeliveredorders', 'DashboardController@revenueDeliveredOrdersExVat');
+  Route::match(['get', 'post'], '/offlinesales', 'DashboardController@offlineSales');
+  Route::match(['get', 'post'], '/onlinesales', 'DashboardController@onlineSales');
+  Route::match(['get', 'post'], '/pendingorders', 'DashboardController@pendingOrders');
+  Route::match(['get', 'post'], '/pendingdeliveries', 'DashboardController@pendingDeliveries');
+  Route::match(['get', 'post'], '/salesperstaff', 'DashboardController@salesExVatPerStaff');
+  Route::match(['get', 'post'], '/orderstoday', 'DashboardController@numberOfOrdersToday');
+  Route::match(['get', 'post'], '/salestoday', 'DashboardController@salesTodayExVat');
+  
+});
+
 Route::group(array('prefix' => 'delivery'), function () {
   Route::match(['get', 'post'], '/', 'DeliveryController@getDeliverys');
 });
