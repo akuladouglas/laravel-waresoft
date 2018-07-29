@@ -26,7 +26,7 @@ class OrderController extends BaseController
     
     public function viewOrder($order_id) {
       
-        $data["orders"] = Order::find($order_id);
+        $data["order"] = Order::find($order_id);
         
         return view("order/view_order", $data);
         

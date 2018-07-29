@@ -17,19 +17,27 @@
             <thead>
               <tr>
                 <th>#</th>
-                <th>Customer</th>
-                <th>Amount</th>
+                <th>Total Price</th>
+                <th>Total Price</th>
+                <th>Total Discounts</th>
+                <th>Tax</th>
                 <th>Date Made</th>
-                <th> </th>
+                <th>Financial Status </th>
+                <th>Tags </th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
               @foreach($orders as $order)
               <tr>
                 <td> {{ $order->id }} </td>
-                <td> {{ $order->number }} </td>
-                <td> {{ $order->email }} </td>
+                <td> {{ $order->total_price }} </td>
+                <td> {{ $order->subtotal_price }}</td>
+                <td> {{ $order->total_discounts }}</td>
+                <td> {{ $order->total_tax }}</td>
                 <td> {{ $order->shopify_created_at }} </td>
+                <td> {{ $order->financial_status }}</td>
+                <td> {{ $order->tags }} </td>
                 <td> <a href="{{url("order/view/{$order->id}")}}" class="btn btn-xs btn-primary">View More</a> </td>
               </tr>
               @endforeach

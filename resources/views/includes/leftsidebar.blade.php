@@ -47,34 +47,34 @@
       </a>
     </li>
 
-    <li class="<?php echo Request::segment(1) == "delivery" ? "active" : ""; ?>" >
+    <li class="hidden <?php echo Request::segment(1) == "delivery" ? "active" : ""; ?>" >
       <a href="{{ url('delivery') }}">
         <i class="material-icons">view_headline</i>
         <span>Deliveries</span>
       </a>
     </li>
-    <li class="<?php echo Request::segment(1) == "product" ? "active" : ""; ?>" >
+    <li class="hidden <?php echo Request::segment(1) == "product" ? "active" : ""; ?>" >
       <a href="{{ url('product') }}">
         <i class="material-icons">apps</i>
         <span>Products</span>
       </a>
     </li>
 
-    <li class="<?php echo Request::segment(1) == "combination" ? "active" : ""; ?>" >
+    <li class="hidden <?php echo Request::segment(1) == "combination" ? "active" : ""; ?>" >
       <a href="{{ url('combination') }}">
         <i class="material-icons">format_align_justify</i>
         <span>Combinations</span>
       </a>
     </li>
 
-    <li class="<?php echo Request::segment(1) == "stock" ? "active" : ""; ?>" >
+    <li class="hidden <?php echo Request::segment(1) == "stock" ? "active" : ""; ?>" >
       <a href="{{ url('stock') }}">
         <i class="material-icons">list</i>
         <span>Stock</span>
       </a>
     </li>
 
-    <li class="<?php echo Request::segment(1) == "report" ? "active" : ""; ?>" >
+    <li class="hidden <?php echo Request::segment(1) == "report" ? "active" : ""; ?>" >
       <a href="#" class="menu-toggle">
         <i class="material-icons">vertical_split</i>
         <span>Reports</span>
