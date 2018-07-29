@@ -9,7 +9,7 @@
         }
     });
 
-    initRealTimeChart();
+//    initRealTimeChart();
     initDonutChart();
     initSparkline();
 });
@@ -72,25 +72,25 @@ function initDonutChart() {
     Morris.Donut({
         element: 'donut_chart',
         data: [{
-            label: 'Chrome',
+            label: 'Walter',
             value: 37
         }, {
-            label: 'Firefox',
+            label: 'Sharon',
             value: 30
         }, {
-            label: 'Safari',
+            label: 'Mahadia',
             value: 18
         }, {
-            label: 'Opera',
+            label: 'Barbara',
             value: 12
         },
         {
-            label: 'Other',
-            value: 3
+            label: 'Milly',
+            value: 100
         }],
         colors: ['rgb(233, 30, 99)', 'rgb(0, 188, 212)', 'rgb(255, 152, 0)', 'rgb(0, 150, 136)', 'rgb(96, 125, 139)'],
         formatter: function (y) {
-            return y + '%'
+            return y + ' orders'
         }
     });
 }

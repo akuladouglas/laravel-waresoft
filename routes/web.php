@@ -47,6 +47,7 @@ Route::group(array('prefix' => 'dashboard'), function () {
   Route::match(['get', 'post'], '/salesperstaff', 'DashboardController@salesExVatPerStaff');
   Route::match(['get', 'post'], '/orderstoday', 'DashboardController@numberOfOrdersToday');
   Route::match(['get', 'post'], '/salestoday', 'DashboardController@salesTodayExVat');
+  Route::match(['get', 'post'], '/test', 'DashboardController@test');
   
 });
 

@@ -19,7 +19,7 @@
                       
                         <div class="body">
                             <div class="table-responsive">
-                                <table id="ordersTable" class="table table-hover table-bordered dashboard-task-infos">
+                                <table id="ordersTable" class="table table-bordered table-striped table-hover dataTable js-exportable">
                                     <thead>
                                         <tr>
                                             <th>Name</th>
