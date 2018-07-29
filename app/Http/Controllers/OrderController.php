@@ -24,6 +24,13 @@ class OrderController extends BaseController
         return view("order/home", $data);
     }
     
+    public function viewOrder($order_id) {
+      
+        $data["orders"] = Order::find($order_id);
+        
+        return view("order/view_order", $data);
+        
+    }
     
     function getDashboard() {
       

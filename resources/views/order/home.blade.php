@@ -2,12 +2,6 @@
 
 @section('content')
 <!-- Widgets -->
-<div class="block-header">
-  <h2> Orders </h2>
-</div>
-
-<legend></legend>
-
 <div class="row clearfix">
   <!-- Task Info -->
   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -36,7 +30,7 @@
                 <td> {{ $order->number }} </td>
                 <td> {{ $order->email }} </td>
                 <td> {{ $order->shopify_created_at }} </td>
-                <td> <a href="#" class="btn btn-xs btn-primary">View More</a> </td>
+                <td> <a href="{{url("order/view/{$order->id}")}}" class="btn btn-xs btn-primary">View More</a> </td>
               </tr>
               @endforeach
             </tbody>

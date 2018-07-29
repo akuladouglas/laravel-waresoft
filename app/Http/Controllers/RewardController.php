@@ -191,7 +191,7 @@ class RewardController extends Controller
   
     public function getCustomers()
     {
-        $data["customers"] = RewardCustomer::orderby("rewards_customer_id", "desc")->paginate(15);
+        $data["customers"] = RewardCustomer::orderby("rewards_customer_id", "desc")->get()->take(1000);
       
         return view("reward/customer", $data);
     }
@@ -199,14 +199,14 @@ class RewardController extends Controller
   
     public function getSms()
     {
-        $data["sms"] = RewardSms::orderby("rewards_sms_id", "DESC")->paginate(15);
+        $data["sms"] = RewardSms::orderby("rewards_sms_id", "DESC")->get()->take(1000);
       
         return view("reward/sms", $data);
     }
   
     public function getActivitys()
     {
-        $data["activities"] = RewardActivity::join("rewards_customers", "rewards_customers.customerId", "rewards_activitys.customerId")->orderby("rewards_activity_id", "desc")->paginate(15);
+        $data["activities"] = RewardActivity::join("rewards_customers", "rewards_customers.customerId", "rewards_activitys.customerId")->orderby("rewards_activity_id", "desc")->take(2000)->get();
       
         return view("reward/activity", $data);
     }

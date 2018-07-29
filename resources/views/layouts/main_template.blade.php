@@ -58,28 +58,10 @@
     <!-- #Top Bar -->
     <section>
         <!-- Left Sidebar -->
-        <aside id="leftsidebar" class="sidebar">
+        <aside id="leftsidebar" class="sidebar">           
 
-            <div class="row">
-              <legend></legend>
-            </div>
-
-            <!-- Menu -->
+            @include('includes.leftsidebar')
             
-            @include('includes.sidemenu')
-            
-            <!-- #Menu -->
-            
-            <!-- Footer -->
-            <div class="legal">
-                <div class="copyright">
-                    &copy; <?php echo date("Y"); ?> <a href="//beautyclick.co.ke">Africanhair Ltd.</a>
-                </div>
-                <div class="version">
-                    <b> Version: </b> 1.0.0
-                </div>
-            </div>
-            <!-- #Footer -->
         </aside>
         <!-- #END# Left Sidebar -->
 
