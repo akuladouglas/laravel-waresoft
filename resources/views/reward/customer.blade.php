@@ -18,7 +18,9 @@
             <thead>
               <tr>
                 <th>Name</th>
+                <th>Email</th>
                 <th>Created At</th>
+                <th>Updated At</th>
                 <th>Total Spent</th>
                 <th>Total Orders</th>
               </tr>
@@ -27,7 +29,9 @@
               @foreach($customers as $customer)
               <tr>
                 <td> {{ $customer->firstName }}  {{ $customer->lastName }} </td>
-                <td> {{ date("Y-m-d", strtotime($customer->createdAt)) }} </td>
+                <td> {{ $customer->emailAddress }} </td>
+                <td> {{ date("Y/m/d h:i", strtotime($customer->createdAt)) }} </td>
+                <td> {{ date("Y/m/d h:i", strtotime($customer->updatedAt)) }} </td>
                 <td> {{ $customer->totalSpent }} </td>
                 <td> {{ $customer->totalOrders }} </td>
               </tr>

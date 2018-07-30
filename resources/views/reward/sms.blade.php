@@ -18,7 +18,7 @@
             <thead>
               <tr>
                 <th>#</th>
-                <th>Text</th>
+                <th>Phone</th>
                 <th>Text</th>
                 <th>Sent</th>
               </tr>
