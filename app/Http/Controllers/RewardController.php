@@ -205,11 +205,11 @@ class RewardController extends Controller
         $claims_activities = RewardActivity::join("rewards_customers", "rewards_customers.customerId", "rewards_activitys.customerId")->where("type", ">=", 8)->where("sms_queued", 0)->get()->take(10);
         
         foreach ($claims_activities as $key => $activity) {
-            $this->createCouponSms($activity->rewards_activity_id);
-      
-            $activity_obj = RewardActivity::where("rewards_activity_id", $activity->rewards_activity_id)->get()->first();
-            $activity_obj->sms_queued = 1;
-            $activity_obj->save();
+//            $this->createCouponSms($activity->rewards_activity_id);
+//      
+//            $activity_obj = RewardActivity::where("rewards_activity_id", $activity->rewards_activity_id)->get()->first();
+//            $activity_obj->sms_queued = 1;
+//            $activity_obj->save();
         }
         
         
@@ -264,10 +264,11 @@ class RewardController extends Controller
 
             $message = "Your coupon code to use at BeautyClick.co.ke. {$coupon_code}. Use this coupon code on your next order." ;
 
-            $sms_obj = new RewardSms;
-            $sms_obj->text = $message;
-            $sms_obj->phone = $shopify_customer_obj->phone;
-            $sms_obj->save();
+//            $sms_obj = new RewardSms;
+//            $sms_obj->text = $message;
+//            $sms_obj->phone = $shopify_customer_obj->phone;
+//            $sms_obj->save();
+            
         }
     }
     
