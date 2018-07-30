@@ -8,6 +8,7 @@ use App\Models\RewardActivity;
 use App\Models\RewardSms;
 use App\Models\Customer;
 use App\Models\Reward;
+use DB;
 
 class RewardController extends Controller
 {
@@ -72,17 +73,29 @@ class RewardController extends Controller
   
     public function syncActivitys()
     {
-        $customer_data = RewardCustomer::where("pointsBalance", ">=", 0)->where("activity_synced", 0)->get()->take(25);
-    
+        $customer_data = RewardCustomer::where("pointsBalance", ">=", 0)->where("activity_synced", 0)->get()->take(80);
+        
+        //reset all customers if they are all synced
+        if(!count($customer_data)){
+//          DB::table('rewards_customers')->update(['activity_synced' => 0]);
+        }
+        
         foreach ($customer_data as $key => $customer) {
+          
             $link = "https://first.collectapps.io/api/v1/activities?CustomerId=$customer->customerId";
       
             $activity_data = $this->get_data($link, $this->headers);
-      
+            
             $decoded_results = json_decode($activity_data);
-      
+            
             foreach ($decoded_results->Activities as $key => $activity) {
-                $activity_obj = new RewardActivity();
+                
+                $activity_obj = RewardActivity::where("id",$activity->Id)->get()->first();
+                
+                if(!$activity_obj){
+                 $activity_obj = new RewardActivity();
+                }
+                
                 $activity_obj->id = $activity->Id;
                 $activity_obj->accountId = $activity->AccountId;
                 $activity_obj->customerId = $activity->CustomerId;
@@ -100,10 +113,13 @@ class RewardController extends Controller
           
                 $activity_obj->save();
         
-                $customer_obj = RewardCustomer::where("customerId", $activity->CustomerId)->get()->first();
-                $customer_obj->activity_synced = 1;
-                $customer_obj->save();
             }
+            
+            //update customer as synced anyway
+            $customer->activity_synced = 1;
+            $customer->last_sync_time = date("Y-m-d h:m:s");
+            $customer->save();
+            
         }
     }
   
