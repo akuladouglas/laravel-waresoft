@@ -191,7 +191,7 @@ class RewardController extends Controller
   
     public function getCustomers()
     {
-        $data["customers"] = RewardCustomer::orderby("rewards_customer_id", "desc")->get()->take(1000);
+        $data["customers"] = RewardCustomer::orderby("rewards_customer_id", "desc")->get()->take(3000);
       
         return view("reward/customer", $data);
     }
