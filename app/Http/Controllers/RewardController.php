@@ -197,7 +197,7 @@ class RewardController extends Controller
     
         $customer_points = number_format($activity_obj->points);
     
-        if ($shopify_customer_obj) {
+        if ($shopify_customer_obj && !empty($shopify_customer_obj->phone)) {
       
 //      $message = "Hi $shopify_customer_obj->first_name, thank you for shoping at BeautyClick. You have $customer_points points. Shop more to earn {$points_results["points_balance_due"]} points for a guaranteed {$points_results["next_price"]}";
 

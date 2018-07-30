@@ -56,6 +56,7 @@ class QueuesController extends Controller
         $sms_queue = RewardSms::where("sent", 0)->get()->take(5);
         
         foreach ($sms_queue as $key => $queue) {
+          
             $this->sendSms($queue->phone, $queue->text);
           
             $sms_obj = RewardSms::where("rewards_sms_id", $queue->rewards_sms_id)->get()->first();
