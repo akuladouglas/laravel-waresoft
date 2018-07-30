@@ -53,7 +53,8 @@
     <!-- Overlay For Sidebars -->
     <div class="overlay"></div>
     <!-- #END# Overlay For Sidebars -->
-    @include("includes.navbar")
+    
+    @include('includes.navbar')
     
     <!-- #Top Bar -->
     <section>
