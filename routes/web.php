@@ -77,7 +77,8 @@ Route::group(array('prefix' => 'customer'), function () {
   Route::match(['get', 'post'], '/sync-customer', 'CustomerController@syncCustomers');
 });
 
-Route::group(array('prefix' => 'reward'), function () {
+Route::group(array('prefix' => 'reward'), function () {  
+  Route::match(['get', 'post'], '/coupon', 'RewardController@getCoupon');
   Route::match(['get', 'post'], '/customers', 'RewardController@getCustomers');
   Route::match(['get', 'post'], '/activitys', 'RewardController@getActivitys');
   Route::match(['get', 'post'], '/sms', 'RewardController@getSms');

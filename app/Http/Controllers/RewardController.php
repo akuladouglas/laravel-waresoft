@@ -32,6 +32,20 @@ class RewardController extends Controller
         return $data;
     }
   
+    
+    public function getCoupon() {
+      
+      $get_url = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/price_rules.json";
+      
+      $data = file_get_contents($get_url);
+      
+      echo "<pre>";
+      print_r($data);
+      echo '</pre>';
+      
+      
+    }
+    
   
     public function syncCustomers()
     {
@@ -173,19 +187,36 @@ class RewardController extends Controller
   
     public function queuePointsBalanceSms()
     {
-        $activities = RewardActivity::join("rewards_customers", "rewards_customers.customerId", "rewards_activitys.customerId")->where("points", ">=", 1)->where("sms_queued", 0)->get()->take(10);
-     
-        foreach ($activities as $key => $activity) {
-            $this->createSms($activity->rewards_activity_id);
+      
+      //points
+      
+        $points_activities = RewardActivity::join("rewards_customers", "rewards_customers.customerId", "rewards_activitys.customerId")->where("type", ">=", 3)->where("sms_queued", 0)->get()->take(10);
+        
+        foreach ($points_activities as $key => $activity) {
+            $this->createPointsSms($activity->rewards_activity_id);
       
             $activity_obj = RewardActivity::where("rewards_activity_id", $activity->rewards_activity_id)->get()->first();
             $activity_obj->sms_queued = 1;
             $activity_obj->save();
         }
+      
+      //claims sms
+        
+        $claims_activities = RewardActivity::join("rewards_customers", "rewards_customers.customerId", "rewards_activitys.customerId")->where("type", ">=", 8)->where("sms_queued", 0)->get()->take(10);
+        
+        foreach ($claims_activities as $key => $activity) {
+            $this->createCouponSms($activity->rewards_activity_id);
+      
+            $activity_obj = RewardActivity::where("rewards_activity_id", $activity->rewards_activity_id)->get()->first();
+            $activity_obj->sms_queued = 1;
+            $activity_obj->save();
+        }
+        
+        
     }
   
   
-    public function createSms($activity_id)
+    public function createPointsSms($activity_id)
     {
         $activity_obj = RewardActivity::join("rewards_customers", "rewards_customers.customerId", "rewards_activitys.customerId")->where("rewards_activity_id", $activity_id)->get()->first();
     
@@ -210,6 +241,37 @@ class RewardController extends Controller
         }
     }
   
+    public function createCouponSms($activity_id)
+    {
+        $activity_obj = RewardActivity::join("rewards_customers", "rewards_customers.customerId", "rewards_activitys.customerId")->where("rewards_activity_id", $activity_id)->get()->first();
+    
+        $shopify_customer_obj = Customer::where("email", trim($activity_obj->emailAddress))->get()->first();
+    
+        $customer_total_points = number_format(RewardActivity::where("customerId", $activity_obj->customerId)->sum("points"));
+    
+        $points_results = $this->computePointsBalance($activity_obj->points);
+    
+        $customer_points = number_format($activity_obj->points);
+    
+        
+        
+        
+        $coupon_code = "";
+        
+        if ($shopify_customer_obj && !empty($shopify_customer_obj->phone)) {
+          
+//      $message = "Hi $shopify_customer_obj->first_name, thank you for shoping at BeautyClick. You have $customer_points points. Shop more to earn {$points_results["points_balance_due"]} points for a guaranteed {$points_results["next_price"]}";
+
+            $message = "Your coupon code to use at BeautyClick.co.ke. {$coupon_code}. Use this coupon code on your next order." ;
+
+            $sms_obj = new RewardSms;
+            $sms_obj->text = $message;
+            $sms_obj->phone = $shopify_customer_obj->phone;
+            $sms_obj->save();
+        }
+    }
+    
+    
     public function getCustomers()
     {
         $data["customers"] = RewardCustomer::orderby("rewards_customer_id", "desc")->get()->take(3000);
