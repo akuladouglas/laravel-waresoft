@@ -38,6 +38,9 @@ class RewardController extends Controller
     
     //https://first.collectapps.io/api/v1/customers?PageNumber=page_number&PageSize=page_size&CreatedAfter=created_after&CreatedBefore=created_before
     
+      
+       /* logic to get new customer */
+      
         $last_reward_customer = RewardCustomer::orderBy("rewards_customer_id", "desc")->get()->take(1)->first();
     
         $created_after = $last_reward_customer->createdAt;
@@ -48,6 +51,8 @@ class RewardController extends Controller
         $response = $this->get_data($link, $this->headers);
     
         $decoded = json_decode($response);
+        
+        /*logic to get updated current customers */
     
         foreach ($decoded->Customers as $key => $customer) {
             $reward_customer = new RewardCustomer();
@@ -77,7 +82,7 @@ class RewardController extends Controller
         
         //reset all customers if they are all synced
         if(!count($customer_data)){
-//          DB::table('rewards_customers')->update(['activity_synced' => 0]);
+          DB::table('rewards_customers')->update(['activity_synced' => 0]);
         }
         
         foreach ($customer_data as $key => $customer) {
