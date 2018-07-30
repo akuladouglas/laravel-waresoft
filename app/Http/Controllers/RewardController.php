@@ -190,7 +190,7 @@ class RewardController extends Controller
       
       //points
       
-        $points_activities = RewardActivity::join("rewards_customers", "rewards_customers.customerId", "rewards_activitys.customerId")->where("type", ">=", 3)->where("sms_queued", 0)->get()->take(10);
+        $points_activities = RewardActivity::join("rewards_customers", "rewards_customers.customerId", "rewards_activitys.customerId")->where("points", ">=", 1)->where("type", "=", 3)->where("sms_queued", 0)->get()->take(10);
         
         foreach ($points_activities as $key => $activity) {
             $this->createPointsSms($activity->rewards_activity_id);
@@ -253,8 +253,6 @@ class RewardController extends Controller
     
         $customer_points = number_format($activity_obj->points);
     
-        
-        
         
         $coupon_code = "";
         
