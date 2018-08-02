@@ -18,9 +18,14 @@ class CyfeDashboardController extends Controller
     
     public function test() {
       
-      $data = [];
+      $data = "Sales Rep, Revenue($), Sales
+              Jane Doe,100132,213
+              Crystal Smith,52035,102
+              Jack Carter,10342,54
+              Mona Junior,5413,21
+              Homer Simpson,100,1";
       
-      return view("dashboard/test");
+      echo $data;
       
     }
     
@@ -40,7 +45,7 @@ class CyfeDashboardController extends Controller
     public function fullfillmentRate()
     {
       
-      $data = "Sales Rep,Revenue($),Sales
+      $data = "Sales Rep, Revenue($), Sales
               Jane Doe,100132,213
               Crystal Smith,52035,102
               Jack Carter,10342,54
