@@ -155,7 +155,7 @@ class CyfeDashboardController extends Controller
                            ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", ">=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                            ->sum("total_price");
-      
+        
         $data = "Order Count, Order Total
               $order_count, $order_total
              ";
@@ -176,16 +176,26 @@ class CyfeDashboardController extends Controller
                              ->where("tags", "like", "%$tag%")
                              ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                              ->sum("total_price");
-
-            $data = "Staff, Order Count, Order Total"."<br>";
+            
+            $order_total_tax[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                             ->where("tags", "like", "%$tag%")
+                             ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                             ->sum("total_tax");
             
         }
-    
-        foreach ($this->offline_tags as $key => $tag) {
-            $data .= "$tag, $order_count[$tag], $order_total[$tag]"."<br>";
-        }
-      
+        
+        $data = "Order Count, Total, Total exVat"."<br>";
+        
+        $order_total_summation = (array_sum($order_total));
+        $order_total_tax_summation = (array_sum($order_total_tax));
+        $order_count_summation = (array_sum($order_count));
+        
+        $ex_vat_total = ($order_total_summation - $order_total_tax_summation);
+        
+        $data .= "$order_count_summation, $order_total_summation, $ex_vat_total"."<br>";
+        
         echo $data;
+        
     }
     
     public function onlineSales()
@@ -194,23 +204,33 @@ class CyfeDashboardController extends Controller
           
             $order_count[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                              ->where("tags", "like", "%$tag%")
-                             ->where("shopify_created_at", ">=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                             ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                              ->count();
 
             $order_total[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                              ->where("tags", "like", "%$tag%")
-                             ->where("shopify_created_at", ">=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                             ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                              ->sum("total_price");
             
-            $data = "Staff, Order Count, Order Total"."<br>";
+            $order_total_tax[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                             ->where("tags", "like", "%$tag%")
+                             ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                             ->sum("total_tax");
             
         }
-    
-        foreach ($this->online_tags as $key => $tag) {
-            $data .= "$tag, $order_count[$tag], $order_total[$tag]"."<br>";
-        }
-      
+        
+        $data = "Order Count, Total, Total exVat"."<br>";
+        
+        $order_total_summation = (array_sum($order_total));
+        $order_total_tax_summation = (array_sum($order_total_tax));
+        $order_count_summation = (array_sum($order_count));
+        
+        $ex_vat_total = ($order_total_summation - $order_total_tax_summation);
+        
+        $data .= "$order_count_summation, $order_total_summation, $ex_vat_total"."<br>";
+        
         echo $data;
+        
     }
     
     public function pendingOrders()
