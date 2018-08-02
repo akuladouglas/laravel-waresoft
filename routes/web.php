@@ -66,8 +66,8 @@ Route::group(array('prefix' => 'cyfe-dash'), function () {
   Route::match(['get', 'post'], '/salesperstaff', 'CyfeDashboardController@salesExVatPerStaff');
   Route::match(['get', 'post'], '/orderstoday', 'CyfeDashboardController@numberOfOrdersToday');
   Route::match(['get', 'post'], '/salestoday', 'CyfeDashboardController@salesTodayExVat');
-  Route::match(['get', 'post'], '/test', 'CyfeDashboardController@test');
-  
+  Route::match(['get', 'post'], '/pendingDeliveriesStaff', 'CyfeDashboardController@pendingDeliveriesExVatPerStaff');
+  Route::match(['get', 'post'], '/test', 'CyfeDashboardController@test'); 
 });
 
 

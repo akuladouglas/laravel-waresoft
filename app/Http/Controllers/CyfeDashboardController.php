@@ -275,6 +275,40 @@ class CyfeDashboardController extends Controller
         echo $data;
     }
     
+    public function pendingDeliveriesExVatPerStaff()
+    {
+      
+        foreach ($this->tags as $tag) {
+          
+            $order_count[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                           ->where("shopify_created_at", ">=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                           ->where("tags", "like", "%$tag%")
+                           ->where("financial_status","pending")
+                           ->count();
+      
+            $order_total[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                           ->where("shopify_created_at", ">=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                           ->where("tags", "like", "%$tag%")
+                           ->where("financial_status","pending")
+                           ->sum("total_price");
+        
+            $order_total_tax[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                              ->where("tags", "like", "%$tag%")
+                              ->where("financial_status","pending")
+                              ->where("shopify_created_at", ">=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                              ->sum("total_tax");
+            
+        }
+      
+        $data = "Staff, Order Count, Order Total"."<br>";
+      
+        foreach ($this->tags as $key => $tag) {
+            $data .= "$tag, $order_count[$tag], $order_total[$tag]"."<br>";
+        }
+      
+        echo $data;
+    }
+    
     public function numberOfOrdersToday()
     {
         $order_count = Order::where("shopify_created_at", "like", Carbon::now()->format("Y-m-d")."%")->count();
