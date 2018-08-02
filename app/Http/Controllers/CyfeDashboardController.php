@@ -12,9 +12,9 @@ class CyfeDashboardController extends Controller
     
     public $end_date;
     
-    public $tags = ["faith","milly","barbara","doreen","walter","sharon"];
+    public $tags = ["faith","milly","barbara","doreen","walter","sharon","lydia","mahadia"];
     
-    public $online_tags = ["milly","doreen","walter","sharon"];
+    public $online_tags = ["milly","doreen","walter","sharon","lydia","mahadia"];
     
     public $offline_tags = ["faith","barbara"];
     
