@@ -183,22 +183,36 @@ class OrderController extends BaseController
     public function syncOrders()
     {
       
-        $last_order = Order::orderBy("id","desc")->take(1)->get()->first();
+//        $last_order = Order::orderBy("id","desc")->take(1)->get()->first();
         
-        echo "<pre>";
-        print_r($last_order->id);
-        echo "</pre>";
+//        echo "<pre>";
+//        print_r($last_order->id);
+//        echo "</pre>";
         
-        echo "<pre>";
-        print_r($last_order->shopify_created_at);
-        echo "</pre>";
-        
-        $get_url_timestamp = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders.json?since_id=$last_order->id";
+//        echo "<pre>";
+//        print_r($last_order->shopify_created_at);
+//        echo "</pre>";
+
+//        $get_url_timestamp = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders.json?since_id=$last_order->id";
       
+//        $contents = file_get_contents($get_url_timestamp);
+      
+        $last_created_order = Order::orderBy("shopify_updated_at","desc")->take(1)->get()->first();
+         
+        if($last_created_order){ 
+          $originator_date = $last_created_order->shopify_created_at;
+        } else {
+          $originator_date = "2018-07-01";
+        }
+        
+        $formatted_date =  Carbon::parse($originator_date)->format('Y-m-d\TH:i:s');
+        
+        $get_url_timestamp = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders.json?updated_at_min=$formatted_date&page=2&limit=250";
+        
         $contents = file_get_contents($get_url_timestamp);
-        
-        $shopify_orders = json_decode($contents);
-        
+              
+        $shopify_orders = json_decode($contents);        
+          
         foreach ($shopify_orders->orders as $key => $shopify_order) {
             $order = new Order();
             $order->id = $shopify_order->id;

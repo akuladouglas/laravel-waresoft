@@ -25,8 +25,8 @@ class CyfeDashboardController extends Controller
      */
     public function __construct()
     {
-        $this->start_date = Carbon::parse("2018-07-01");
-        $this->end_date = Carbon::parse("2018-07-31");
+        $this->start_date = Carbon::parse("2018-08-01");
+        $this->end_date = Carbon::parse("2018-08-31");
     }
     
     public function test()
@@ -354,4 +354,46 @@ class CyfeDashboardController extends Controller
       
         echo $data;
     }
+    
+    public function dailyTransactionBreakdown()
+    {
+        
+        $date_range = $this->generateDateRange($this->start_date, $this->end_date);
+        
+        foreach ($date_range as $key => $date) {
+          
+          $order_count[$date] = Order::where("shopify_created_at", "like", Carbon::parse($date)->format("Y-m-d")."%")
+                             ->count();
+        
+          $order_total[$date] = Order::where("shopify_created_at", "like", Carbon::parse($date)->format("Y-m-d")."%")
+                             ->sum("total_price");
+          
+        }
+        
+        $data = "Date, Order Count, Order Total"."<br>";
+        
+        foreach ($date_range as $key => $date) {
+          $data .= "$date, $order_count[$date], $order_total[$date]"."<br>";
+        }
+        
+        echo $data;
+        
+    }
+    
+    private function generateDateRange(Carbon $start_date, Carbon $end_date, $minimal = false)
+    {
+        $dates = [];
+      
+        if ($minimal) {
+            for ($date = $start_date; $date->lte($end_date); $date->addDay()) {
+                $dates[] = $date->format("d");
+            }
+        } else {
+            for ($date = $start_date; $date->lte($end_date); $date->addDay()) {
+                $dates[] = $date->format("Y-m-d");
+            }
+        }
+        return $dates;
+    }
+    
 }
