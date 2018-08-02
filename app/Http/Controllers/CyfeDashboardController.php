@@ -18,12 +18,12 @@ class CyfeDashboardController extends Controller
     
     public function test() {
       
-      $data = "Sales Rep, Revenue($), Sales
-              Jane Doe,100132,213
-              Crystal Smith,52035,102
-              Jack Carter,10342,54
-              Mona Junior,5413,21
-              Homer Simpson,100,1";
+      $data = "Sales Staff, Revenue(Kes), Sales
+              Barbara,100132,213
+              Milly,120350,102
+              Doreen,103420,54
+              Faith,105413,21
+              Walter,100200,1";
       
       echo $data;
       
