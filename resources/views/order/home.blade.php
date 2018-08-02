@@ -35,7 +35,7 @@
                 <td> {{ $order->subtotal_price }}</td>
                 <td> {{ $order->total_discounts }}</td>
                 <td> {{ $order->total_tax }}</td>
-                <td> {{ $order->shopify_created_at }} </td>
+                <td> {{ date("d/m/y", strtotime($order->shopify_created_at)) }} </td>
                 <td> {{ $order->financial_status }}</td>
                 <td> {{ $order->tags }} </td>
                 <td> <a href="{{url("order/view/{$order->id}")}}" class="btn btn-xs btn-primary">View More</a> </td>

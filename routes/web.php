@@ -52,6 +52,25 @@ Route::group(array('prefix' => 'dashboard'), function () {
   
 });
 
+Route::group(array('prefix' => 'cyfe-dash'), function () {
+  
+  Route::match(['get', 'post'], '/fullfillment', 'CyfeDashboardController@fullfillmentRate');
+  Route::match(['get', 'post'], '/paidsalesamount', 'CyfeDashboardController@paidSalesAmount');
+  Route::match(['get', 'post'], '/averagebasket', 'CyfeDashboardController@averageBasketExVat');
+  Route::match(['get', 'post'], '/deliveredorders', 'CyfeDashboardController@deliveredOrders');
+  Route::match(['get', 'post'], '/revenuedeliveredorders', 'CyfeDashboardController@revenueDeliveredOrdersExVat');
+  Route::match(['get', 'post'], '/offlinesales', 'CyfeDashboardController@offlineSales');
+  Route::match(['get', 'post'], '/onlinesales', 'CyfeDashboardController@onlineSales');
+  Route::match(['get', 'post'], '/pendingorders', 'CyfeDashboardController@pendingOrders');
+  Route::match(['get', 'post'], '/pendingdeliveries', 'CyfeDashboardController@pendingDeliveries');
+  Route::match(['get', 'post'], '/salesperstaff', 'CyfeDashboardController@salesExVatPerStaff');
+  Route::match(['get', 'post'], '/orderstoday', 'CyfeDashboardController@numberOfOrdersToday');
+  Route::match(['get', 'post'], '/salestoday', 'CyfeDashboardController@salesTodayExVat');
+  Route::match(['get', 'post'], '/test', 'CyfeDashboardController@test');
+  
+});
+
+
 Route::group(array('prefix' => 'delivery'), function () {
   Route::match(['get', 'post'], '/', 'DeliveryController@getDeliverys');
 });
