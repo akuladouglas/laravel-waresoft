@@ -99,7 +99,7 @@ class CyfeDashboardController extends Controller
         $orders_total = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                              ->where("shopify_created_at", ">=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                              ->sum("total_price");
-      
+        
         $total_tax = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                                 ->where("shopify_created_at", ">=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                                 ->sum("total_tax");
@@ -166,20 +166,22 @@ class CyfeDashboardController extends Controller
     public function offlineSales()
     {
         foreach ($this->offline_tags as $key => $tag) {
-            $order_count = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+          
+            $order_count[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                              ->where("tags", "like", "%$tag%")
-                             ->where("shopify_created_at", ">=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                             ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                              ->count();
 
-            $order_total = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+            $order_total[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                              ->where("tags", "like", "%$tag%")
-                             ->where("shopify_created_at", ">=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                             ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                              ->sum("total_price");
 
             $data = "Staff, Order Count, Order Total"."<br>";
+            
         }
     
-        foreach ($this->online_tags as $key => $tag) {
+        foreach ($this->offline_tags as $key => $tag) {
             $data .= "$tag, $order_count[$tag], $order_total[$tag]"."<br>";
         }
       
@@ -187,19 +189,21 @@ class CyfeDashboardController extends Controller
     }
     
     public function onlineSales()
-    {
+    {      
         foreach ($this->online_tags as $key => $tag) {
-            $order_count = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+          
+            $order_count[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                              ->where("tags", "like", "%$tag%")
                              ->where("shopify_created_at", ">=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                              ->count();
 
-            $order_total = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+            $order_total[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                              ->where("tags", "like", "%$tag%")
                              ->where("shopify_created_at", ">=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                              ->sum("total_price");
-
+            
             $data = "Staff, Order Count, Order Total"."<br>";
+            
         }
     
         foreach ($this->online_tags as $key => $tag) {
