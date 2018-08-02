@@ -74,11 +74,19 @@ class OrderController extends BaseController
       $shopify_orders = json_decode($contents);
       
       foreach ($shopify_orders->orders as $key => $shopify_order) {
+            
             $order = Order::where("id",$shopify_order->id)->get()->first();
+            
+            if(!$order){
+              $order = new Order();
+            }
+            
             $order->email = $shopify_order->email;
+            
             if ($shopify_order->closed_at) {
                 $order->closed_at = date("Y-m-d h:m:s", strtotime($shopify_order->closed_at));
             }
+            
             $order->shopify_created_at = date("Y-m-d h:m:s", strtotime($shopify_order->created_at));
             $order->shopify_updated_at = date("Y-m-d h:m:s", strtotime($shopify_order->updated_at));
             $order->number = $shopify_order->number;
@@ -118,6 +126,7 @@ class OrderController extends BaseController
             $order->browser_ip = $shopify_order->browser_ip;
             $order->landing_site_ref = $shopify_order->landing_site_ref;
             $order->processing_method = $shopify_order->processing_method;
+            $order->fulfillment_status = $shopify_order->fulfillment_status;
             $order->checkout_id = $shopify_order->checkout_id;
             $order->source_name = $shopify_order->source_name;
             $order->tags = $shopify_order->tags;
@@ -132,6 +141,11 @@ class OrderController extends BaseController
             if ($ordersline_items) {
                 foreach ($ordersline_items as $key => $order_line_item) {
                     $line_item = Lineitems::where("id", $order_line_item->id)->get()->first();
+                    
+                    if(!$line_item){
+                      $line_item = new Lineitems();
+                    }
+                    
                     $line_item->order_id = $order_id;
                     $line_item->variant_id = $order_line_item->variant_id;
                     $line_item->title = $order_line_item->title;
@@ -231,6 +245,7 @@ class OrderController extends BaseController
             $order->browser_ip = $shopify_order->browser_ip;
             $order->landing_site_ref = $shopify_order->landing_site_ref;
             $order->processing_method = $shopify_order->processing_method;
+            $order->fulfillment_status = $shopify_order->fulfillment_status;
             $order->checkout_id = $shopify_order->checkout_id;
             $order->source_name = $shopify_order->source_name;
             $order->tags = $shopify_order->tags;
