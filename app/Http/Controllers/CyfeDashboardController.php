@@ -376,6 +376,9 @@ class CyfeDashboardController extends Controller
           $data .= "$date, $order_count[$date], $order_total[$date]"."<br>";
         }
         
+        $data .= "Color,#52ff7f,#ff7e0e"."<br>";
+        $data .= "Type,area,line";
+        
         echo $data;
         
     }
