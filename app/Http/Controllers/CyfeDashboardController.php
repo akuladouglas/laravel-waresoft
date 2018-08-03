@@ -81,8 +81,8 @@ class CyfeDashboardController extends Controller
         
         $fullfillment_rate = round((($paid_fullfilled_orders / $all_orders)*100), 3);
       
-        $data = "All Orders, Fullfilled Orders, Fullfillment Rate (%)
-               $all_orders,$fullfilled_orders,$fullfillment_rate
+        $data = "All Orders, Paid Fullfilled Orders, Fullfillment Rate (%)
+               $all_orders,$paid_fullfilled_orders,$fullfillment_rate
                ";
       
         echo $data;
@@ -295,21 +295,30 @@ class CyfeDashboardController extends Controller
     
     public function salesExVatPerStaff()
     {
+        
         foreach ($this->tags as $tag) {
+          
             $order_count[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                           ->where("fulfillment_status", "fulfilled")
+                           ->where("financial_status", "paid")
                            ->where("tags", "like", "%$tag%")
                            ->count();
       
             $order_total[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                           ->where("fulfillment_status", "fulfilled")
+                           ->where("financial_status", "paid")
                            ->where("tags", "like", "%$tag%")
                            ->sum("total_price");
         
             $order_total_tax[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
-                              ->where("tags", "like", "%$tag%")
-                              ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
-                              ->sum("total_tax");
+                            ->where("tags", "like", "%$tag%")
+                            ->where("fulfillment_status", "fulfilled")
+                            ->where("financial_status", "paid")
+                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                            ->sum("total_tax");
+            
         }
       
         $data = "Staff, Order Count, Order Total"."<br>";
@@ -319,6 +328,7 @@ class CyfeDashboardController extends Controller
         }
       
         echo $data;
+        
     }
     
     public function pendingDeliveriesExVatPerStaff()
