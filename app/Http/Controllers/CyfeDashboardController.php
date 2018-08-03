@@ -22,15 +22,15 @@ class CyfeDashboardController extends Controller
     
     public $cancelled_reason_tags = [
           "COOD" => "Change of order details",
-          "NR" => "No Response",
-          "DD" => "Delayed delivery",
-          "DTU" => "Delivery timelines unfeasible",
-          "RUD" => "Reject Upon delivery",
-          "PLO" => "Payment long overdue",
+          "NR"   => "No Response",
+          "DD"   => "Delayed delivery",
+          "DTU"  => "Delivery timelines unfeasible",
+          "RUD"  => "Reject Upon delivery",
+          "PLO"  => "Payment long overdue",
           "IPLO" => "In store pick up long overdue",
-          "SO" => "Stock Out",
+          "SO"   => "Stock Out",
           "CNLI" => "Client no longer interested"
-    ];
+         ];
     
     /**
      * Create a new controller instance.
@@ -107,6 +107,7 @@ class CyfeDashboardController extends Controller
                ";
       
         echo $data;
+        
     }
     
     public function averageBasketExVat()
