@@ -108,10 +108,10 @@ class CyfeDashboardController extends Controller
       
         $ex_vat_total = ($paid_sales_amount - $paid_sales_amount_tax);
       
-        $data = "Sales Number, Sales Amount
-               $paid_sales_count, $ex_vat_total
+        $data = "Number of Orders, Total Sales Ex VAT, Total Sales Ex VAT
+               $paid_sales_count, $paid_sales_amount ,$ex_vat_total
                ";
-      
+        
         echo $data;
         
     }
@@ -132,8 +132,8 @@ class CyfeDashboardController extends Controller
       
         $basket_size = round(($orders_total / $orders_count), 2);
         $ex_vat_total = ($orders_total - $total_tax);
-      
-        $data = "Order Total, Order Count, Basket size
+        
+        $data = "Total Sales ex VAT, Number of Orders, Average Basket size
                $ex_vat_total, $orders_count, $basket_size   
            ";
       
@@ -163,7 +163,7 @@ class CyfeDashboardController extends Controller
         
         $total_ex_vat = round(($order_total - $order_total_tax),2);
         
-        $data = "Order Count, Total, Vat, Order Ex Vat Total
+        $data = "Number of orders, Total Inc VAT, Vat, Order Ex Vat Total
               $order_count, $order_total, $order_total_tax, $total_ex_vat
              ";
       
@@ -210,7 +210,7 @@ class CyfeDashboardController extends Controller
             
         }
         
-        $data = "Order Count, Total, Total exVat"."<br>";
+        $data = "Number of orders, Total Inc Vat, Total ex Vat"."<br>";
         
         $order_total_summation = (array_sum($order_total));
         $order_total_tax_summation = (array_sum($order_total_tax));
@@ -245,7 +245,7 @@ class CyfeDashboardController extends Controller
             
         }
         
-        $data = "Order Count, Total, Total exVat"."<br>";
+        $data = "Number of orders, Total, Total ex Vat"."<br>";
         
         $order_total_summation = (array_sum($order_total));
         $order_total_tax_summation = (array_sum($order_total_tax));
@@ -261,6 +261,7 @@ class CyfeDashboardController extends Controller
     
     public function pendingOrders()
     {
+      
         $order_count = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                            ->count();
@@ -268,12 +269,19 @@ class CyfeDashboardController extends Controller
         $order_total = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                            ->sum("total_price");
-      
-        $data = "Order Count, Order Total
-              $order_count, $order_total
+        
+        $tax = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                           ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                           ->sum("total_tax");
+        
+        $ex_vat_order_total = round(($order_total - $tax),2);
+        
+        $data = "Number of Orders, Total Inc VAT, Total Ex VAT
+              $order_count, $order_total, $ex_vat_order_total
              ";
-      
+        
         echo $data;
+        
     }
     
     public function pendingDeliveries()
@@ -286,11 +294,11 @@ class CyfeDashboardController extends Controller
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                            ->sum("total_price");
       
-        $data = "Order Count, Order Total
-              $order_count, $order_total
-             ";
-      
+        $data = "Number of Orders, Total Inc VAT
+                  $order_count, $order_total";
+                 
         echo $data;
+        
     }
     
     public function salesExVatPerStaff()
@@ -321,10 +329,13 @@ class CyfeDashboardController extends Controller
             
         }
       
-        $data = "Staff, Order Count, Order Total"."<br>";
+        
+        
+        $data = "Staff, Number of Orders, Total ex VAT"."<br>";
       
         foreach ($this->tags as $key => $tag) {
-            $data .= "$tag, $order_count[$tag], $order_total[$tag]"."<br>";
+            $ex_vat_amount[$tag] = round(($order_total[$tag] - $order_total_tax[$tag]),2);
+            $data .= "$tag, $order_count[$tag], $ex_vat_amount[$tag]"."<br>";
         }
       
         echo $data;
@@ -356,7 +367,7 @@ class CyfeDashboardController extends Controller
             
         }
       
-        $data = "Staff, Order Count, Order Total"."<br>";
+        $data = "Staff, Number of Orders, Total ex VAT"."<br>";
       
         foreach ($this->tags as $key => $tag) {
             $data .= "$tag, $order_count[$tag], $order_total[$tag]"."<br>";
@@ -387,11 +398,12 @@ class CyfeDashboardController extends Controller
             
         }
       
-        $data = "Cancelled Reason, Order Count, Order Total"."<br>";
-      
+        $data = "Cancelled Reason, Number of Orders, Total ex VAT"."<br>";
+        
         foreach ($this->cancelled_tags as $key => $tag) {
             $reason = $this->cancelled_reason_tags[$tag];
-            $data .= "$reason, $order_count[$tag], $order_total[$tag]"."<br>";
+            $ex_vat_amount = round(($order_total[$tag] - $order_total_tax[$tag]),2);
+            $data .= "$reason, $order_count[$tag], $ex_vat_amount"."<br>";
         }
       
         echo $data;
@@ -406,7 +418,7 @@ class CyfeDashboardController extends Controller
           
         $ex_vat_order_total = round(($order_total - $tax),2);
         
-        $data = "Order Count, Total, Ex Vat
+        $data = "NUmber of Orders, Total Inc Vat, Total ex Vat
               $order_count, $order_total, $ex_vat_order_total 
              ";
         
@@ -420,11 +432,11 @@ class CyfeDashboardController extends Controller
         $order_total_tax = Order::where("shopify_created_at", "like", Carbon::now()->format("Y-m-d")."%")->sum("total_tax");
         $total_ex_vat = ($order_total - $order_total_tax);
       
-        $data = "Order Count, Order Total
-              $order_count, $total_ex_vat
-             ";
+        $data = "Number of Orders, Total ex Vat
+              $order_count, $total_ex_vat ";
       
         echo $data;
+        
     }
     
     public function dailyTransactionBreakdown()
@@ -439,7 +451,7 @@ class CyfeDashboardController extends Controller
                              ->sum("total_price");
         }
         
-        $data = "Date, Order Count, Order Total"."<br>";
+        $data = "Date, Number of Orders, Total Inc VAT"."<br>";
         
         foreach ($date_range as $key => $date) {
           $data .= "$date, $order_count[$date], $order_total[$date]"."<br>";
