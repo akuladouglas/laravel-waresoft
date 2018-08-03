@@ -134,9 +134,13 @@ class CyfeDashboardController extends Controller
                             ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                             ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                             ->sum("total_tax");
-      
-        $total_ex_vat = ($order_total - $order_total_tax);
-      
+        
+        $order_total = round($order_total, 2);
+        
+        $order_total_tax = round($order_total_tax, 2);
+        
+        $total_ex_vat = round(($order_total - $order_total_tax),2);
+        
         $data = "Order Count, Total, Vat, Order Ex Vat Total
               $order_count, $order_total, $order_total_tax, $total_ex_vat
              ";
