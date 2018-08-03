@@ -202,7 +202,7 @@ class OrderController extends BaseController
         if($last_created_order){ 
           $originator_date = $last_created_order->shopify_created_at;
         } else {
-          $originator_date = "2018-07-30";
+          $originator_date = "2018-07-31";
         }
         
         $formatted_date =  Carbon::parse($originator_date)->format('Y-m-d\TH:i:s');
@@ -212,7 +212,19 @@ class OrderController extends BaseController
         $contents = file_get_contents($get_url_timestamp);
               
         $shopify_orders = json_decode($contents);        
-          
+        
+        
+//        echo "<pre>";
+//        print_r(count($shopify_orders->orders));
+//        echo "</pre>";
+        
+        
+        echo "<pre>";
+//        print_r(count($shopify_orders));
+        echo "</pre>";        
+        
+//        exit();
+        
         foreach ($shopify_orders->orders as $key => $shopify_order) {
             $order = new Order();
             $order->id = $shopify_order->id;

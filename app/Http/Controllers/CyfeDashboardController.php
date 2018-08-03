@@ -18,6 +18,20 @@ class CyfeDashboardController extends Controller
     
     public $offline_tags = ["faith","barbara"];
     
+    public $cancelled_tags = ["COOD","NR","DD","DTU","RUD","PLO","IPLO","SO","CNLI"];
+    
+    public $cancelled_reason_tags = [
+          "COOD" => "Change of order details",
+          "NR" => "No Response",
+          "DD" => "Delayed delivery",
+          "DTU" => "Delivery timelines unfeasible",
+          "RUD" => "Reject Upon delivery",
+          "PLO" => "Payment long overdue",
+          "IPLO" => "In store pick up long overdue",
+          "SO" => "Stock Out",
+          "CNLI" => "Client no longer interested"
+    ];
+    
     /**
      * Create a new controller instance.
      *
@@ -80,6 +94,7 @@ class CyfeDashboardController extends Controller
                                   ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                                   ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                                   ->sum("total_price");
+        
         $paid_sales_amount_tax = Order::where("financial_status", "paid")
                                   ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                                   ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
@@ -327,6 +342,36 @@ class CyfeDashboardController extends Controller
         $data = "Staff, Order Count, Order Total"."<br>";
       
         foreach ($this->tags as $key => $tag) {
+            $data .= "$tag, $order_count[$tag], $order_total[$tag]"."<br>";
+        }
+      
+        echo $data;
+    }
+    
+    public function cancelledOrders()
+    {   
+      
+        foreach ($this->cancelled_tags as $tag) {
+            
+            $order_count[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                           ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                           ->where("tags", "like", "%$tag%")
+                           ->count();
+      
+            $order_total[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                           ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                           ->where("tags", "like", "%$tag%")
+                           ->sum("total_price");
+        
+            $order_total_tax[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                              ->where("tags", "like", "%$tag%")
+                              ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                              ->sum("total_tax");
+        }
+      
+        $data = "Cancelled Reason, Order Count, Order Total"."<br>";
+      
+        foreach ($this->cancelled_tags as $key => $tag) {
             $data .= "$tag, $order_count[$tag], $order_total[$tag]"."<br>";
         }
       
