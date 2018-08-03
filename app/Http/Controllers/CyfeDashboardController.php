@@ -72,8 +72,14 @@ class CyfeDashboardController extends Controller
                                   ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                                   ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                                   ->count();
-      
-        $fullfillment_rate = round((($fullfilled_orders / $all_orders)*100), 3);
+        
+        $paid_fullfilled_orders = Order::where("fulfillment_status", "fulfilled")
+                                  ->where("financial_status", "paid")
+                                  ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                                  ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                                  ->count();
+        
+        $fullfillment_rate = round((($paid_fullfilled_orders / $all_orders)*100), 3);
       
         $data = "All Orders, Fullfilled Orders, Fullfillment Rate (%)
                $all_orders,$fullfilled_orders,$fullfillment_rate
