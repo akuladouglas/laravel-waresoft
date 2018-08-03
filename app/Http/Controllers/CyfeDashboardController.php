@@ -457,7 +457,7 @@ class CyfeDashboardController extends Controller
         $data = "Date, Number of Orders, Total Inc VAT, Total Ex VAT"."<br>";
         
         foreach ($date_range as $key => $date) {
-          $ex_vat_total[$date] = round(($order_total[$date]),2);
+          $ex_vat_total[$date] = round(($order_total[$date] - $order_total_tax[$date]),2);
           $data .= "$date, $order_count[$date], $order_total[$date], $ex_vat_total[$date]"."<br>";
         }
         
