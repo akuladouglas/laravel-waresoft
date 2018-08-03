@@ -6,7 +6,7 @@
   <ul class="list">
     <li class="header"> Navigation </li>
 
-    <li class="<?php echo Request::segment(1) == "home" ? "active" : ""; ?>" >
+    <li class="hidden <?php echo Request::segment(1) == "home" ? "active" : ""; ?>" >
       <a href="{{ url('home') }}">
         <i class="material-icons">home</i>
         <span> Dashboard </span>
@@ -39,7 +39,34 @@
         </li>
       </ul>
     </li>
-
+    
+    <li class="<?php echo Request::segment(1) == "payment" ? "active" : ""; ?>" >
+      <a href="#" class="menu-toggle">
+        <i class="material-icons">list</i>
+        <span> Payments & Vouchers </span>
+      </a>
+      <ul class="ml-menu">
+        <li>
+          <a class="" href="{{ url('payment/list') }}">
+            <i class="material-icons col-light-green">list</i>
+            <span> Payments List </span>
+          </a>
+        </li>
+        <li>
+          <a href="{{ url('payment/mpesa') }}">
+            <i class="material-icons col-light-green">list</i>
+            <span> Request Mpesa Payment </span>
+          </a>
+        </li>
+        <li>
+          <a href="{{ url('payment/suregifts') }}">
+            <i class="material-icons col-light-green">list</i>
+            <span> Check Suregifts Voucher </span>
+          </a>
+        </li>
+      </ul>
+    </li>
+    
     <li class="<?php echo Request::segment(1) == "order" ? "active" : ""; ?>" >
       <a href="{{ url('order') }}">
         <i class="material-icons">view_headline</i>
@@ -53,6 +80,7 @@
         <span>Deliveries</span>
       </a>
     </li>
+    
     <li class="hidden <?php echo Request::segment(1) == "product" ? "active" : ""; ?>" >
       <a href="{{ url('product') }}">
         <i class="material-icons">apps</i>
