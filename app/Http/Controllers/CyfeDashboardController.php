@@ -368,12 +368,14 @@ class CyfeDashboardController extends Controller
                               ->where("tags", "like", "%$tag%")
                               ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                               ->sum("total_tax");
+            
         }
       
         $data = "Cancelled Reason, Order Count, Order Total"."<br>";
       
         foreach ($this->cancelled_tags as $key => $tag) {
-            $data .= "$tag, $order_count[$tag], $order_total[$tag]"."<br>";
+            $reason = $this->cancelled_reason_tags[$tag];
+            $data .= "$reason, $order_count[$tag], $order_total[$tag]"."<br>";
         }
       
         echo $data;
