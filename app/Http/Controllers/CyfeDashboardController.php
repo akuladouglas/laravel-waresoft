@@ -357,17 +357,14 @@ class CyfeDashboardController extends Controller
     
     public function dailyTransactionBreakdown()
     {
-        
         $date_range = $this->generateDateRange($this->start_date, $this->end_date);
         
         foreach ($date_range as $key => $date) {
-          
           $order_count[$date] = Order::where("shopify_created_at", "like", Carbon::parse($date)->format("Y-m-d")."%")
                              ->count();
         
           $order_total[$date] = Order::where("shopify_created_at", "like", Carbon::parse($date)->format("Y-m-d")."%")
                              ->sum("total_price");
-          
         }
         
         $data = "Date, Order Count, Order Total"."<br>";
@@ -376,11 +373,7 @@ class CyfeDashboardController extends Controller
           $data .= "$date, $order_count[$date], $order_total[$date]"."<br>";
         }
         
-        $data .= "Color,#52ff7f,#ff7e0e"."<br>";
-        $data .= "Type,area,line";
-        
         echo $data;
-        
     }
     
     private function generateDateRange(Carbon $start_date, Carbon $end_date, $minimal = false)
