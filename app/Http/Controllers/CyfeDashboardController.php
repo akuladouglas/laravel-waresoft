@@ -385,11 +385,15 @@ class CyfeDashboardController extends Controller
     {
         $order_count = Order::where("shopify_created_at", "like", Carbon::now()->format("Y-m-d")."%")->count();
         $order_total = Order::where("shopify_created_at", "like", Carbon::now()->format("Y-m-d")."%")->sum("total_price");
-      
-        $data = "Order Count, Order Total
-              $order_count, $order_total
+        $tax = Order::where("shopify_created_at", "like", Carbon::now()->format("Y-m-d")."%")->sum("total_tax");
+        $discounts = Order::where("shopify_created_at", "like", Carbon::now()->format("Y-m-d")."%")->sum("total_discounts");
+          
+        $ex_vat_order_total = ($order_total - $tax - $discounts);
+        
+        $data = "Order Count, Total, Tax, Discounts, Ex Vat
+              $order_count, $order_total, $tax, $discounts, $ex_vat_order_total 
              ";
-      
+        
         echo $data;
     }
     
