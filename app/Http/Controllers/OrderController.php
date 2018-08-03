@@ -219,14 +219,20 @@ class OrderController extends BaseController
 //        echo "</pre>";
         
         
-        echo "<pre>";
+//        echo "<pre>";
 //        print_r(count($shopify_orders));
-        echo "</pre>";        
+//        echo "</pre>";        
         
 //        exit();
         
         foreach ($shopify_orders->orders as $key => $shopify_order) {
-            $order = new Order();
+            //attempt to get order
+            
+            $order = Order::where("id",$shopify_order->id)->get()->first();
+            
+            if(!$order){
+              $order = new Order();
+            }
             $order->id = $shopify_order->id;
             $order->email = $shopify_order->email;
             if ($shopify_order->closed_at) {
@@ -284,8 +290,15 @@ class OrderController extends BaseController
         
             //save line item
             if ($ordersline_items) {
+              
                 foreach ($ordersline_items as $key => $order_line_item) {
-                    $line_item = new Lineitems();
+                    
+                    $line_item = Lineitems::where("id",$order_line_item->id)->get()->first();
+                    
+                    if(!$line_item){
+                     $line_item = new Lineitems();
+                    }
+                    
                     $line_item->id = $order_line_item->id;
                     $line_item->order_id = $order_id;
                     $line_item->variant_id = $order_line_item->variant_id;
@@ -314,7 +327,9 @@ class OrderController extends BaseController
             
                     $line_item->save();
                 }
+                
             }
+            
         }
         
         
