@@ -449,12 +449,16 @@ class CyfeDashboardController extends Controller
         
           $order_total[$date] = Order::where("shopify_created_at", "like", Carbon::parse($date)->format("Y-m-d")."%")
                              ->sum("total_price");
+          
+          $order_total_tax[$date] = Order::where("shopify_created_at", "like", Carbon::parse($date)->format("Y-m-d")."%")
+                             ->sum("total_tax");
         }
         
-        $data = "Date, Number of Orders, Total Inc VAT"."<br>";
+        $data = "Date, Number of Orders, Total Inc VAT, Total Ex VAT"."<br>";
         
         foreach ($date_range as $key => $date) {
-          $data .= "$date, $order_count[$date], $order_total[$date]"."<br>";
+          $ex_vat_total[$date] = round(($order_total[$date]),2);
+          $data .= "$date, $order_count[$date], $order_total[$date], $ex_vat_total[$date]"."<br>";
         }
         
         echo $data;
