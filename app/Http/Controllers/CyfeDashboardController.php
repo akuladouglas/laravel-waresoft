@@ -108,7 +108,7 @@ class CyfeDashboardController extends Controller
       
         $ex_vat_total = ($paid_sales_amount - $paid_sales_amount_tax);
       
-        $data = "Number of Orders, Total Sales Ex VAT, Total Sales Ex VAT
+        $data = "Number of Orders, Total Sales Inc VAT, Total Sales Ex VAT
                $paid_sales_count, $paid_sales_amount ,$ex_vat_total
                ";
         
