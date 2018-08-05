@@ -412,14 +412,15 @@ class CyfeDashboardController extends Controller
     public function numberOfOrdersToday()
     {
         $order_count = Order::where("shopify_created_at", "like", Carbon::now()->format("Y-m-d")."%")->count();
-        $order_total = Order::where("shopify_created_at", "like", Carbon::now()->format("Y-m-d")."%")->sum("total_price");
-        $tax = Order::where("shopify_created_at", "like", Carbon::now()->format("Y-m-d")."%")->sum("total_tax");
+        $order_count_paid = Order::where("financial_status","paid")->where("shopify_created_at", "like", Carbon::now()->format("Y-m-d")."%")->count();
+        $paid_order_total = Order::where("financial_status","paid")->where("shopify_created_at", "like", Carbon::now()->format("Y-m-d")."%")->sum("total_price");
+        $paid_tax = Order::where("financial_status","paid")->where("shopify_created_at", "like", Carbon::now()->format("Y-m-d")."%")->sum("total_tax");
         $discounts = Order::where("shopify_created_at", "like", Carbon::now()->format("Y-m-d")."%")->sum("total_discounts");
           
-        $ex_vat_order_total = round(($order_total - $tax),2);
+        $ex_vat_order_total = round(($paid_order_total - $paid_tax),2);
         
-        $data = "NUmber of Orders, Total Inc Vat, Total ex Vat
-              $order_count, $order_total, $ex_vat_order_total 
+        $data = "All Orders, Paid Orders,  Paid Total Inc Vat, Paid Total ex Vat
+              $order_count, $order_count_paid, $paid_order_total, $ex_vat_order_total 
              ";
         
         echo $data;
