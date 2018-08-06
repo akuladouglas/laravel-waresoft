@@ -338,7 +338,8 @@ class CyfeDashboardController extends Controller
       
         foreach ($this->tags as $key => $tag) {
             $ex_vat_amount[$tag] = round(($order_total[$tag] - $order_total_tax[$tag]),2);
-            $data .= "$tag, $order_count[$tag], $ex_vat_amount[$tag]"."<br>";
+            $name = ucfirst($tag);
+            $data .= "$name, $order_count[$tag], $ex_vat_amount[$tag]"."<br>";
         }
       
         echo $data;
@@ -373,7 +374,8 @@ class CyfeDashboardController extends Controller
         $data = "Staff, Number of Orders, Total ex VAT"."<br>";
       
         foreach ($this->tags as $key => $tag) {
-            $data .= "$tag, $order_count[$tag], $order_total[$tag]"."<br>";
+            $name = ucfirst($tag);
+            $data .= "$name, $order_count[$tag], $order_total[$tag]"."<br>";
         }
       
         echo $data;
