@@ -264,14 +264,17 @@ class CyfeDashboardController extends Controller
       
         $order_count = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                           ->where("financial_status","pending")
                            ->count();
       
         $order_total = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                           ->where("financial_status","pending")
                            ->sum("total_price");
         
         $tax = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                           ->where("financial_status","pending")
                            ->sum("total_tax");
         
         $ex_vat_order_total = round(($order_total - $tax),2);
