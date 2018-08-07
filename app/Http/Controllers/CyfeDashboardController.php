@@ -491,6 +491,47 @@ class CyfeDashboardController extends Controller
         echo $data;
     }
     
+    public function onelineSalesDailyTransactionBreakdown()
+    {
+        $date_range = $this->generateDateRange($this->start_date, $this->end_date);
+        
+        foreach ($date_range as $key => $date) {
+          
+          foreach ($this->online_tags as $tag) {
+            
+            $order_count[$date][$tag] = Order::where("shopify_created_at", "like", Carbon::parse($date)->format("Y-m-d")."%")
+                                         ->where("tags", "like", "%$tag%")
+                                         ->count();
+            
+            $order_total[$date][$tag] = Order::where("shopify_created_at", "like", Carbon::parse($date)->format("Y-m-d")."%")
+                                          ->where("tags", "like", "%$tag%")                           
+                                          ->sum("total_price");
+            
+            $order_total_tax[$date][$tag] = Order::where("shopify_created_at", "like", Carbon::parse($date)->format("Y-m-d")."%")
+                                            ->where("tags", "like", "%$tag%")
+                                            ->sum("total_tax");
+            
+          }
+          
+        }
+        
+        foreach ($date_range as $key => $date) {          
+          $aggregate_order_count[$date] = array_sum($order_count[$date]);
+          $aggregate_order_total[$date] = array_sum($order_total[$date]);
+          $aggregate_order_total_tax[$date] = array_sum($order_total_tax[$date]);          
+        }
+        
+        $data = "Date, Number of Orders, Total Inc VAT, Total Ex VAT"."<br>";
+        
+        foreach ($date_range as $key => $date) {
+          $ex_vat_total[$date] = round(($aggregate_order_total[$date] - $aggregate_order_total_tax[$date]),2);
+          $data .= "$date, $aggregate_order_count[$date], $aggregate_order_total[$date], $ex_vat_total[$date]"."<br>";
+        }
+        
+        echo $data;
+    }
+    
+    
     private function generateDateRange(Carbon $start_date, Carbon $end_date, $minimal = false)
     {
         $dates = [];
