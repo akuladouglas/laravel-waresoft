@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Order;
+use App\Models\Lineitems;
 use Carbon\Carbon;
+use DB;
 
 class CyfeDashboardController extends Controller
 {
@@ -558,5 +560,68 @@ class CyfeDashboardController extends Controller
         }
         return $dates;
     }
+    
+    public function breakdownByVendor() {
+      
+      $products = Lineitems::join("orders","orders.id","=","line_items.order_id")
+                            ->select("line_items.vendor", DB::raw('sum(line_items.quantity) as total'), DB::raw('sum(line_items.price*line_items.quantity) as item_price'))
+                            ->groupBy("line_items.vendor")
+                            ->where("orders.shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                            ->where("orders.shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                            ->orderBy("total", "desc")                            
+                            ->get();
+      
+      $data = "Vendor, Number of Items, Total Item Sales"."<br>";
+      
+      foreach ($products as $key => $product) {
+        $data .= "$product->vendor, $product->total, $product->item_price"."<br>";
+      }
+      
+      echo $data;
+      
+    }
+    
+    public function breakdownByProduct() {
+      
+      $products = Lineitems::join("orders","orders.id","=","line_items.order_id")
+                            ->select("line_items.title", DB::raw('count(*) as total'), DB::raw('sum(line_items.price*line_items.quantity) as item_price'))
+                            ->groupBy("line_items.title")
+                            ->where("orders.shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                            ->where("orders.shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                            ->orderBy("total", "desc")
+                            ->limit(30)
+                            ->get();
+      
+      $data = "Product, Number of Products, Total Product Sales"."<br>";
+      
+      foreach ($products as $key => $product) {
+        $data .= "$product->title, $product->total, $product->item_price"."<br>";
+      }
+      
+      echo $data;
+      
+    }
+    
+    public function breakdownBySku() {
+      
+      $products = Lineitems::join("orders","orders.id","=","line_items.order_id")
+                            ->select("line_items.sku", DB::raw('count(*) as total'), DB::raw('sum(line_items.price*line_items.quantity) as item_price'))
+                            ->groupBy("line_items.sku")
+                            ->where("orders.shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                            ->where("orders.shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                            ->orderBy("total", "desc")
+                            ->limit(30)
+                            ->get();
+      
+      $data = "SKU, Number of Items, Total Item Sales"."<br>";
+      
+      foreach ($products as $key => $product) {
+        $data .= "$product->sku, $product->total, $product->item_price"."<br>";
+      }
+      
+      echo $data;
+      
+    }
+    
     
 }

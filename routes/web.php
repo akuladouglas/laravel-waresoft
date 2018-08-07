@@ -70,6 +70,10 @@ Route::group(array('prefix' => 'cyfe-dash'), function () {
   Route::match(['get', 'post'], '/dailytransactionbreakdown', 'CyfeDashboardController@dailyTransactionBreakdown');      
   Route::match(['get', 'post'], '/onlinesalesdailytransactionbreakdown', 'CyfeDashboardController@onelineSalesDailyTransactionBreakdown');      
   Route::match(['get', 'post'], '/cancelledorders', 'CyfeDashboardController@cancelledOrders');
+  Route::match(['get', 'post'], '/breakdownbyvendor', 'CyfeDashboardController@breakdownByVendor');
+  Route::match(['get', 'post'], '/breakdownbyproduct', 'CyfeDashboardController@breakdownByProduct');
+  Route::match(['get', 'post'], '/breakdownbysku', 'CyfeDashboardController@breakdownBySku');
+  
   Route::match(['get', 'post'], '/test', 'CyfeDashboardController@test'); 
 });
 
