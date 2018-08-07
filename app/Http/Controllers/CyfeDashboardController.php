@@ -14,6 +14,8 @@ class CyfeDashboardController extends Controller
     
     public $end_date;
     
+    public $today;
+    
     public $tags = ["faith","milly","barbara","doreen","walter","sharon","lydia","mahadia"];
     
     public $online_tags = ["milly","doreen","walter","sharon","lydia","mahadia"];
@@ -43,6 +45,7 @@ class CyfeDashboardController extends Controller
     {
         $this->start_date = Carbon::parse("2018-08-01");
         $this->end_date = Carbon::parse("2018-08-31");
+        $this->today = Carbon::now();
     }
     
     public function test()
@@ -121,8 +124,8 @@ class CyfeDashboardController extends Controller
       
         $ex_vat_total = ($paid_sales_amount - $paid_sales_amount_tax);
       
-        $data = "Number of Orders, Total Sales Inc VAT, Total Sales Ex VAT
-               $paid_sales_count, $paid_sales_amount ,$ex_vat_total
+        $data = "As At, Number of Orders, Total Sales Inc VAT, Total Sales Ex VAT
+                 {$this->today->format("d/m/y")}, $paid_sales_count, $paid_sales_amount ,$ex_vat_total
                ";
         
         echo $data;
@@ -146,8 +149,8 @@ class CyfeDashboardController extends Controller
         $basket_size = round(($orders_total / $orders_count), 2);
         $ex_vat_total = ($orders_total - $total_tax);
         
-        $data = "Total Sales ex VAT, Number of Orders, Average Basket size
-               $ex_vat_total, $orders_count, $basket_size   
+        $data = "As At, Total Sales ex VAT, Number of Orders, Average Basket size
+          {$this->today->format("d/m/y")},$ex_vat_total, $orders_count, $basket_size   
            ";
       
         echo $data;
@@ -176,8 +179,8 @@ class CyfeDashboardController extends Controller
         
         $total_ex_vat = round(($order_total - $order_total_tax),2);
         
-        $data = "Number of orders, Total Inc VAT, Order Ex Vat Total
-              $order_count, $order_total, $total_ex_vat
+        $data = "As At,Number of orders, Total Inc VAT, Order Ex Vat Total
+               {$this->today->format("d/m/y")},$order_count, $order_total, $total_ex_vat
              ";
       
         echo $data;
@@ -223,7 +226,7 @@ class CyfeDashboardController extends Controller
             
         }
         
-        $data = "Number of orders, Total Inc Vat, Total ex Vat"."<br>";
+        $data = "As At, Number of orders, Total Inc Vat, Total ex Vat"."<br>";
         
         $order_total_summation = (array_sum($order_total));
         $order_total_tax_summation = (array_sum($order_total_tax));
@@ -231,7 +234,7 @@ class CyfeDashboardController extends Controller
         
         $ex_vat_total = ($order_total_summation - $order_total_tax_summation);
         
-        $data .= "$order_count_summation, $order_total_summation, $ex_vat_total"."<br>";
+        $data .= "{$this->today->format("d/m/y")},$order_count_summation, $order_total_summation, $ex_vat_total"."<br>";
         
         echo $data;
         
@@ -258,7 +261,7 @@ class CyfeDashboardController extends Controller
             
         }
         
-        $data = "Number of orders, Total, Total ex Vat"."<br>";
+        $data = "As At,Number of orders, Total, Total ex Vat"."<br>";
         
         $order_total_summation = (array_sum($order_total));
         $order_total_tax_summation = (array_sum($order_total_tax));
@@ -266,7 +269,7 @@ class CyfeDashboardController extends Controller
         
         $ex_vat_total = ($order_total_summation - $order_total_tax_summation);
         
-        $data .= "$order_count_summation, $order_total_summation, $ex_vat_total"."<br>";
+        $data .= "{$this->today->format("d/m/y")},$order_count_summation, $order_total_summation, $ex_vat_total"."<br>";
         
         echo $data;
         
@@ -292,8 +295,8 @@ class CyfeDashboardController extends Controller
         
         $ex_vat_order_total = round(($order_total - $tax),2);
         
-        $data = "Number of Orders, Total Inc VAT, Total Ex VAT
-              $order_count, $order_total, $ex_vat_order_total
+        $data = "As At, Number of Orders, Total Inc VAT, Total Ex VAT
+              {$this->today->format("d/m/y")}, $order_count, $order_total, $ex_vat_order_total
              ";
         
         echo $data;
@@ -310,8 +313,8 @@ class CyfeDashboardController extends Controller
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                            ->sum("total_price");
       
-        $data = "Number of Orders, Total Inc VAT
-                  $order_count, $order_total";
+        $data = "As At, Number of Orders, Total Inc VAT
+                 {$this->today->format("d/m/y")}, $order_count, $order_total";
                  
         echo $data;
         
@@ -347,7 +350,7 @@ class CyfeDashboardController extends Controller
       
         
         
-        $datax = "Staff, Number of Orders, Total ex VAT"."<br>";
+        $datax = "As At,Staff, Number of Orders, Total ex VAT"."<br>";
       
         foreach ($this->tags as $key => $tag) {
             $ex_vat_amount[$tag] = round(($order_total[$tag] - $order_total_tax[$tag]),2);
@@ -361,7 +364,7 @@ class CyfeDashboardController extends Controller
         });
         
         foreach ($data as $key => $data_item) {
-          $datax .= $data_item["name"].",".$data_item["order_count"].",".$data_item["total_ex_vat"]."<br>";
+          $datax .= {$this->today->format("d/m/y")}, $data_item["name"].",".$data_item["order_count"].",".$data_item["total_ex_vat"]."<br>";
         }
         
         echo $datax;
@@ -393,7 +396,7 @@ class CyfeDashboardController extends Controller
             
         }
         
-        $datax = "Staff, Number of Orders, Total ex VAT"."<br>";
+        $datax = "As At, Staff, Number of Orders, Total ex VAT"."<br>";
       
         foreach ($this->tags as $key => $tag) {
             $ex_vat_amount[$tag] = round(($order_total[$tag] - $order_total_tax[$tag]),2);
@@ -407,7 +410,7 @@ class CyfeDashboardController extends Controller
         });
         
         foreach ($data as $key => $data_item) {
-          $datax .= $data_item["name"].",".$data_item["order_count"].",".$data_item["total_ex_vat"]."<br>";
+          $datax .= {$this->today->format("d/m/y")}, $data_item["name"].",".$data_item["order_count"].",".$data_item["total_ex_vat"]."<br>";
         }
         
         echo $datax;
@@ -436,12 +439,12 @@ class CyfeDashboardController extends Controller
             
         }
       
-        $data = "Cancelled Reason, Number of Orders, Total ex VAT"."<br>";
+        $data = "As At, Cancelled Reason, Number of Orders, Total ex VAT"."<br>";
         
         foreach ($this->cancelled_tags as $key => $tag) {
             $reason = $this->cancelled_reason_tags[$tag];
             $ex_vat_amount = round(($order_total[$tag] - $order_total_tax[$tag]),2);
-            $data .= "$reason, $order_count[$tag], $ex_vat_amount"."<br>";
+            $data .= "{$this->today->format("d/m/y")}, $reason, $order_count[$tag], $ex_vat_amount"."<br>";
         }
       
         echo $data;
@@ -458,8 +461,8 @@ class CyfeDashboardController extends Controller
           
         $ex_vat_order_total = round(($paid_order_total - $paid_tax),2);
         
-        $data = "All Orders, Gross Amount, Paid Orders,  Paid Total Inc Vat, Paid Total ex Vat
-              $order_count, $order_total, $order_count_paid, $paid_order_total, $ex_vat_order_total 
+        $data = "As At, All Orders, Gross Amount, Paid Orders,  Paid Total Inc Vat, Paid Total ex Vat
+              {$this->today->format("d/m/y")}, $order_count, $order_total, $order_count_paid, $paid_order_total, $ex_vat_order_total 
              ";
         
         echo $data;
@@ -472,8 +475,8 @@ class CyfeDashboardController extends Controller
         $order_total_tax = Order::where("shopify_created_at", "like", Carbon::now()->format("Y-m-d")."%")->sum("total_tax");
         $total_ex_vat = ($order_total - $order_total_tax);
       
-        $data = "Number of Orders, Total ex Vat
-              $order_count, $total_ex_vat ";
+        $data = "As At, Number of Orders, Total ex Vat
+              {$this->today->format("d/m/y")}, $order_count, $total_ex_vat ";
       
         echo $data;
         
@@ -494,11 +497,11 @@ class CyfeDashboardController extends Controller
                              ->sum("total_tax");
         }
         
-        $data = "Date, Number of Orders, Total Inc VAT, Total Ex VAT"."<br>";
+        $data = "As At, Date, Number of Orders, Total Inc VAT, Total Ex VAT"."<br>";
         
         foreach ($date_range as $key => $date) {
           $ex_vat_total[$date] = round(($order_total[$date] - $order_total_tax[$date]),2);
-          $data .= "$date, $order_count[$date], $order_total[$date], $ex_vat_total[$date]"."<br>";
+          $data .= "{$this->today->format("d/m/y")}, $date, $order_count[$date], $order_total[$date], $ex_vat_total[$date]"."<br>";
         }
         
         echo $data;
@@ -534,11 +537,11 @@ class CyfeDashboardController extends Controller
           $aggregate_order_total_tax[$date] = array_sum($order_total_tax[$date]);          
         }
         
-        $data = "Date, Number of Orders, Total Inc VAT, Total Ex VAT"."<br>";
+        $data = "As At, Date, Number of Orders, Total Inc VAT, Total Ex VAT"."<br>";
         
         foreach ($date_range as $key => $date) {
           $ex_vat_total[$date] = round(($aggregate_order_total[$date] - $aggregate_order_total_tax[$date]),2);
-          $data .= "$date, $aggregate_order_count[$date], $aggregate_order_total[$date], $ex_vat_total[$date]"."<br>";
+          $data .= "{$this->today->format("d/m/y")}, $date, $aggregate_order_count[$date], $aggregate_order_total[$date], $ex_vat_total[$date]"."<br>";
         }
         
         echo $data;
@@ -563,18 +566,25 @@ class CyfeDashboardController extends Controller
     
     public function breakdownByVendor() {
       
-      $products = Lineitems::join("orders","orders.id","=","line_items.order_id")
+      $date_range = $this->generateDateRange($this->start_date, $this->end_date);
+      
+      foreach ($date_range as $key => $date) {
+        
+       $products = Lineitems::join("orders","orders.id","=","line_items.order_id")
                             ->select("line_items.vendor", DB::raw('sum(line_items.quantity) as total'), DB::raw('sum(line_items.price*line_items.quantity) as item_price'))
                             ->groupBy("line_items.vendor")
                             ->where("orders.shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                             ->where("orders.shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                             ->orderBy("total", "desc")                            
-                            ->get();
+                            ->get();       
+      }
       
-      $data = "Vendor, Number of Items, Total Item Sales"."<br>";
+      
+      
+      $data = "As At, Vendor, Number of Items, Total Item Sales"."<br>";
       
       foreach ($products as $key => $product) {
-        $data .= "$product->vendor, $product->total, $product->item_price"."<br>";
+        $data .= "{$this->today->format("d/m/y")}, $product->vendor, $product->total, $product->item_price"."<br>";
       }
       
       echo $data;
@@ -592,10 +602,10 @@ class CyfeDashboardController extends Controller
                             ->limit(30)
                             ->get();
       
-      $data = "Product, Number of Products, Total Product Sales"."<br>";
+      $data = "As At, Product, Number of Products, Total Product Sales"."<br>";
       
       foreach ($products as $key => $product) {
-        $data .= "$product->title, $product->total, $product->item_price"."<br>";
+        $data .= "{$this->today->format("d/m/y")}, $product->title, $product->total, $product->item_price"."<br>";
       }
       
       echo $data;
@@ -613,10 +623,12 @@ class CyfeDashboardController extends Controller
                             ->limit(30)
                             ->get();
       
-      $data = "SKU, Number of Items, Total Item Sales"."<br>";
+      
+      
+      $data = "As At, SKU, Number of Items, Total Item Sales"."<br>";
       
       foreach ($products as $key => $product) {
-        $data .= "$product->sku, $product->total, $product->item_price"."<br>";
+        $data .= "{$this->today->format("d/m/y")}, $product->sku, $product->total, $product->item_price"."<br>";
       }
       
       echo $data;
