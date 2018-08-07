@@ -86,7 +86,7 @@ class CyfeDashboardController extends Controller
         
         foreach ($this->cancelled_tags as $key => $tag) {
           
-        $cancelled_orders[$tag] = Order::where("tags", "like", "%$tag%")
+        $cancelled_orders[$tag] = Order::where("tags", "like", "%COOD%")
                                   ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                                   ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                                   ->count();
