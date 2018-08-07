@@ -444,7 +444,7 @@ class CyfeDashboardController extends Controller
         foreach ($this->cancelled_tags as $key => $tag) {
             $reason = $this->cancelled_reason_tags[$tag];
             $ex_vat_amount = round(($order_total[$tag] - $order_total_tax[$tag]),2);
-            $data .= "$reason, $order_count[$tag], {$this->today->format("d/m/y")}, $ex_vat_amount"."<br>";
+            $data .= "$reason, {$this->today->format("d/m/y")}, $order_count[$tag], $ex_vat_amount"."<br>";
         }
       
         echo $data;
