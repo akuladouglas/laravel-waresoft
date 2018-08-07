@@ -364,7 +364,7 @@ class CyfeDashboardController extends Controller
         });
         
         foreach ($data as $key => $data_item) {
-          $datax .= {$this->today->format("d/m/y")}, $data_item["name"].",".$data_item["order_count"].",".$data_item["total_ex_vat"]."<br>";
+          $datax .= $this->today->format("d/m/y").",".$data_item["name"].",".$data_item["order_count"].",".$data_item["total_ex_vat"]."<br>";
         }
         
         echo $datax;
