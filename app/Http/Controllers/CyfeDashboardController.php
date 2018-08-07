@@ -79,10 +79,21 @@ class CyfeDashboardController extends Controller
                                   ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                                   ->count();
         
-        $fullfillment_rate = round((($paid_fullfilled_orders / $all_orders)*100), 3);
+        foreach ($this->cancelled_tags as $key => $tag) {
+          
+        $cancelled_orders[$tag] = Order::where("tags", "like", "%$tag%")
+                                  ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                                  ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                                  ->count();
+        
+        }
+        
+        $aggregate_cancelled_orders = array_sum($cancelled_orders);                
+        
+        $fullfillment_rate = round((($paid_fullfilled_orders / ($all_orders - $aggregate_cancelled_orders))*100), 3);
       
-        $data = "All Orders, Paid Fullfilled Orders, Fullfillment Rate (%)
-               $all_orders,$paid_fullfilled_orders,$fullfillment_rate
+        $data = "All Orders, Cancelled Orders, Paid Fullfilled Orders, Fullfillment Rate (%)
+               $all_orders,$aggregate_cancelled_orders, $paid_fullfilled_orders,$fullfillment_rate
                ";
       
         echo $data;
