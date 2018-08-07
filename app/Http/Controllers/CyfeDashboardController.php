@@ -439,12 +439,12 @@ class CyfeDashboardController extends Controller
             
         }
       
-        $data = "As At, Cancelled Reason, Number of Orders, Total ex VAT"."<br>";
+        $data = " Cancelled Reason, As At, Number of Orders, Total ex VAT"."<br>";
         
         foreach ($this->cancelled_tags as $key => $tag) {
             $reason = $this->cancelled_reason_tags[$tag];
             $ex_vat_amount = round(($order_total[$tag] - $order_total_tax[$tag]),2);
-            $data .= "{$this->today->format("d/m/y")}, $reason, $order_count[$tag], $ex_vat_amount"."<br>";
+            $data .= "$reason, $order_count[$tag], {$this->today->format("d/m/y")}, $ex_vat_amount"."<br>";
         }
       
         echo $data;
@@ -461,8 +461,8 @@ class CyfeDashboardController extends Controller
           
         $ex_vat_order_total = round(($paid_order_total - $paid_tax),2);
         
-        $data = "As At, All Orders, Gross Amount, Paid Orders,  Paid Total Inc Vat, Paid Total ex Vat
-              {$this->today->format("d/m/y")}, $order_count, $order_total, $order_count_paid, $paid_order_total, $ex_vat_order_total 
+        $data = "All Orders, Gross Amount, Paid Orders,  Paid Total Inc Vat, Paid Total ex Vat
+              $order_count, $order_total, $order_count_paid, $paid_order_total, $ex_vat_order_total 
              ";
         
         echo $data;
