@@ -163,8 +163,8 @@ class CyfeDashboardController extends Controller
         
         $total_ex_vat = round(($order_total - $order_total_tax),2);
         
-        $data = "Number of orders, Total Inc VAT, Vat, Order Ex Vat Total
-              $order_count, $order_total, $order_total_tax, $total_ex_vat
+        $data = "Number of orders, Total Inc VAT, Order Ex Vat Total
+              $order_count, $order_total, $total_ex_vat
              ";
       
         echo $data;
@@ -334,15 +334,24 @@ class CyfeDashboardController extends Controller
       
         
         
-        $data = "Staff, Number of Orders, Total ex VAT"."<br>";
+        $datax = "Staff, Number of Orders, Total ex VAT"."<br>";
       
         foreach ($this->tags as $key => $tag) {
             $ex_vat_amount[$tag] = round(($order_total[$tag] - $order_total_tax[$tag]),2);
-            $name = ucfirst($tag);
-            $data .= "$name, $order_count[$tag], $ex_vat_amount[$tag]"."<br>";
+            $data[$tag]["name"] = ucfirst($tag);
+            $data[$tag]["order_count"] = $order_count[$tag];
+            $data[$tag]["total_ex_vat"] = $ex_vat_amount[$tag];
         }
-      
-        echo $data;
+        
+        usort($data, function($a, $b){
+          return $a["total_ex_vat"] < $b["total_ex_vat"];
+        });
+        
+        foreach ($data as $key => $data_item) {
+          $datax .= $data_item["name"].",".$data_item["order_count"].",".$data_item["total_ex_vat"]."<br>";
+        }
+        
+        echo $datax;
         
     }
     
@@ -370,15 +379,26 @@ class CyfeDashboardController extends Controller
                               ->sum("total_tax");
             
         }
-      
-        $data = "Staff, Number of Orders, Total ex VAT"."<br>";
+        
+        $datax = "Staff, Number of Orders, Total ex VAT"."<br>";
       
         foreach ($this->tags as $key => $tag) {
-            $name = ucfirst($tag);
-            $data .= "$name, $order_count[$tag], $order_total[$tag]"."<br>";
+            $ex_vat_amount[$tag] = round(($order_total[$tag] - $order_total_tax[$tag]),2);
+            $data[$tag]["name"] = ucfirst($tag);
+            $data[$tag]["order_count"] = $order_count[$tag];
+            $data[$tag]["total_ex_vat"] = $ex_vat_amount[$tag];
         }
-      
-        echo $data;
+        
+        usort($data, function($a, $b){
+          return $a["total_ex_vat"] < $b["total_ex_vat"];
+        });
+        
+        foreach ($data as $key => $data_item) {
+          $datax .= $data_item["name"].",".$data_item["order_count"].",".$data_item["total_ex_vat"]."<br>";
+        }
+        
+        echo $datax;
+        
     }
     
     public function cancelledOrders()
@@ -417,6 +437,7 @@ class CyfeDashboardController extends Controller
     public function numberOfOrdersToday()
     {
         $order_count = Order::where("shopify_created_at", "like", Carbon::now()->format("Y-m-d")."%")->count();
+        $order_total = Order::where("shopify_created_at", "like", Carbon::now()->format("Y-m-d")."%")->sum("total_price");
         $order_count_paid = Order::where("financial_status","paid")->where("shopify_created_at", "like", Carbon::now()->format("Y-m-d")."%")->count();
         $paid_order_total = Order::where("financial_status","paid")->where("shopify_created_at", "like", Carbon::now()->format("Y-m-d")."%")->sum("total_price");
         $paid_tax = Order::where("financial_status","paid")->where("shopify_created_at", "like", Carbon::now()->format("Y-m-d")."%")->sum("total_tax");
@@ -424,8 +445,8 @@ class CyfeDashboardController extends Controller
           
         $ex_vat_order_total = round(($paid_order_total - $paid_tax),2);
         
-        $data = "All Orders, Paid Orders,  Paid Total Inc Vat, Paid Total ex Vat
-              $order_count, $order_count_paid, $paid_order_total, $ex_vat_order_total 
+        $data = "All Orders, Gross Amount, Paid Orders,  Paid Total Inc Vat, Paid Total ex Vat
+              $order_count, $order_total, $order_count_paid, $paid_order_total, $ex_vat_order_total 
              ";
         
         echo $data;
