@@ -197,27 +197,24 @@ class OrderController extends BaseController
       
 //        $contents = file_get_contents($get_url_timestamp);
       
-      
-        $last_created_order = Order::orderBy("shopify_updated_at","desc")->take(1)->get()->first();
-        if($last_created_order){ 
-          $originator_date = $last_created_order->shopify_created_at;
-        } else {
-          $originator_date = "2018-07-31";
-        }
+//        $last_created_order = Order::orderBy("shopify_updated_at","desc")->take(1)->get()->first();
+//        
+//        if($last_created_order){ 
+//          $originator_date = $last_created_order->shopify_created_at;
+//        } else {
+//          $originator_date = "2018-07-31";
+//        }
+        
+        $originator_date = "2018-07-31";
         
         $formatted_date =  Carbon::parse($originator_date)->format('Y-m-d\TH:i:s');
         
-        $get_url_timestamp = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders.json?updated_at_min=$formatted_date&page=2&limit=250";
+        $get_url_timestamp = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders.json?created_at_min=$formatted_date&page=2&limit=250";
         
         $contents = file_get_contents($get_url_timestamp);
               
         $shopify_orders = json_decode($contents);        
         
-//        
-//        echo "<pre>";
-////        print_r(count($shopify_orders->orders));
-//        echo "</pre>";
-//        
         
         foreach ($shopify_orders->orders as $key => $shopify_order) {
             //attempt to get order
@@ -280,6 +277,18 @@ class OrderController extends BaseController
             
             if(!empty($shopify_order->customer->id)){
              $order->customer_id = $shopify_order->customer->id;
+            }
+            
+            if(!empty($shopify_order->billing_address->phone)){
+             $order->customer_phone = $shopify_order->billing_address->phone;
+            }
+            
+            if(!empty($shopify_order->customer->default_address->first_name)){
+             $order->customer_firstname = $shopify_order->customer->default_address->first_name;
+            }
+            
+            if(!empty($shopify_order->customer->default_address->last_name)){
+             $order->customer_lastname = $shopify_order->customer->default_address->last_name;
             }
             
             $order_id = $shopify_order->id;

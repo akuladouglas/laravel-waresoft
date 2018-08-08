@@ -88,6 +88,12 @@ Route::group(array('prefix' => 'product'), function () {
   Route::match(['get', 'post'], '/', 'ProductController@getProducts');
 });
 
+Route::group(array('prefix' => 'payment'), function () {
+  Route::match(['get', 'post'], '/list', 'PaymentController@paymentsList');
+  Route::match(['get', 'post'], '/mpesa', 'PaymentController@requestMpesa');
+  Route::match(['get', 'post'], '/suregifts', 'PaymentController@suregifts');
+});
+
 Route::group(array('prefix' => 'combination'), function () {
   Route::match(['get', 'post'], '/', 'CombinationController@getCombinations');
 });
