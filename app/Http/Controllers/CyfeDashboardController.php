@@ -624,5 +624,34 @@ class CyfeDashboardController extends Controller
       
     }
     
+    public function breakdownReturningVsNew() {
+      
+      $order_count_new = Order::select("customer_id", DB::raw("count(*) as orders_made "))
+                           ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                           ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                           ->where("financial_status","paid")
+                           ->having("orders_made", "=", "1")
+                           ->orderBy("orders_made", "desc")
+                           ->groupBy("customer_id")
+                           ->get();
+      
+      $order_count_returning = Order::select("customer_id", DB::raw("count(*) as orders_made "))
+                           ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                           ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                           ->where("financial_status","paid")
+                           ->having("orders_made", ">=", "2")
+                           ->groupBy("customer_id")
+                           ->get();
+      
+      $new_customers = count($order_count_new);
+      $returning_customers = count($order_count_returning);
+      
+      $data = "As At, New Customers, Returning Customers"."<br>";
+      
+      $data .= "{$this->today->format("d-m-Y")} , $new_customers, $returning_customers"."<br>";
+      
+      echo $data;
+      
+    }
     
 }

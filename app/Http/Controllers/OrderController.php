@@ -197,17 +197,20 @@ class OrderController extends BaseController
       
 //        $contents = file_get_contents($get_url_timestamp);
       
+      /*
         $last_created_order = Order::orderBy("shopify_updated_at","desc")->take(1)->get()->first();
-         
         if($last_created_order){ 
           $originator_date = $last_created_order->shopify_created_at;
         } else {
           $originator_date = "2018-07-31";
         }
+        */
+      
+        $originator_date = "2018-07-31";
         
         $formatted_date =  Carbon::parse($originator_date)->format('Y-m-d\TH:i:s');
         
-        $get_url_timestamp = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders.json?updated_at_min=$formatted_date&page=1&limit=250";
+        $get_url_timestamp = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders.json?created_at_min=$formatted_date&page=1&limit=250";
         
         $contents = file_get_contents($get_url_timestamp);
               
@@ -218,12 +221,6 @@ class OrderController extends BaseController
 ////        print_r(count($shopify_orders->orders));
 //        echo "</pre>";
 //        
-        
-//        echo "<pre>";
-//        print_r(count($shopify_orders));
-//        echo "</pre>";        
-        
-//        exit();
         
         foreach ($shopify_orders->orders as $key => $shopify_order) {
             //attempt to get order
@@ -283,6 +280,11 @@ class OrderController extends BaseController
             $order->tags = $shopify_order->tags;
             $order->contact_email = $shopify_order->contact_email;
             $order->order_status_url = $shopify_order->order_status_url;
+            
+            if(!empty($shopify_order->customer->id)){
+             $order->customer_id = $shopify_order->customer->id;
+            }
+            
             $order_id = $shopify_order->id;
             $ordersline_items = $shopify_order->line_items;
         
