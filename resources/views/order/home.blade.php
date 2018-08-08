@@ -39,7 +39,7 @@
                 <td> {{ $order->tags }} </td>
                 <td> 
                   @if($order->financial_status != "paid")
-                  <a onclick="return confirm('You are about to send an STK Push. Proceed ?')" href="{{url("order/view/{$order->id}")}}" class="btn btn-xs btn-success"> Push STK </a>
+                  <a onclick="return confirm('You are about to send an STK Push. Proceed ?')" href="{{url("payment/process-stk-push/{$order->id}")}}" class="btn btn-xs btn-success"> Push STK </a>
                   @endif
                 </td>
                 <td>    

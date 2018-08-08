@@ -8,7 +8,7 @@
     <div class="card">
 
       <div class="header">
-        <h2> Orders List </h2>
+        <h2> Payments List </h2>
       </div>
 
       <div class="body">
