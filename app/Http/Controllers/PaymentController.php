@@ -28,4 +28,12 @@ class PaymentController extends Controller
       return view("payment/suregifts", $data);
   }
   
+  public function mpesaPushStats()
+  {
+      $data[] = 0;
+      
+      return view("payment/pushstats", $data);
+  }
+  
+  
 }

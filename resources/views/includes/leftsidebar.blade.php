@@ -64,6 +64,12 @@
             <span> Check Suregifts Voucher </span>
           </a>
         </li>
+        <li>
+          <a href="{{ url('payment/pushstats') }}">
+            <i class="material-icons col-light-green">list</i>
+            <span> Mpesa Push Stats </span>
+          </a>
+        </li>
       </ul>
     </li>
     
