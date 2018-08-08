@@ -564,10 +564,6 @@ class CyfeDashboardController extends Controller
     
     public function breakdownByVendor() {
       
-      $date_range = $this->generateDateRange($this->start_date, $this->end_date);
-      
-      foreach ($date_range as $key => $date) {
-        
        $products = Lineitems::join("orders","orders.id","=","line_items.order_id")
                             ->select("line_items.vendor", DB::raw('sum(line_items.quantity) as total'), DB::raw('sum(line_items.price*line_items.quantity) as item_price'))
                             ->groupBy("line_items.vendor")
@@ -575,9 +571,6 @@ class CyfeDashboardController extends Controller
                             ->where("orders.shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                             ->orderBy("total", "desc")                            
                             ->get();       
-      }
-      
-      
       
       $data = "Vendor, As At, Number of Items, Total Item Sales"."<br>";
       
