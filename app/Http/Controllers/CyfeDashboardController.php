@@ -648,7 +648,7 @@ class CyfeDashboardController extends Controller
       
       $data = "As At, New Customers, Returning Customers"."<br>";
       
-      $data .= "{$this->today->format("d-m-Y")} , $new_customers, $returning_customers"."<br>";
+      $data .= "{$this->today->format("d/m/Y")} , $new_customers, $returning_customers"."<br>";
       
       echo $data;
       
