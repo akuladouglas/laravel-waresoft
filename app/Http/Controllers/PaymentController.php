@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Stkstats;
+use App\User;
 use App\Services\PaymentService;
 use App\Services\SmsService;
 use Auth;
@@ -42,7 +43,7 @@ class PaymentController extends Controller
   
   public function mpesaPushStats()
   {
-      $data[] = 0;
+      $data["stats"] = Stkstats::join("users","users.id","stk_stats.user_id")->get();
       
       return view("payment/pushstats", $data);
   }
