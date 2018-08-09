@@ -27,6 +27,7 @@
                 <th>Amount</th>
                 <th>Orders Made</th>
                 <th>Points</th>
+                <th>Sms Created </th>
               </tr>
             </thead>
             <tbody>
@@ -40,6 +41,7 @@
                 <td> {{ $activity->totalSpent }} </td>
                 <td> {{ $activity->totalOrders }} </td>
                 <td> {{ $activity->points }} </td>
+                <td> {{ $activity->sms_queued ? "Yes" : "No" }} </td>
               </tr>
               @endforeach
             </tbody>
