@@ -21,8 +21,6 @@
                 <th>Email</th>
                 <th>Created At</th>
                 <th>Updated At</th>
-                <th>Total Spent</th>
-                <th>Total Orders</th>
               </tr>
             </thead>
             <tbody>
@@ -30,10 +28,8 @@
               <tr>
                 <td> {{ $customer->firstName }}  {{ $customer->lastName }} </td>
                 <td> {{ $customer->emailAddress }} </td>
-                <td> {{ date("Y/m/d h:i", strtotime($customer->createdAt)) }} </td>
-                <td> {{ date("Y/m/d h:i", strtotime($customer->updatedAt)) }} </td>
-                <td> {{ $customer->totalSpent }} </td>
-                <td> {{ $customer->totalOrders }} </td>
+                <td> {{ date("d/m/y h:i", strtotime($customer->createdAt)) }} </td>
+                <td> {{ date("d/m/y h:i", strtotime($customer->updatedAt)) }} </td>
               </tr>
               @endforeach
             </tbody>

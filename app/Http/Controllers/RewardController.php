@@ -9,6 +9,8 @@ use App\Models\RewardSms;
 use App\Models\Customer;
 use App\Models\Reward;
 use DB;
+use App\Models\RewardCoupon;
+use Carbon\Carbon;
 
 class RewardController extends Controller
 {
@@ -31,18 +33,38 @@ class RewardController extends Controller
         curl_close($ch);
         return $data;
     }
-  
     
-    public function getCoupon() {
+    public function getCoupon($customer_id) {
       
-      $get_url = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/price_rules.json";
+      $url = "https://app.marsello.com/api/v1/customers/availablerewards/$customer_id";
       
-      $data = file_get_contents($get_url);
+      $response = $this->get_data($url, $this->headers);
       
-      echo "<pre>";
-      print_r($data);
-      echo '</pre>';
+      $decoded = json_decode($response);
       
+      $results_customer_id = $decoded->Customer->CustomerId;
+      $reward_coupons_array = $decoded->Rewards;
+      
+      foreach ($reward_coupons_array as $key => $reward_coupons) {
+        $coupon = RewardCoupon::where("coupon_id", $reward_coupons->Id)->get()->first();
+        
+        if(!$coupon){
+          $coupon = new RewardCoupon();
+        }
+        
+        $coupon->customer_id = $results_customer_id;
+        $coupon->coupon_id = $reward_coupons->Id;
+        $coupon->account_id = $reward_coupons->AccountId;
+        $coupon->created_at = Carbon::parse($reward_coupons->CreatedAt)->format("Y-m-d H:m:s");
+        $coupon->title = $reward_coupons->Title;
+        $coupon->terms = $reward_coupons->Terms;
+        $coupon->points_required = $reward_coupons->PointsRequired;
+        $coupon->discount_amount = $reward_coupons->DiscountAmount;
+        $coupon->save();
+        
+      }
+      
+      return true;
       
     }
     
@@ -146,8 +168,20 @@ class RewardController extends Controller
             $customer->save();
             
         }
+        
     }
   
+    public function syncCoupons() {
+      
+      $customers_with_coupons = RewardActivity::where("type",8)->get();
+      
+      foreach ($customers_with_coupons as $key => $customer_with_coupon) {
+        $this->getCoupon($customer_with_coupon->customerId);
+      }
+      
+    }
+    
+    
     public function computePointsBalance($points)
     {
         switch ($points) {
@@ -208,14 +242,14 @@ class RewardController extends Controller
       
       //claims sms
         
-        $claims_activities = RewardActivity::join("rewards_customers", "rewards_customers.customerId", "rewards_activitys.customerId")->where("type", ">=", 8)->where("sms_queued", 0)->get()->take(10);
+        $claims_activities = RewardActivity::join("rewards_customers", "rewards_customers.customerId", "rewards_activitys.customerId")->where("type", "=", 8)->where("sms_queued", 0)->get()->take(10);
         
         foreach ($claims_activities as $key => $activity) {
-//            $this->createCouponSms($activity->rewards_activity_id);
-//      
-//            $activity_obj = RewardActivity::where("rewards_activity_id", $activity->rewards_activity_id)->get()->first();
-//            $activity_obj->sms_queued = 1;
-//            $activity_obj->save();
+            $this->createCouponSms($activity->rewards_activity_id);
+      
+            $activity_obj = RewardActivity::where("rewards_activity_id", $activity->rewards_activity_id)->get()->first();
+            $activity_obj->sms_queued = 1;
+            $activity_obj->save();
         }
         
         
@@ -259,19 +293,24 @@ class RewardController extends Controller
     
         $customer_points = number_format($activity_obj->points);
     
+        $coupon_code_obj = RewardCoupon::where("coupon_id",$activity_obj->couponId)->get()->first();
         
         $coupon_code = "";
         
+        if($coupon_code_obj){
+         $coupon_code_title = $coupon_code_obj->title;
+         preg_match('#\((.*?)\)#', $coupon_code_title, $match);
+         $coupon_code = substr($match[1], 1);
+        }
+        
         if ($shopify_customer_obj && !empty($shopify_customer_obj->phone)) {
           
-//      $message = "Hi $shopify_customer_obj->first_name, thank you for shoping at BeautyClick. You have $customer_points points. Shop more to earn {$points_results["points_balance_due"]} points for a guaranteed {$points_results["next_price"]}";
-
             $message = "Your coupon code to use at BeautyClick.co.ke. {$coupon_code}. Use this coupon code on your next order." ;
 
-//            $sms_obj = new RewardSms;
-//            $sms_obj->text = $message;
-//            $sms_obj->phone = $shopify_customer_obj->phone;
-//            $sms_obj->save();
+            $sms_obj = new RewardSms;
+            $sms_obj->text = $message;
+            $sms_obj->phone = $shopify_customer_obj->phone;
+            $sms_obj->save();
             
         }
     }

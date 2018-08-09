@@ -121,6 +121,11 @@ Route::group(array('prefix' => 'reward'), function () {
   Route::match(['get', 'post'], '/sync-customers', 'RewardController@syncCustomers');
   Route::match(['get', 'post'], '/sync-activitys', 'RewardController@syncActivitys');
   Route::match(['get', 'post'], '/queue-points-sms', 'RewardController@queuePointsBalanceSms');
+  Route::match(['get', 'post'], '/sync-coupons', 'RewardController@syncCoupons');
+  
+  Route::match(['get', 'post'], '/create-coupon-sms/{id}', 'RewardController@createCouponSms');
+  
+  
 });
 
 Route::group(array('prefix' => 'queues'), function () {
