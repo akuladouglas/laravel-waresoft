@@ -22,8 +22,6 @@
       <div class="header">
         <h2> Orders List </h2>
       </div>
-
-      
       
       <div class="body">
         <div class="table-responsive">

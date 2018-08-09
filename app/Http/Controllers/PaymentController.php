@@ -59,8 +59,8 @@ class PaymentController extends Controller
       $account_number = str_replace("#", "", $order->name);
       
       //do push
-//      $payment_service = new PaymentService();
-//      $payment_service->sendSTK($formatted_phone_number, $order_amount, $account_number);
+      $payment_service = new PaymentService();
+      $payment_service->sendSTK($formatted_phone_number, $order_amount, $account_number);
         
       //record push in stats
       $stk_stat = Stkstats::where("order_name", $account_number)->get()->first();
