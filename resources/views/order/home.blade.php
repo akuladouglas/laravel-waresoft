@@ -6,11 +6,25 @@
   <!-- Task Info -->
   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <div class="card">
-
+      
+      @if(session('success'))
+      <div class="clearfix"></div>
+      <div class="col-md-12">
+        <div class="alert alert-success alert-dismissible">
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          <strong> Success! </strong>
+          <p> {{ session('success') }} </p>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      @endif
+      
       <div class="header">
         <h2> Orders List </h2>
       </div>
 
+      
+      
       <div class="body">
         <div class="table-responsive">
           <table class="table table-bordered table-striped table-hover dataTable js-exportable">
