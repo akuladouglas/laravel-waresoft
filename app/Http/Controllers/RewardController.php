@@ -60,7 +60,7 @@ class RewardController extends Controller
         $created_after = $last_reward_customer->createdAt;
         $created_before = "";
     
-        $link = "https://first.collectapps.io/api/v1/customers?PageNumber=1&PageSize=100&CreatedAfter=$created_after&CreatedBefore=$created_before";
+        $link = "https://app.marsello.com/api/v1/customers?PageNumber=1&PageSize=100&CreatedAfter=$created_after&CreatedBefore=$created_before";
     
         $response = $this->get_data($link, $this->headers);
     
@@ -69,7 +69,13 @@ class RewardController extends Controller
         /*logic to get updated current customers */
     
         foreach ($decoded->Customers as $key => $customer) {
-            $reward_customer = new RewardCustomer();
+            
+            $reward_customer = RewardCustomer::where("customerId", $customer->CustomerId)->get()->first();
+            
+            if(!$reward_customer){
+              $reward_customer = new RewardCustomer();
+            }
+            
             $reward_customer->customerId = $customer->CustomerId;
             $reward_customer->accountId = $customer->AccountId;
             $reward_customer->createdAt = $customer->CreatedAt;
@@ -101,7 +107,7 @@ class RewardController extends Controller
         
         foreach ($customer_data as $key => $customer) {
           
-            $link = "https://first.collectapps.io/api/v1/activities?CustomerId=$customer->customerId";
+            $link = "https://app.marsello.com/api/v1/activities?CustomerId=$customer->customerId";
       
             $activity_data = $this->get_data($link, $this->headers);
             
