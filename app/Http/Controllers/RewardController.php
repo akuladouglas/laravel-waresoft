@@ -19,8 +19,7 @@ class RewardController extends Controller
     public $api_base_link = "https://first.collectapps.io/api/v1";
     private $authetication = "Apikey 495993e27b695496030f6394c7200ae4";
     private $headers = array("Authorization: Apikey 495993e27b695496030f6394c7200ae4");
-  
-  
+    
     public function get_data($url, $headers)
     {
         $ch = curl_init();
@@ -46,6 +45,7 @@ class RewardController extends Controller
       $reward_coupons_array = $decoded->Rewards;
       
       foreach ($reward_coupons_array as $key => $reward_coupons) {
+        
         $coupon = RewardCoupon::where("coupon_id", $reward_coupons->Id)->get()->first();
         
         if(!$coupon){
@@ -333,7 +333,13 @@ class RewardController extends Controller
   
     public function getActivitys()
     {
-        $data["activities"] = RewardActivity::join("rewards_customers", "rewards_customers.customerId", "rewards_activitys.customerId")->orderby("rewards_activity_id", "desc")->take(2000)->get();
+       $select_columns = ["rewards_activity_id", "firstName", "lastName", "emailAddress", "rewards_activitys.createdAt","totalSpent","totalOrders","points"];
+      
+       $data["activities"] = RewardActivity::join("rewards_customers", "rewards_customers.customerId", "rewards_activitys.customerId")
+          ->orderby("rewards_activity_id", "desc")
+          ->take(2000)
+          ->select($select_columns)
+          ->get();
       
         return view("reward/activity", $data);
     }

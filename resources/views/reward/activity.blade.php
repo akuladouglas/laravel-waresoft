@@ -37,7 +37,7 @@
                 <td> {{ $activity->firstName }}  {{ $activity->lastName }} </td>
                 <td> {{ $activity->emailAddress }} </td>
                 <th> {{ $activity->description }} </th>
-                <td> {{ date("d/m/y", strtotime($activity->createdAt)) }} </td>
+                <td> {{ date("Y-m-d", strtotime($activity->createdAt)) }} </td>
                 <td> {{ $activity->totalSpent }} </td>
                 <td> {{ $activity->totalOrders }} </td>
                 <td> {{ $activity->points }} </td>
