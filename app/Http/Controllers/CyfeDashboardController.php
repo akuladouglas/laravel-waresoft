@@ -582,6 +582,25 @@ class CyfeDashboardController extends Controller
       
     }
     
+    public function dailyBreakdownByVendor() {
+      
+       $products = Lineitems::join("orders","orders.id","=","line_items.order_id")
+                            ->select("line_items.vendor", DB::raw('sum(line_items.quantity) as total'), DB::raw('sum(line_items.price*line_items.quantity) as item_price'))
+                            ->groupBy("line_items.vendor")
+                            ->where("orders.shopify_created_at", "like", $this->today->format("Y-m-d")."%")
+                            ->orderBy("total", "desc")                            
+                            ->get();       
+      
+      $data = "Vendor, As At, Number of Items, Total Item Sales"."<br>";
+      
+      foreach ($products as $key => $product) {
+        $data .= "$product->vendor, {$this->today->format("d/m/y")}, $product->total, $product->item_price"."<br>";
+      }
+      
+      echo $data;
+      
+    }
+    
     public function breakdownByProduct() {
       
       $products = Lineitems::join("orders","orders.id","=","line_items.order_id")
@@ -603,6 +622,26 @@ class CyfeDashboardController extends Controller
       
     }
     
+    public function dailyBreakdownByProduct() {
+      
+      $products = Lineitems::join("orders","orders.id","=","line_items.order_id")
+                            ->select("line_items.title", DB::raw('count(*) as total'), DB::raw('sum(line_items.price*line_items.quantity) as item_price'))
+                            ->groupBy("line_items.title")
+                            ->where("orders.shopify_created_at", "like", $this->today->format("Y-m-d")."%")
+                            ->orderBy("total", "desc")
+                            ->limit(30)
+                            ->get();
+      
+      $data = "Product, As At, Number of Products, Total Product Sales"."<br>";
+      
+      foreach ($products as $key => $product) {
+        $data .= " $product->title, {$this->today->format("d/m/y")}, $product->total, $product->item_price"."<br>";
+      }
+      
+      echo $data;
+      
+    }
+    
     public function breakdownBySku() {
       
       $products = Lineitems::join("orders","orders.id","=","line_items.order_id")
@@ -610,6 +649,27 @@ class CyfeDashboardController extends Controller
                             ->groupBy("line_items.sku")
                             ->where("orders.shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                             ->where("orders.shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                            ->orderBy("total", "desc")
+                            ->limit(30)
+                            ->get();
+      
+      $data = "SKU, As At, Number of Items, Total Item Sales"."<br>";
+      
+      foreach ($products as $key => $product) {
+        $data .= "$product->sku, {$this->today->format("d/m/y")},  $product->total, $product->item_price"."<br>";
+      }
+      
+      echo $data;
+      
+    }
+    
+    
+    public function dailyBreakdownBySku() {
+      
+      $products = Lineitems::join("orders","orders.id","=","line_items.order_id")
+                            ->select("line_items.sku", DB::raw('count(*) as total'), DB::raw('sum(line_items.price*line_items.quantity) as item_price'))
+                            ->groupBy("line_items.sku")
+                            ->where("orders.shopify_created_at", "like", $this->today->format("Y-m-d")."%")
                             ->orderBy("total", "desc")
                             ->limit(30)
                             ->get();
@@ -648,24 +708,6 @@ class CyfeDashboardController extends Controller
           array_push($returning_customer_array, $customer_id);
         }
       }
-      
-      
-//      $order_count_new = Order::select("customer_id", DB::raw("count(*) as orders_made "))
-//                           ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
-//                           ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
-//                           ->where("financial_status","paid")
-//                           ->having("orders_made", "=", "1")
-//                           ->orderBy("orders_made", "desc")
-//                           ->groupBy("customer_id")
-//                           ->get();
-      
-//      $order_count_returning = Order::select("customer_id", DB::raw("count(*) as orders_made "))
-//                           ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
-//                           ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
-//                           ->where("financial_status","paid")
-//                           ->having("orders_made", ">=", "2")
-//                           ->groupBy("customer_id")
-//                           ->get();
       
       $new_customers = count($new_customer_array);
       $returning_customers = count($returning_customer_array);
