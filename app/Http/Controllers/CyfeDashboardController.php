@@ -612,7 +612,7 @@ class CyfeDashboardController extends Controller
                             ->limit(30)
                             ->get();
       
-      $data = "Product, As At, Number of Products, Total Product Sales"."<br>";
+      $data = "Product, As At, Number of Products, Total Sales"."<br>";
       
       foreach ($products as $key => $product) {
         $data .= " $product->title, {$this->today->format("d/m/y")}, $product->total, $product->item_price"."<br>";
@@ -632,7 +632,7 @@ class CyfeDashboardController extends Controller
                             ->limit(30)
                             ->get();
       
-      $data = "Product, As At, Number of Products, Total Product Sales"."<br>";
+      $data = "Product, As At, Number of Products, Total Sales"."<br>";
       
       foreach ($products as $key => $product) {
         $data .= " $product->title, {$this->today->format("d/m/y")}, $product->total, $product->item_price"."<br>";
@@ -674,7 +674,7 @@ class CyfeDashboardController extends Controller
                             ->limit(30)
                             ->get();
       
-      $data = "SKU, As At, Number of Items, Total Item Sales"."<br>";
+      $data = "SKU, As At, Number of Items, Total Sales"."<br>";
       
       foreach ($products as $key => $product) {
         $data .= "$product->sku, {$this->today->format("d/m/y")},  $product->total, $product->item_price"."<br>";
