@@ -52,7 +52,7 @@
             <span> Payments List </span>
           </a>
         </li>
-        <li>
+        <li class="hidden">
           <a href="{{ url('payment/mpesa') }}">
             <i class="material-icons col-light-green">list</i>
             <span> Request Mpesa Payment </span>
