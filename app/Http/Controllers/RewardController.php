@@ -333,7 +333,7 @@ class RewardController extends Controller
   
     public function getActivitys()
     {
-       $select_columns = ["rewards_activity_id", "firstName", "lastName", "emailAddress", "rewards_activitys.createdAt","totalSpent","totalOrders","points"];
+       $select_columns = ["rewards_activity_id", "firstName", "lastName", "emailAddress", "description", "rewards_activitys.createdAt","totalSpent","totalOrders","points"];
       
        $data["activities"] = RewardActivity::join("rewards_customers", "rewards_customers.customerId", "rewards_activitys.customerId")
           ->orderby("rewards_activity_id", "desc")
