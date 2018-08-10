@@ -24,14 +24,16 @@ class CustomerController extends BaseController
     
     public function syncCustomers()
     {
-      
+      /*
         $last_updated_customer = Customer::orderBy("updated_at","desc")->take(1)->get()->first();
 
         $formatted_date =  Carbon::parse($last_updated_customer->updated_at)->format('Y-m-d\TH:i:s');
 
         $get_url = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/customers.json?updated_at_min=$formatted_date";
         
-        /*
+        dump($get_url);
+     */ 
+        
         $last_customer = Customer::orderBy("id", "desc")->get()->take(1)->first();
         if($last_customer) {
           $last_customer_id = $last_customer->customerid;
@@ -39,8 +41,7 @@ class CustomerController extends BaseController
           $last_customer_id = 449367507001;
         }
         $get_url = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/customers.json?since_id=$last_customer_id&limit=250"; //449367507001
-       */
-      
+       
         $contents = file_get_contents($get_url);
         
         $shopify_customers = json_decode($contents);

@@ -72,9 +72,6 @@ class RewardController extends Controller
     public function syncCustomers()
     {
     
-    //https://first.collectapps.io/api/v1/customers?PageNumber=page_number&PageSize=page_size&CreatedAfter=created_after&CreatedBefore=created_before
-    
-      
        /* logic to get new customer */
       
         $last_reward_customer = RewardCustomer::orderBy("rewards_customer_id", "desc")->get()->take(1)->first();
