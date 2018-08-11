@@ -12,10 +12,18 @@
       </div>
 
       <div class="body">
-        <div class="table-responsive">
-          
-          
+        <div class="">
+          <form action="{{url('payment/suregifts')}}" method="POST">
+            <div class="form-group">
+              <div class="form-line">
+                <input type="text" name="voucher_code" class="form-control" placeholder="Voucher Code" required />
+              </div>
+            </div>
 
+            <div class="form-group">
+              <button class="btn btn-primary"> Check Voucher Validity </button>
+            </div>
+          </form>
         </div>
       </div>
 

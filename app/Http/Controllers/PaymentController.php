@@ -34,9 +34,16 @@ class PaymentController extends Controller
       return view("payment/requestMpesa", $data);
   }
   
-  public function suregifts()
+  public function suregifts(Request $request)
   {
       $data[] = 0;
+      
+      if($request->has("voucher_code")){
+        
+        
+//        $request->flash("success", "voucher does not exist");
+        return view("payment/suregifts", $data);
+      }
       
       return view("payment/suregifts", $data);
   }
