@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\Lineitems;
 use Carbon\Carbon;
 use DB;
+use Illuminate\Support\Facades\Mail;
 
 class CyfeDashboardController extends Controller
 {
@@ -718,6 +719,16 @@ class CyfeDashboardController extends Controller
       $data .= "{$this->today->format("d/m/Y")} , $all_customers, $new_customers, $returning_customers"."<br>";
       
       echo $data;
+      
+    }
+    
+    function getPaymentPost($postdata) {
+      
+      mail("akulad19@gmail.com", "Test", $postdata);
+      
+      dump($postdata);
+      
+      dd("gets here");
       
     }
     
