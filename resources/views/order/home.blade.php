@@ -42,7 +42,7 @@
             <tbody>
               @foreach($orders as $order)
               <tr>
-                <td> {{ date("d/m/y", strtotime($order->shopify_created_at)) }} </td>
+                <td> {{ date("Y/m/d", strtotime($order->shopify_created_at)) }} </td>
                 <td> {{ $order->customer_firstname }} {{ $order->customer_lastname }} </td>
                 <td> {{ $order->name }}</td>
                 <td> {{ $order->customer_phone }} </td>
