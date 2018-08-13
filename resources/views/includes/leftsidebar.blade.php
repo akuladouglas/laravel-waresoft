@@ -58,7 +58,7 @@
             <span> Request Mpesa Payment </span>
           </a>
         </li>
-        <li>
+        <li class="hidden">
           <a href="{{ url('payment/suregifts') }}">
             <i class="material-icons col-light-green">list</i>
             <span> Check Suregifts Voucher </span>

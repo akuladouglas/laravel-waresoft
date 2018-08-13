@@ -726,10 +726,7 @@ class CyfeDashboardController extends Controller
       
       mail("akulad19@gmail.com", "Test", $postdata);
       
-      dump($postdata);
-      
-      dd("gets here");
-      
     }
+    
     
 }
