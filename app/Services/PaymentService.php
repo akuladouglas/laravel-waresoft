@@ -205,11 +205,6 @@ class PaymentService {
       'TransactionDesc' => 'Test'
     );
     
-	echo "<p> <u> Request Body </u> </p>";
-	echo "<pre>";	
-	print_r($curl_post_data);
-	echo "</pre>";
-	
     $data_string = json_encode($curl_post_data);
 
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -218,11 +213,6 @@ class PaymentService {
 
     $curl_response = curl_exec($curl);
     
-    echo "<p> <u> Response </u> </p>";
-    echo "<pre>";
-    print_r($curl_response);    
-    echo "</pre>";
-
   }
   
   

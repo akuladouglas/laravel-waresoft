@@ -95,5 +95,31 @@ class PaymentController extends Controller
 //    return false;
     
   }
+      
+  
+  public function processSendPayInfo($order_id, Request $request) {
+    
+    $order = Order::find($order_id);
+    
+    if($order){
+      
+      $phone_number = str_replace(" ", "", $order->customer_phone);
+      $formatted_phone_number = 254721869246;  //"254".substr($phone_number, -9);
+      $order_amount = round($order->total_price);
+      $account_number = str_replace("#", "", $order->name);
+      
+      //send sms notification with payment info
+      $message = "Hi $order->customer_firstname, To complete payment for your order. Please make payment to paybill 654221 and account number $account_number. Thank you.";
+      $sms = new SmsService();
+      $sms->sendNewSms($formatted_phone_number, $message);
+      
+      //wait for results of callback and record
+      $request->session()->flash('success', "Payment Push to $order->customer_firstname was successful!");
+      return redirect("order");
+      
+    }
+//    return false;
+    
+  }
   
 }

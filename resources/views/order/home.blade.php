@@ -37,6 +37,7 @@
                 <th>Tags </th>
                 <th></th>
                 <th></th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -50,12 +51,17 @@
                 <td> {{ $order->financial_status }}</td>
                 <td> {{ $order->tags }} </td>
                 <td> 
-                  @if($order->financial_status != "paid")
-                  <a onclick="return confirm('You are about to send an STK Push. Proceed ?')" href="{{url("payment/process-stk-push/{$order->id}")}}" class="btn btn-xs btn-success"> Push STK </a>
+                  @if($order->financial_status != "paid" && $order->customer_phone)
+                    <a onclick="return confirm('You are about to send an STK Push. Proceed ?')" href="{{url("payment/process-send-pay-info/{$order->id}")}}" class="btn btn-xs btn-primary"> Send Pay <br> Info </a>
+                  @endif
+                </td>
+                <td> 
+                  @if($order->financial_status != "paid" && $order->customer_phone)
+                    <a onclick="return confirm('You are about to send an STK Push. Proceed ?')" href="{{url("payment/process-stk-push/{$order->id}")}}" class="btn btn-xs btn-success"> Push STK </a>
                   @endif
                 </td>
                 <td>    
-                    <a href="{{url("order/view/{$order->id}")}}" class="btn btn-xs btn-primary">View More</a> 
+                    <a href="{{url("order/view/{$order->id}")}}" class="btn btn-xs btn-default">View More</a> 
                 </td>
               </tr>
               @endforeach

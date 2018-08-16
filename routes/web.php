@@ -98,6 +98,11 @@ Route::group(array('prefix' => 'payment'), function () {
   Route::match(['get', 'post'], '/suregifts', 'PaymentController@suregifts');
   Route::match(['get', 'post'], '/pushstats', 'PaymentController@mpesaPushStats');
   Route::match(['get', 'post'], '/process-stk-push/{id}', 'PaymentController@processStkPush');
+  Route::match(['get', 'post'], '/process-send-pay-info/{id}', 'PaymentController@processSendPayInfo');  
+});
+
+Route::group(array('prefix' => 'pay'), function () {
+  Route::match(['get', 'post'], '/{order_id}', 'PayController@processPayRequest');
 });
 
 Route::group(array('prefix' => 'combination'), function () {
