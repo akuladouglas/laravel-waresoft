@@ -86,18 +86,22 @@ class CyfeDashboardController extends Controller
                                   ->count();
         
           
-        $cancelled_orders = Order::where("tags", "like", "%COOD%")
+        $cood_orders = Order::where("tags", "like", "%COOD%")
                                   ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                                   ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                                   ->count();
         
+        $cancelled_orders = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                                  ->where("cancelled_at","!=",null)
+                                  ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                                  ->count();                
         
-        $aggregate_cancelled_orders = ($cancelled_orders);                
-        
-        $fullfillment_rate = round((($paid_fullfilled_orders / ($all_orders - $aggregate_cancelled_orders))*100), 3);
+        $fullfillment_rate = round((($paid_fullfilled_orders / ($all_orders - $cood_orders))*100), 3);
       
-        $data = "All Orders, Cancelled Orders, Paid Fullfilled Orders, Fullfillment Rate (%)
-               $all_orders,$aggregate_cancelled_orders, $paid_fullfilled_orders,$fullfillment_rate
+        $aggregate_all_orders = (($all_orders + $cancelled_orders) - $cood_orders);
+        
+        $data = "All Orders, Cancelled, CooD, Paid Fullfilled Orders, Fullfillment Rate (%)
+               $aggregate_all_orders, $cancelled_orders, $cood_orders, $paid_fullfilled_orders,$fullfillment_rate
                ";
       
         echo $data;
