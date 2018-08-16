@@ -114,7 +114,7 @@ class PaymentController extends Controller
       $sms->sendNewSms($formatted_phone_number, $message);
       
       //wait for results of callback and record
-      $request->session()->flash('success', "Payment Push to $order->customer_firstname was successful!");
+      $request->session()->flash('success', "Payment Information to $order->customer_firstname has been sent");
       return redirect("order");
       
     }
