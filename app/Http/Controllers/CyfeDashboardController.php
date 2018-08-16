@@ -351,8 +351,6 @@ class CyfeDashboardController extends Controller
             
         }
       
-        
-        
         $datax = "As At,Staff, Number of Orders, Total ex VAT"."<br>";
       
         foreach ($this->tags as $key => $tag) {
@@ -366,9 +364,16 @@ class CyfeDashboardController extends Controller
           return $a["total_ex_vat"] < $b["total_ex_vat"];
         });
         
+        $combined_orders = 0;
+        $combined_sales = 0;
+        
         foreach ($data as $key => $data_item) {
+          $combined_orders += $data_item["order_count"];
+          $combined_sales += $data_item["total_ex_vat"];
           $datax .= $this->today->format("d/m/y").",".$data_item["name"].",".$data_item["order_count"].",".$data_item["total_ex_vat"]."<br>";
         }
+        
+        $datax .= $this->today->format("d/m/y").", Total (All Staff), $combined_orders, $combined_sales ";
         
         echo $datax;
         
@@ -412,9 +417,16 @@ class CyfeDashboardController extends Controller
           return $a["total_ex_vat"] < $b["total_ex_vat"];
         });
         
+        $combined_orders = 0;
+        $combined_sales = 0;
+        
         foreach ($data as $key => $data_item) {
+          $combined_orders += $data_item["order_count"];
+          $combined_sales += $data_item["total_ex_vat"];
           $datax .= $this->today->format("d/m/y").",".$data_item["name"].",".$data_item["order_count"].",".$data_item["total_ex_vat"]."<br>";
         }
+        
+        $datax .= $this->today->format("d/m/y").", Total (All Staff), $combined_orders, $combined_sales ";
         
         echo $datax;
         
