@@ -19,6 +19,7 @@
               <tr>
                 <th>Name</th>
                 <th>Email</th>
+                <th>Phone</th>
                 <th>Total Spent</th>
                 <th>Total Orders</th>
                 <th>Birth Date</th>
@@ -31,6 +32,7 @@
               <tr>
                 <td> {{ $customer->firstName }}  {{ $customer->lastName }} </td>
                 <td> {{ $customer->emailAddress }} </td>
+                <td> {{ $customer->phone }} </td>
                 <td> {{ $customer->totalSpent }} </td>
                 <td> {{ $customer->totalOrders }} </td>
                 <td> {{ $customer->birthDate ? $customer->birthDate : "-" }} </td>
