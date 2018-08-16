@@ -274,7 +274,9 @@ class RewardController extends Controller
             $sms_obj = new RewardSms;
             $sms_obj->text = $message;
             $sms_obj->phone = $shopify_customer_obj->phone;
+            $sms_obj->created_at = Carbon::now()->format("Y-m-d H:m:s");
             $sms_obj->save();
+            
         }
     }
   
@@ -307,6 +309,7 @@ class RewardController extends Controller
             $sms_obj = new RewardSms;
             $sms_obj->text = $message;
             $sms_obj->phone = $shopify_customer_obj->phone;
+            $sms_obj->created_at = Carbon::now()->format("Y-m-d H:m:s");
             $sms_obj->save();
             
         }

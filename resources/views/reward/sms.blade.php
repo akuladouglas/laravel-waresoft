@@ -17,16 +17,17 @@
           <table class="table table-bordered table-striped table-hover dataTable js-exportable">
             <thead>
               <tr>
-                <th>#</th>
+                <th>Date Created</th>
                 <th>Phone</th>
                 <th>Text</th>
                 <th>Sent</th>
+                
               </tr>
             </thead>
             <tbody>
               @foreach($sms as $text)
               <tr>
-                <td> {{ $text->rewards_sms_id }} </td>
+                <td> {{ $text->created_at }} </td>
                 <td> {{ $text->phone }} </td>
                 <td> {{ $text->text }} </td>
                 <td> {{ $text->sent ? "Yes" : "No" }} </td>
