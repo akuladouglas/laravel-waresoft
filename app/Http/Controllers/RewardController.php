@@ -318,7 +318,7 @@ class RewardController extends Controller
     
     public function getCustomers()
     {
-        $data["customers"] = RewardCustomer::join("customers", "rewards_customers.emailAddress", "=", "cucstomers.email")
+        $data["customers"] = RewardCustomer::join("customers", "rewards_customers.emailAddress", "=", "customers.email")
                                             ->orderby("rewards_customers.rewards_customer_id", "desc")
                                             ->get()
                                             ->take(3000);
