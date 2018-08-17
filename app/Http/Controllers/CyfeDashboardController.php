@@ -442,6 +442,29 @@ class CyfeDashboardController extends Controller
     
     public function salesExVatPerStaff()
     {
+      
+        $all_order_count = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                           ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                           ->where("fulfillment_status", "fulfilled")
+                           ->where("financial_status", "paid")
+                           ->where("cancelled_at", null)
+                           ->count();
+      
+        $all_order_total = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                       ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                       ->where("fulfillment_status", "fulfilled")
+                       ->where("financial_status", "paid")
+                       ->where("cancelled_at", null)
+                       ->sum("total_price");
+
+        $all_order_total_tax = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                        ->where("fulfillment_status", "fulfilled")
+                        ->where("financial_status", "paid")
+                        ->where("cancelled_at", null)
+                        ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                        ->sum("total_tax");
+        
+        $all_order_total_ex_vat = ($all_order_total - $all_order_total_tax);
         
         foreach ($this->tags as $tag) {
           
@@ -493,7 +516,12 @@ class CyfeDashboardController extends Controller
           $datax .= $this->today->format("d/m/y").",".$data_item["name"].",".$data_item["order_count"].",".$data_item["total_ex_vat"]."<br>";
         }
         
-        $datax .= $this->today->format("d/m/y").", Total (All Staff), $combined_orders, $combined_sales ";
+        $untagged_order_count = ($all_order_count - $combined_orders);
+        $untagged_order_total = ($all_order_total_ex_vat - $combined_sales);
+        
+        $datax .= $this->today->format("d/m/y").", Untagged, $untagged_order_count, $untagged_order_total ";
+        
+        $datax .= $this->today->format("d/m/y").", Total (All Staff), $all_order_count, $all_order_total_ex_vat ";
         
         echo $datax;
         
