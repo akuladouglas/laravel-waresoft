@@ -950,7 +950,7 @@ class CyfeDashboardController extends Controller
             $ex_vat_amount[$status] = round(($order_total[$status] - $order_total_tax[$status]),2);
             $data[$status]["name"] = ucfirst($status);
               if(empty($data[$status]["name"])){
-                $data[$status]["name"] = "Null";
+                $data[$status]["name"] = "Not Fulfilled";
               }
             $data[$status]["order_count"] = $order_count[$status];
             $data[$status]["total_ex_vat"] = $ex_vat_amount[$status];
