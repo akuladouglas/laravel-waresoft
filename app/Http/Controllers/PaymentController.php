@@ -62,7 +62,7 @@ class PaymentController extends Controller
     if($order){
       
       $phone_number = str_replace(" ", "", $order->customer_phone);
-      $formatted_phone_number = 254721869246;  //"254".substr($phone_number, -9);
+      $formatted_phone_number = "254".substr($phone_number, -9);
       $order_amount = round($order->total_price);
       $account_number = str_replace("#", "", $order->name);
       
@@ -104,7 +104,7 @@ class PaymentController extends Controller
     if($order){
       
       $phone_number = str_replace(" ", "", $order->customer_phone);
-      $formatted_phone_number = 254721869246;  //"254".substr($phone_number, -9);
+      $formatted_phone_number = "254".substr($phone_number, -9);
       $order_amount = round($order->total_price);
       $account_number = str_replace("#", "", $order->name);
       
