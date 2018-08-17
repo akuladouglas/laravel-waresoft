@@ -111,16 +111,19 @@ class CyfeDashboardController extends Controller
     public function paidSalesAmount()
     {
         $paid_sales_count = Order::where("financial_status", "paid")
+                                 ->where("cancelled_at", null)
                                  ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                                  ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                                  ->count();
       
         $paid_sales_amount = Order::where("financial_status", "paid")
+                                  ->where("cancelled_at", null)
                                   ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                                   ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                                   ->sum("total_price");
         
         $paid_sales_amount_tax = Order::where("financial_status", "paid")
+                                  ->where("cancelled_at", null)
                                   ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                                   ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                                   ->sum("total_tax");
@@ -138,14 +141,17 @@ class CyfeDashboardController extends Controller
     public function averageBasketExVat()
     {
         $orders_total = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                             ->where("cancelled_at", null)
                              ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                              ->sum("total_price");
         
         $total_tax = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                                ->where("cancelled_at", null)
                                 ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                                 ->sum("total_tax");
       
         $orders_count = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                                ->where("cancelled_at", null)
                                 ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                                 ->count();
       
@@ -162,16 +168,19 @@ class CyfeDashboardController extends Controller
     public function deliveredOrders()
     {
         $order_count = Order::where("fulfillment_status", "fulfilled")
+                           ->where("cancelled_at", null)
                            ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                            ->count();
       
         $order_total = Order::where("fulfillment_status", "fulfilled")
+                            ->where("cancelled_at", null)
                             ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                             ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                             ->sum("total_price");
       
         $order_total_tax = Order::where("fulfillment_status", "fulfilled")
+                            ->where("cancelled_at", null)
                             ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                             ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                             ->sum("total_tax");
@@ -290,16 +299,19 @@ class CyfeDashboardController extends Controller
         $order_count = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                            ->where("financial_status","pending")
+                           ->where("cancelled_at", null)
                            ->count();
       
         $order_total = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                            ->where("financial_status","pending")
+                           ->where("cancelled_at", null)
                            ->sum("total_price");
         
         $tax = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                            ->where("financial_status","pending")
+                           ->where("cancelled_at", null)
                            ->sum("total_tax");
         
         $ex_vat_order_total = round(($order_total - $tax),2);
@@ -316,10 +328,12 @@ class CyfeDashboardController extends Controller
     {
         $order_count = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                           ->where("cancelled_at", null)
                            ->count();
       
         $order_total = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                           ->where("cancelled_at", null)
                            ->sum("total_price");
       
         $data = "As At, Number of Orders, Total Inc VAT
@@ -339,6 +353,7 @@ class CyfeDashboardController extends Controller
                            ->where("fulfillment_status", "fulfilled")
                            ->where("financial_status", "paid")
                            ->where("tags", "like", "%$tag%")
+                           ->where("cancelled_at", null)
                            ->count();
       
             $order_total[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
@@ -346,12 +361,14 @@ class CyfeDashboardController extends Controller
                            ->where("fulfillment_status", "fulfilled")
                            ->where("financial_status", "paid")
                            ->where("tags", "like", "%$tag%")
+                           ->where("cancelled_at", null)
                            ->sum("total_price");
         
             $order_total_tax[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                             ->where("tags", "like", "%$tag%")
                             ->where("fulfillment_status", "fulfilled")
                             ->where("financial_status", "paid")
+                            ->where("cancelled_at", null)
                             ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                             ->sum("total_tax");
             
@@ -393,17 +410,20 @@ class CyfeDashboardController extends Controller
             $order_count[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                            ->where("tags", "like", "%$tag%")
+                           ->where("cancelled_at", null)
                            ->where("financial_status","pending")
                            ->count();
       
             $order_total[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                            ->where("tags", "like", "%$tag%")
+                           ->where("cancelled_at", null)
                            ->where("financial_status","pending")
                            ->sum("total_price");
         
             $order_total_tax[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                               ->where("tags", "like", "%$tag%")
+                              ->where("cancelled_at", null)
                               ->where("financial_status","pending")
                               ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                               ->sum("total_tax");
@@ -538,14 +558,17 @@ class CyfeDashboardController extends Controller
             
             $order_count[$date][$tag] = Order::where("shopify_created_at", "like", Carbon::parse($date)->format("Y-m-d")."%")
                                          ->where("tags", "like", "%$tag%")
+                                         ->where("cancelled_at", null)
                                          ->count();
             
             $order_total[$date][$tag] = Order::where("shopify_created_at", "like", Carbon::parse($date)->format("Y-m-d")."%")
-                                          ->where("tags", "like", "%$tag%")                           
+                                          ->where("tags", "like", "%$tag%")
+                                          ->where("cancelled_at", null)
                                           ->sum("total_price");
             
             $order_total_tax[$date][$tag] = Order::where("shopify_created_at", "like", Carbon::parse($date)->format("Y-m-d")."%")
                                             ->where("tags", "like", "%$tag%")
+                                            ->where("cancelled_at", null)
                                             ->sum("total_tax");
             
           }
