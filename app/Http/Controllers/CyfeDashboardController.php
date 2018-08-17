@@ -888,7 +888,7 @@ class CyfeDashboardController extends Controller
             $ex_vat_amount[$status] = round(($order_total[$status] - $order_total_tax[$status]),2);
             $data[$status]["name"] = ucfirst($status);
             
-            if(!empty($data[$status]["name"])){
+            if(empty($data[$status]["name"])){
               $data[$status]["name"] = "Null";
             }
             
@@ -945,7 +945,7 @@ class CyfeDashboardController extends Controller
             $ex_vat_amount[$status] = round(($order_total[$status] - $order_total_tax[$status]),2);
             $data[$status]["name"] = ucfirst($status);
             
-            if(!empty($data[$status]["name"])){
+            if(empty($data[$status]["name"])){
               $data[$status]["name"] = "Null";
             }
             
