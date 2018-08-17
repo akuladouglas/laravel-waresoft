@@ -519,7 +519,7 @@ class CyfeDashboardController extends Controller
         $untagged_order_count = ($all_order_count - $combined_orders);
         $untagged_order_total = ($all_order_total_ex_vat - $combined_sales);
         
-        $datax .= $this->today->format("d/m/y").", Untagged, $untagged_order_count, $untagged_order_total ";
+        $datax .= $this->today->format("d/m/y").", Untagged, $untagged_order_count, $untagged_order_total "."<br>";
         
         $datax .= $this->today->format("d/m/y").", Total (All Staff), $all_order_count, $all_order_total_ex_vat ";
         
