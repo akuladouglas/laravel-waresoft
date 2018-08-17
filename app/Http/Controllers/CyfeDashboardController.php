@@ -935,8 +935,8 @@ class CyfeDashboardController extends Controller
         }
         
         $datax = "As At, Financial, Number of Orders, Total ex VAT"."<br>";
-      
-        foreach ($this->fullfillment_status as $key => $status) {
+        
+        foreach ($this->financial_status as $key => $status) {
             $ex_vat_amount[$status] = round(($order_total[$status] - $order_total_tax[$status]),2);
             $data[$status]["name"] = ucfirst($status);
             $data[$status]["order_count"] = $order_count[$status];
