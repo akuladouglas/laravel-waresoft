@@ -37,6 +37,14 @@ class CyfeDashboardController extends Controller
           "CNLI" => "Client no longer interested"
          ];
     
+    public $fullfillment_status = [
+      null,"fulfilled","partial","shipped","unshipped"
+    ];
+    
+    public $financial_status = [
+      null, "authorized", "pending","paid","partially_paid","refunded","voided","partially_refunded","unpaid"
+    ];
+
     /**
      * Create a new controller instance.
      *
@@ -51,8 +59,6 @@ class CyfeDashboardController extends Controller
     
     public function test()
     {
-        dd($this->start_date);
-      
         $data = "Sales Staff, Revenue(Kes), Sales
               Barbara,100132,213
               Milly,120350,102
@@ -851,6 +857,111 @@ class CyfeDashboardController extends Controller
       echo $data;
       
     }
+    
+    function fullfillmentStatusBreakdown() {
+        
+        foreach ($this->fullfillment_status as $key => $status) {
+          
+            $order_count[$status] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                             ->where("fulfillment_status", $status)
+                             ->where("cancelled_at", null)
+                             ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                             ->count();
+
+            $order_total[$status] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                             ->where("fulfillment_status", $status)
+                             ->where("cancelled_at", null)
+                             ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                             ->sum("total_price");
+            
+            $order_total_tax[$status] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                             ->where("fulfillment_status", $status)
+                             ->where("cancelled_at", null)
+                             ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                             ->sum("total_tax");
+            
+        }
+        
+        $datax = "As At, Fulfillment, Number of Orders, Total ex VAT"."<br>";
+      
+        foreach ($this->fullfillment_status as $key => $status) {
+            $ex_vat_amount[$status] = round(($order_total[$status] - $order_total_tax[$status]),2);
+            $data[$status]["name"] = ucfirst($status);
+            $data[$status]["order_count"] = $order_count[$status];
+            $data[$status]["total_ex_vat"] = $ex_vat_amount[$status];
+        }
+        
+        usort($data, function($a, $b){
+          return $a["total_ex_vat"] < $b["total_ex_vat"];
+        });
+        
+        $combined_orders = 0;
+        $combined_sales = 0;
+        
+        foreach ($data as $key => $data_item) {
+          $combined_orders += $data_item["order_count"];
+          $combined_sales += $data_item["total_ex_vat"];
+          $datax .= $this->today->format("d/m/y").",".$data_item["name"].",".$data_item["order_count"].",".$data_item["total_ex_vat"]."<br>";
+        }
+        
+        $datax .= $this->today->format("d/m/y").", Total Sales, $combined_orders, $combined_sales ";
+        
+        echo $datax;
+        
+    }
+    
+    function financialStatusBreakdown() {
+      
+        foreach ($this->financial_status as $key => $status) {
+          
+            $order_count[$status] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                             ->where("financial_status", $status)
+                             ->where("cancelled_at", null)
+                             ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                             ->count();
+
+            $order_total[$status] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                             ->where("financial_status", $status)
+                             ->where("cancelled_at", null)
+                             ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                             ->sum("total_price");
+            
+            $order_total_tax[$status] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                             ->where("financial_status", $status)
+                             ->where("cancelled_at", null)
+                             ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                             ->sum("total_tax");
+            
+        }
+        
+        $datax = "As At, Financial, Number of Orders, Total ex VAT"."<br>";
+      
+        foreach ($this->fullfillment_status as $key => $status) {
+            $ex_vat_amount[$status] = round(($order_total[$status] - $order_total_tax[$status]),2);
+            $data[$status]["name"] = ucfirst($status);
+            $data[$status]["order_count"] = $order_count[$status];
+            $data[$status]["total_ex_vat"] = $ex_vat_amount[$status];
+        }
+        
+        usort($data, function($a, $b){
+          return $a["total_ex_vat"] < $b["total_ex_vat"];
+        });
+        
+        $combined_orders = 0;
+        $combined_sales = 0;
+        
+        foreach ($data as $key => $data_item) {
+          $combined_orders += $data_item["order_count"];
+          $combined_sales += $data_item["total_ex_vat"];
+          $datax .= $this->today->format("d/m/y").",".$data_item["name"].",".$data_item["order_count"].",".$data_item["total_ex_vat"]."<br>";
+        }
+        
+        $datax .= $this->today->format("d/m/y").", All Sales, $combined_orders, $combined_sales ";
+        
+        echo $datax;
+      
+    }
+    
     
     function getPaymentPost($postdata) {
       
