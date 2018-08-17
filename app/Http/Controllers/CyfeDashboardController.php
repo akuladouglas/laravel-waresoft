@@ -103,7 +103,7 @@ class CyfeDashboardController extends Controller
                                   ->count();
         
         $cood_non_cancelled = Order::where("tags", "like", "%COOD%")
-                                  ->where("cancelled_at","!=",null)
+                                  ->where("cancelled_at",null)
                                   ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                                   ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                                   ->count();
