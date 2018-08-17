@@ -109,7 +109,7 @@ class PaymentController extends Controller
       $account_number = str_replace("#", "", $order->name);
       
       //send sms notification with payment info
-      $message = "Hi $order->customer_firstname, To complete payment for your order. Please make payment to paybill 654221 and account number $account_number. Thank you.";
+      $message = "Hi $order->customer_firstname, To complete payment for your order. Please make payment of $order_amount to paybill 654221 and account number $account_number. Thank you.";
       $sms = new SmsService();
       $sms->sendNewSms($formatted_phone_number, $message);
       
