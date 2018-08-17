@@ -108,7 +108,7 @@ class CyfeDashboardController extends Controller
                                   ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                                   ->count();
         
-        $fullfillment_rate = round((($paid_fullfilled_orders / ($all_orders - $cood_orders))*100), 2);
+        $fullfillment_rate = round((($paid_fullfilled_orders / ($all_orders - $cood_non_cancelled))*100), 2);
       
         $aggregate_all_orders = (($all_orders));
         
