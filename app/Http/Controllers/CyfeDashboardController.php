@@ -521,7 +521,7 @@ class CyfeDashboardController extends Controller
         
         $datax .= $this->today->format("d/m/y").", Untagged, $untagged_order_count, $untagged_order_total "."<br>";
         
-        $datax .= $this->today->format("d/m/y").", Total (All Staff), $all_order_count, $all_order_total_ex_vat ";
+        $datax .= $this->today->format("d/m/y").", Total, $all_order_count, $all_order_total_ex_vat ";
         
         echo $datax;
         
