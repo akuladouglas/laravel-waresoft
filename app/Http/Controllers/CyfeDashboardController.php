@@ -887,11 +887,11 @@ class CyfeDashboardController extends Controller
         foreach ($this->fullfillment_status as $key => $status) {
             $ex_vat_amount[$status] = round(($order_total[$status] - $order_total_tax[$status]),2);
             $data[$status]["name"] = ucfirst($status);
-            
-            if(empty($data[$status]["name"])){
-              $data[$status]["name"] = "Null";
+            if(empty($data[$status]["order_count"])){
+              if(empty($data[$status]["name"])){
+                $data[$status]["name"] = "Null";
+              }
             }
-            
             $data[$status]["order_count"] = $order_count[$status];
             $data[$status]["total_ex_vat"] = $ex_vat_amount[$status];
         }
@@ -942,15 +942,15 @@ class CyfeDashboardController extends Controller
         $datax = "As At, Financial, Number of Orders, Total ex VAT"."<br>";
         
         foreach ($this->financial_status as $key => $status) {
+          if(empty($data[$status]["order_count"])){
             $ex_vat_amount[$status] = round(($order_total[$status] - $order_total_tax[$status]),2);
             $data[$status]["name"] = ucfirst($status);
-            
             if(empty($data[$status]["name"])){
               $data[$status]["name"] = "Null";
             }
-            
             $data[$status]["order_count"] = $order_count[$status];
             $data[$status]["total_ex_vat"] = $ex_vat_amount[$status];
+          }
         }
         
         usort($data, function($a, $b){
