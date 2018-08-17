@@ -293,6 +293,91 @@ class CyfeDashboardController extends Controller
         
     }
     
+    public function untaggedSales()
+    {      
+        //all numbers
+        
+        $all_order_count = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                               ->where("cancelled_at", null)
+                               ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                               ->count();
+
+        $all_order_total = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                         ->where("cancelled_at", null)
+                         ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                         ->sum("total_price");
+
+        $all_order_total_tax = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                         ->where("cancelled_at", null)
+                         ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                         ->sum("total_tax");
+        
+        foreach ($this->online_tags as $key => $tag) {
+          
+            $online_order_count[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                             ->where("tags", "like", "%$tag%")
+                             ->where("cancelled_at", null)
+                             ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                             ->count();
+
+            $online_order_total[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                             ->where("tags", "like", "%$tag%")
+                             ->where("cancelled_at", null)
+                             ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                             ->sum("total_price");
+            
+            $online_order_total_tax[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                             ->where("tags", "like", "%$tag%")
+                             ->where("cancelled_at", null)
+                             ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                             ->sum("total_tax");
+            
+        }
+        
+        foreach ($this->offline_tags as $key => $tag) {
+          
+            $offline_order_count[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                             ->where("tags", "like", "%$tag%")
+                             ->where("cancelled_at", null)
+                             ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                             ->count();
+
+            $offline_order_total[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                             ->where("tags", "like", "%$tag%")
+                             ->where("cancelled_at", null)
+                             ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                             ->sum("total_price");
+            
+            $offline_order_total_tax[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                             ->where("tags", "like", "%$tag%")
+                             ->where("cancelled_at", null)
+                             ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                             ->sum("total_tax");
+            
+        }
+        
+        $data = "As At,Number of orders, Total, Total ex Vat"."<br>";
+        
+        $offline_order_total_summation = (array_sum($offline_order_total));
+        $offline_order_total_tax_summation = (array_sum($offline_order_total_tax));
+        $offline_order_count_summation = (array_sum($offline_order_count));
+        
+        $online_order_total_summation = (array_sum($online_order_total));
+        $online_order_total_tax_summation = (array_sum($online_order_total_tax));
+        $online_order_count_summation = (array_sum($online_order_count));
+        
+        $order_total_summation = $all_order_total - ($offline_order_total_summation + $online_order_total_summation);
+        $order_total_tax_summation = $all_order_total_tax - ($offline_order_total_tax_summation + $online_order_total_tax_summation);
+        $order_count_summation = $all_order_count - ($offline_order_count_summation + $online_order_count_summation);
+        
+        $ex_vat_total = ($order_total_summation - $order_total_tax_summation);
+        
+        $data .= "{$this->today->format("d/m/y")},$order_count_summation, $order_total_summation, $ex_vat_total"."<br>";
+        
+        echo $data;
+        
+    }
+    
     public function pendingOrders()
     {
       
