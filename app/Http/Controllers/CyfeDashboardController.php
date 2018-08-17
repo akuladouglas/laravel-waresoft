@@ -885,7 +885,7 @@ class CyfeDashboardController extends Controller
         $datax = "As At, Fulfillment, Number of Orders, Total ex VAT"."<br>";
       
         foreach ($this->fullfillment_status as $key => $status) {
-          if(($data[$status]["order_count"]) > 0){
+          if(($status["order_count"]) > 0){
             $ex_vat_amount[$status] = round(($order_total[$status] - $order_total_tax[$status]),2);
             $data[$status]["name"] = ucfirst($status);
               if(empty($data[$status]["name"])){
@@ -942,7 +942,7 @@ class CyfeDashboardController extends Controller
         $datax = "As At, Financial, Number of Orders, Total ex VAT"."<br>";
         
         foreach ($this->financial_status as $key => $status) {
-          if(($data[$status]["order_count"]) > 0){
+          if(($status["order_count"]) > 0){
             $ex_vat_amount[$status] = round(($order_total[$status] - $order_total_tax[$status]),2);
             $data[$status]["name"] = ucfirst($status);
             if(empty($data[$status]["name"])){
