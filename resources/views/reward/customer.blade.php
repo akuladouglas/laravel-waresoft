@@ -22,6 +22,7 @@
                 <th>Phone</th>
                 <th>Total Spent</th>
                 <th>Total Orders</th>
+                <th>Points</th>
                 <th>Birth Date</th>
                 <th>Subscribed</th>
                 <th>Created At</th>
@@ -36,6 +37,7 @@
                 <td> {{ $customer->phone }} </td>
                 <td> {{ $customer->totalSpent }} </td>
                 <td> {{ $customer->totalOrders }} </td>
+                <td> {{ $customer->pointsBalance }} </td>
                 <td> {{ $customer->birthDate ? $customer->birthDate : "-" }} </td>
                 <td> {{ $customer->accepts_marketing ? "Yes" : "No" }} </td>
                 <td> {{ date("Y/m/d", strtotime($customer->createdAt)) }} </td>
