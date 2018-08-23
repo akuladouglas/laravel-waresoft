@@ -105,6 +105,9 @@ class RewardController extends Controller
         /*logic to get updated current customers */
     
         if (sizeof($decoded->Customers)) {
+          
+            dd($decoded->Customers);
+          
             foreach ($decoded->Customers as $key => $customer) {
                 $reward_customer = RewardCustomer::where("customerId", $customer->CustomerId)->get()->first();
             
