@@ -281,8 +281,7 @@ class RewardController extends Controller
         if ($shopify_customer_obj && !empty($shopify_customer_obj->phone)) {
       
 //      $message = "Hi $shopify_customer_obj->first_name, thank you for shoping at BeautyClick. You have $customer_points points. Shop more to earn {$points_results["points_balance_due"]} points for a guaranteed {$points_results["next_price"]}";
-          
-            $message = "Thank you for shopping at BeautyClick. You earned $customer_points points. Your balance is $customer_total_points. Check your redemption options at www.beautyclick.co.ke/account" ;
+            $message = "Hi Beauty, You've earned $customer_points points from shopping at BeautyClick! Your points balance is now $customer_total_points. Thanks and have a great day!";
 
             $sms_obj = new RewardSms;
             $sms_obj->text = $message;
