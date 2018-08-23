@@ -70,9 +70,9 @@ class CyfeDashboardController extends Controller
     }
     
     /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
+     * /fullfillment
+     * 
+     * @return 
      */
     public function fullfillmentRate()
     {
@@ -119,7 +119,10 @@ class CyfeDashboardController extends Controller
         echo $data;
     }
     
-    
+    /**
+     * paidsalesamount
+     * 
+     */
     public function paidSalesAmount()
     {
         $paid_sales_count = Order::where("financial_status", "paid")
@@ -150,6 +153,11 @@ class CyfeDashboardController extends Controller
         
     }
     
+    /**
+     * 
+     * averagebasket
+     */
+    
     public function averageBasketExVat()
     {
         $orders_total = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
@@ -176,6 +184,12 @@ class CyfeDashboardController extends Controller
       
         echo $data;
     }
+    
+    /**
+     * 
+     * deliveredorders
+     * 
+     */
     
     public function deliveredOrders()
     {
@@ -210,6 +224,9 @@ class CyfeDashboardController extends Controller
         echo $data;
     }
     
+    /**
+     * revenuedeliveredorders
+     */
     public function revenueDeliveredOrdersExVat()
     {
         $order_count = Order::where("fulfillment_status", "fulfilled")
@@ -229,6 +246,10 @@ class CyfeDashboardController extends Controller
         echo $data;
     }
     
+    /**
+     * offlinesales
+     * 
+     */
     public function offlineSales()
     {
         foreach ($this->offline_tags as $key => $tag) {
@@ -267,6 +288,9 @@ class CyfeDashboardController extends Controller
         
     }
     
+    /**
+     * onlinesales
+     */    
     public function onlineSales()
     {      
         foreach ($this->online_tags as $key => $tag) {
@@ -304,6 +328,11 @@ class CyfeDashboardController extends Controller
         echo $data;
         
     }
+    
+    /**
+     * untaggedsales
+     * 
+     */
     
     public function untaggedSales()
     {      
@@ -390,6 +419,11 @@ class CyfeDashboardController extends Controller
         
     }
     
+    /**
+     * 
+     * pendingorders
+     */
+    
     public function pendingOrders()
     {
       
@@ -421,6 +455,11 @@ class CyfeDashboardController extends Controller
         
     }
     
+    /**
+     * 
+     * pendingdeliveries
+     */
+    
     public function pendingDeliveries()
     {
         $order_count = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
@@ -439,6 +478,11 @@ class CyfeDashboardController extends Controller
         echo $data;
         
     }
+    
+    /**
+     * 
+     * salesperstaff
+     */
     
     public function salesExVatPerStaff()
     {
@@ -527,6 +571,11 @@ class CyfeDashboardController extends Controller
         
     }
     
+    /**
+     * orderstoday
+     * 
+     */
+    
     public function pendingDeliveriesExVatPerStaff()
     {
         $all_order_count = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
@@ -607,6 +656,10 @@ class CyfeDashboardController extends Controller
         
     }
     
+    /**
+     * cancelledorders
+     * 
+     */
     public function cancelledOrders()
     {   
       
@@ -640,6 +693,11 @@ class CyfeDashboardController extends Controller
         echo $data;
     }
     
+    /**
+     * 
+     * orderstoday
+     */
+    
     public function numberOfOrdersToday()
     {
         $order_count = Order::where("shopify_created_at", "like", Carbon::now()->format("Y-m-d")."%")->count();
@@ -658,6 +716,10 @@ class CyfeDashboardController extends Controller
         echo $data;
     }
     
+    /**
+     * salestoday
+     */
+    
     public function salesTodayExVat()
     {
         $order_count = Order::where("shopify_created_at", "like", Carbon::now()->format("Y-m-d")."%")->count();
@@ -671,6 +733,11 @@ class CyfeDashboardController extends Controller
         echo $data;
         
     }
+    
+    /**
+     * 
+     * dailytransactionbreakdown
+     */
     
     public function dailyTransactionBreakdown()
     {
@@ -699,6 +766,11 @@ class CyfeDashboardController extends Controller
         
         echo $data;
     }
+    
+    /**
+     * 
+     * onlinesalesdailytransactionbreakdown
+     */
     
     public function onelineSalesDailyTransactionBreakdown()
     {
@@ -743,6 +815,14 @@ class CyfeDashboardController extends Controller
         echo $data;
     }
     
+    /**
+     * 
+     * @param Carbon $start_date
+     * @param Carbon $end_date
+     * @param type $minimal
+     * @return type
+     * 
+     */
     
     private function generateDateRange(Carbon $start_date, Carbon $end_date, $minimal = false)
     {
@@ -759,6 +839,11 @@ class CyfeDashboardController extends Controller
         }
         return $dates;
     }
+    
+    /**
+     * 
+     * breakdownbyvendor
+     */
     
     public function breakdownByVendor() {
       
@@ -780,6 +865,10 @@ class CyfeDashboardController extends Controller
       
     }
     
+    /**
+     * dailybreakdownbyvendor
+     */
+    
     public function dailyBreakdownByVendor() {
       
        $products = Lineitems::join("orders","orders.id","=","line_items.order_id")
@@ -798,6 +887,11 @@ class CyfeDashboardController extends Controller
       echo $data;
       
     }
+    
+    /**
+     * breakdownbyproduct
+     * 
+     */
     
     public function breakdownByProduct() {
       
@@ -820,6 +914,11 @@ class CyfeDashboardController extends Controller
       
     }
     
+    /**
+     * dailybreakdownbyproduct
+     * 
+     */
+    
     public function dailyBreakdownByProduct() {
       
       $products = Lineitems::join("orders","orders.id","=","line_items.order_id")
@@ -839,6 +938,11 @@ class CyfeDashboardController extends Controller
       echo $data;
       
     }
+    
+    /**
+     * breakdownbysku
+     * 
+     */
     
     public function breakdownBySku() {
       
@@ -861,6 +965,10 @@ class CyfeDashboardController extends Controller
       
     }
     
+    /**
+     * 
+     * dailybreakdownbysku
+     */
     
     public function dailyBreakdownBySku() {
       
@@ -881,6 +989,11 @@ class CyfeDashboardController extends Controller
       echo $data;
       
     }
+    
+    /**
+     * 
+     * returningvsnew
+     */    
     
     public function breakdownReturningVsNew() {
       
@@ -918,6 +1031,12 @@ class CyfeDashboardController extends Controller
       echo $data;
       
     }
+    
+    /**
+     * 
+     * breakdownbyfullfillmentstatus
+     */
+    
     
     function fullfillmentStatusBreakdown() {
         
@@ -975,6 +1094,11 @@ class CyfeDashboardController extends Controller
         echo $datax;
         
     }
+    
+    /**
+     * 
+     * breakdownbyfinancialstatus
+     */
     
     function financialStatusBreakdown() {
       

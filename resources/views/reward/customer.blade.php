@@ -23,6 +23,7 @@
                 <th>Total Spent</th>
                 <th>Total Orders</th>
                 <th>Birth Date</th>
+                <th>Subscribed</th>
                 <th>Created At</th>
                 <th>Updated At</th>
               </tr>
@@ -36,6 +37,7 @@
                 <td> {{ $customer->totalSpent }} </td>
                 <td> {{ $customer->totalOrders }} </td>
                 <td> {{ $customer->birthDate ? $customer->birthDate : "-" }} </td>
+                <td> {{ $customer->accepts_marketing ? "Yes" : "No" }} </td>
                 <td> {{ date("Y/m/d", strtotime($customer->createdAt)) }} </td>
                 <td> {{ date("Y/m/d", strtotime($customer->updatedAt)) }} </td>
               </tr>
