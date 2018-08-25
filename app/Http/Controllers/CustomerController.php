@@ -8,6 +8,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\Request;
 use Carbon\Carbon;
 
 class CustomerController extends BaseController
@@ -17,10 +18,23 @@ class CustomerController extends BaseController
     
     public function getCustomers()
     {
-        $data["customers"] = Customer::orderby("id", "desc")->paginate(15);
+        $data["customers"] = Customer::select()->orderby("id", "desc")->get();
       
         return view("customer/home", $data);
     }
+    
+    /**
+     * Manually Sync Customers from Shopify
+     * @return
+     */
+    public function refresh(Request $request)
+    {
+        $this->syncCustomers();
+        $request->session()->flash("success", "Customer list updated from shopify successfully");
+
+        return redirect(url("customer"));
+    }
+    
     
     public function syncCustomers()
     {

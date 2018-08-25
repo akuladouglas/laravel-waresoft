@@ -88,9 +88,12 @@ Route::group(array('prefix' => 'cyfe-dash'), function () {
   
 });
 
-
 Route::group(array('prefix' => 'delivery'), function () {
   Route::match(['get', 'post'], '/', 'DeliveryController@getDeliverys');
+});
+
+Route::group(array('prefix' => 'leads'), function () {
+  Route::match(['get', 'post'], '/', 'LeadsController@getDeliverys');
 });
 
 Route::group(array('prefix' => 'product'), function () {
@@ -125,6 +128,7 @@ Route::group(array('prefix' => 'report'), function () {
 Route::group(array('prefix' => 'customer'), function () {
   Route::match(['get', 'post'], '/', 'CustomerController@getCustomers');
   Route::match(['get', 'post'], '/sync-customer', 'CustomerController@syncCustomers');
+  Route::match(['get', 'post'], '/refresh', 'CustomerController@refresh');
 });
 
 Route::group(array('prefix' => 'reward'), function () {  

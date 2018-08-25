@@ -6,7 +6,7 @@
   <ul class="list">
     <li class="header"> Navigation </li>
 
-    <li class="hidden <?php echo Request::segment(1) == "home" ? "active" : ""; ?>" >
+    <li class="<?php echo Request::segment(1) == "home" ? "active" : ""; ?>" >
       <a href="{{ url('home') }}">
         <i class="material-icons">home</i>
         <span> Dashboard </span>
@@ -39,7 +39,14 @@
         </li>
       </ul>
     </li>
-    
+
+    <li class="<?php echo Request::segment(1) == "home" ? "active" : ""; ?>" >
+      <a href="{{ url('customer') }}">
+        <i class="material-icons">face</i>
+        <span> Shopify Customers </span>
+      </a>
+    </li>
+
     <li class="<?php echo Request::segment(1) == "payment" ? "active" : ""; ?>" >
       <a href="#" class="menu-toggle">
         <i class="material-icons">list</i>
@@ -72,21 +79,21 @@
         </li>
       </ul>
     </li>
-    
+
     <li class="<?php echo Request::segment(1) == "order" ? "active" : ""; ?>" >
       <a href="{{ url('order') }}">
         <i class="material-icons">view_headline</i>
-        <span>Orders</span>
+        <span> Shopify Orders</span>
       </a>
     </li>
 
-    <li class="hidden <?php echo Request::segment(1) == "delivery" ? "active" : ""; ?>" >
+    <li class="<?php echo Request::segment(1) == "delivery" ? "active" : ""; ?>" >
       <a href="{{ url('delivery') }}">
         <i class="material-icons">view_headline</i>
         <span>Deliveries</span>
       </a>
     </li>
-    
+
     <li class="hidden <?php echo Request::segment(1) == "product" ? "active" : ""; ?>" >
       <a href="{{ url('product') }}">
         <i class="material-icons">apps</i>
@@ -108,7 +115,7 @@
       </a>
     </li>
 
-    <li class="hidden <?php echo Request::segment(1) == "report" ? "active" : ""; ?>" >
+    <li class="<?php echo Request::segment(1) == "report" ? "active" : ""; ?>" >
       <a href="#" class="menu-toggle">
         <i class="material-icons">vertical_split</i>
         <span>Reports</span>

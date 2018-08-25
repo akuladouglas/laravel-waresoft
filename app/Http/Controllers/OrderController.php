@@ -65,7 +65,7 @@ class OrderController extends BaseController
     public function refresh(Request $request)
     {
         $this->syncOrders();
-        $request->session()->flash("success", "Orders Updated Successfully");
+        $request->session()->flash("success", "Orders List Updated from Shopify Successfully");
 
         return redirect(url("order"));
     }
