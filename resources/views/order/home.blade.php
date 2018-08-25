@@ -6,7 +6,7 @@
   <!-- Task Info -->
   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <div class="card">
-      
+
       @if(session('success'))
       <div class="clearfix"></div>
       <div class="col-md-12">
@@ -18,11 +18,20 @@
       </div>
       <div class="clearfix"></div>
       @endif
-      
+
       <div class="header">
-        <h2> Orders List </h2>
+
+        <div class="col-lg-6">
+          <h2> Orders List </h2>
+        </div>
+
+        <div class="col-lg-6">
+          <a href="{{url("order/refresh")}}" class="btn btn-primary pull-right"> Refresh Orders List </a>
+        </div>
+        <div class="clearfix"></div>
+
       </div>
-      
+
       <div class="body">
         <div class="table-responsive">
           <table class="table table-bordered table-striped table-hover dataTable js-exportable">
@@ -52,16 +61,16 @@
                 <td> {{ $order->tags }} </td>
                 <td> 
                   @if($order->financial_status != "paid" && $order->customer_phone)
-                    <a onclick="return confirm('You are about to send Payment Information. Proceed ?')" href="{{url("payment/process-send-pay-info/{$order->id}")}}" class="btn btn-xs btn-primary"> Send Pay <br> Info </a>
+                  <a onclick="return confirm('You are about to send Payment Information. Proceed ?')" href="{{url("payment/process-send-pay-info/{$order->id}")}}" class="btn btn-xs btn-primary"> Send Pay <br> Info </a>
                   @endif
                 </td>
                 <td> 
                   @if($order->financial_status != "paid" && $order->customer_phone)
-                    <a onclick="return confirm('You are about to send an STK Push. Proceed ?')" href="{{url("payment/process-stk-push/{$order->id}")}}" class="btn btn-xs btn-success"> Push STK </a>
+                  <a onclick="return confirm('You are about to send an STK Push. Proceed ?')" href="{{url("payment/process-stk-push/{$order->id}")}}" class="btn btn-xs btn-success"> Push STK </a>
                   @endif
                 </td>
                 <td>    
-                    <a href="{{url("order/view/{$order->id}")}}" class="btn btn-xs btn-default">View More</a> 
+                  <a href="{{url("order/view/{$order->id}")}}" class="btn btn-xs btn-default">View More</a> 
                 </td>
               </tr>
               @endforeach

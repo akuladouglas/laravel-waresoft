@@ -4,89 +4,97 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Lineitems;
-
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Carbon\Carbon;
 use App\Services\OrderReportService;
+use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class OrderController extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-    
-    
+    use AuthorizesRequests,
+      DispatchesJobs,
+      ValidatesRequests;
+
     public function getOrders()
     {
         $data["orders"] = Order::orderBy("id", "desc")->get()->take(2000);
-        
+
         return view("order/home", $data);
     }
-    
-    public function viewOrder($order_id) {
-      
+
+    public function viewOrder($order_id)
+    {
         $data["order"] = Order::find($order_id);
-        
+
         return view("order/view_order", $data);
-        
     }
-    
-    function getDashboard() {
-      
-      $start_date = "2018-07-25";
-      $end_date = "2018-07-27";
-      
-      $report_service = new OrderReportService();
-      
-      $results = $report_service->getOrders();
-      
-      //all orders
-      
-      dd($results);
-      
-      //paid orders
-      $paid_orders = Order::where("shopify_created_at",">=",$start_date)
-                      ->where("shopify_created_at","<=",$end_date)
-                      ->where("financial_status", "paid")
-                      ->get();
-      
-      dd($orders);
-      
-      exit();
-      
-      return $data;
-      
+
+    public function getDashboard()
+    {
+        $start_date = "2018-07-25";
+        $end_date = "2018-07-27";
+
+        $report_service = new OrderReportService();
+
+        $results = $report_service->getOrders();
+
+        //all orders
+
+        dd($results);
+
+        //paid orders
+        $paid_orders = Order::where("shopify_created_at", ">=", $start_date)
+      ->where("shopify_created_at", "<=", $end_date)
+      ->where("financial_status", "paid")
+      ->get();
+
+        dd($orders);
+
+        exit();
+
+        return $data;
     }
-    
-    
-    
-    public function syncUpdatedOrders(){
-      
-      $last_updated_order = Order::orderBy("shopify_updated_at","desc")->take(1)->get()->first();
-      
-      $formatted_date =  Carbon::parse($last_updated_order->shopify_updated_at)->format('Y-m-d\TH:i:s');
-      
-      $get_url_timestamp = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders.json?updated_at_min=$formatted_date";
-      
-      $contents = file_get_contents($get_url_timestamp);
-      
-      $shopify_orders = json_decode($contents);
-      
-      foreach ($shopify_orders->orders as $key => $shopify_order) {
-            
-            $order = Order::where("id",$shopify_order->id)->get()->first();
-            
-            if(!$order){
-              $order = new Order();
+
+    /**
+     * Manually Sync Orders from Shopify
+     * @return
+     */
+    public function refresh(Request $request)
+    {
+        $this->syncOrders();
+        $request->session()->flash("success", "Orders Updated Successfully");
+
+        return redirect(url("order"));
+    }
+
+    public function syncUpdatedOrders()
+    {
+        $last_updated_order = Order::orderBy("shopify_updated_at", "desc")->take(1)->get()->first();
+
+        $formatted_date = Carbon::parse($last_updated_order->shopify_updated_at)->format('Y-m-d\TH:i:s');
+
+        $get_url_timestamp = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders.json?updated_at_min=$formatted_date";
+
+        $contents = file_get_contents($get_url_timestamp);
+
+        $shopify_orders = json_decode($contents);
+
+        foreach ($shopify_orders->orders as $key => $shopify_order) {
+            $order = Order::where("id", $shopify_order->id)->get()->first();
+
+            if (!$order) {
+                $order = new Order();
             }
-            
+
             $order->email = $shopify_order->email;
-            
+
             if ($shopify_order->closed_at) {
                 $order->closed_at = date("Y-m-d h:m:s", strtotime($shopify_order->closed_at));
             }
-            
+
             $order->shopify_created_at = date("Y-m-d h:m:s", strtotime($shopify_order->created_at));
             $order->shopify_updated_at = date("Y-m-d h:m:s", strtotime($shopify_order->updated_at));
             $order->number = $shopify_order->number;
@@ -134,18 +142,18 @@ class OrderController extends BaseController
             $order->order_status_url = $shopify_order->order_status_url;
             $order_id = $shopify_order->id;
             $ordersline_items = $shopify_order->line_items;
-        
+
             $order->save();
-        
+
             //save line item
             if ($ordersline_items) {
                 foreach ($ordersline_items as $key => $order_line_item) {
                     $line_item = Lineitems::where("id", $order_line_item->id)->get()->first();
-                    
-                    if(!$line_item){
-                      $line_item = new Lineitems();
+
+                    if (!$line_item) {
+                        $line_item = new Lineitems();
                     }
-                    
+
                     $line_item->order_id = $order_id;
                     $line_item->variant_id = $order_line_item->variant_id;
                     $line_item->title = $order_line_item->title;
@@ -170,66 +178,57 @@ class OrderController extends BaseController
                     $line_item->discount_allocations = "";
                     $line_item->admin_graphql_api_id = $order_line_item->admin_graphql_api_id;
                     $line_item->tax_lines = "";
-            
+
                     $line_item->save();
                 }
             }
         }
-      
-      
     }
 
-    
-    public function syncCancelledOrders() {
-      
-      $url = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders.json?status='cancelled'&page=1&limit=250";
-      
+    public function syncCancelledOrders()
+    {
+        $url = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders.json?status='cancelled'&page=1&limit=250";
     }
-    
 
     public function syncOrders()
     {
-      
-//        $last_order = Order::orderBy("id","desc")->take(1)->get()->first();
-        
-//        echo "<pre>";
-//        print_r($last_order->id);
-//        echo "</pre>";
-        
-//        echo "<pre>";
-//        print_r($last_order->shopify_created_at);
-//        echo "</pre>";
 
-//        $get_url_timestamp = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders.json?since_id=$last_order->id";
-      
-//        $contents = file_get_contents($get_url_timestamp);
-      
-        $last_created_order = Order::orderBy("shopify_updated_at","desc")->take(1)->get()->first();
-        
-        if($last_created_order){ 
-          $originator_date = $last_created_order->shopify_created_at;
+//        $last_order = Order::orderBy("id","desc")->take(1)->get()->first();
+        //        echo "<pre>";
+        //        print_r($last_order->id);
+        //        echo "</pre>";
+        //        echo "<pre>";
+        //        print_r($last_order->shopify_created_at);
+        //        echo "</pre>";
+        //        $get_url_timestamp = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders.json?since_id=$last_order->id";
+        //        $contents = file_get_contents($get_url_timestamp);
+
+        $last_created_order = Order::orderBy("shopify_updated_at", "desc")->take(1)->get()->first();
+
+        if ($last_created_order) {
+            $originator_date = $last_created_order->shopify_created_at;
         } else {
-          $originator_date = "2018-07-31";
+            $originator_date = "2018-07-31";
         }
-        
+
         $originator_date = "2018-07-31";
-        
-        $formatted_date =  Carbon::parse($originator_date)->format('Y-m-d\TH:i:s');
-        
+
+        $formatted_date = Carbon::parse($originator_date)->format('Y-m-d\TH:i:s');
+
         $get_url_timestamp = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders.json?status=any&updated_at_min=$formatted_date&page=1&limit=250";
-        
+
         $contents = file_get_contents($get_url_timestamp);
-              
-        $shopify_orders = json_decode($contents);        
-        
-        
+
+        $shopify_orders = json_decode($contents);
+
+
         foreach ($shopify_orders->orders as $key => $shopify_order) {
             //attempt to get order
-            
-            $order = Order::where("id",$shopify_order->id)->get()->first();
-            
-            if(!$order){
-              $order = new Order();
+
+            $order = Order::where("id", $shopify_order->id)->get()->first();
+
+            if (!$order) {
+                $order = new Order();
             }
             $order->id = $shopify_order->id;
             $order->email = $shopify_order->email;
@@ -281,39 +280,37 @@ class OrderController extends BaseController
             $order->tags = $shopify_order->tags;
             $order->contact_email = $shopify_order->contact_email;
             $order->order_status_url = $shopify_order->order_status_url;
-            
-            if(!empty($shopify_order->customer->id)){
-             $order->customer_id = $shopify_order->customer->id;
+
+            if (!empty($shopify_order->customer->id)) {
+                $order->customer_id = $shopify_order->customer->id;
             }
-            
-            if(!empty($shopify_order->billing_address->phone)){
-             $order->customer_phone = $shopify_order->billing_address->phone;
+
+            if (!empty($shopify_order->billing_address->phone)) {
+                $order->customer_phone = $shopify_order->billing_address->phone;
             }
-            
-            if(!empty($shopify_order->customer->default_address->first_name)){
-             $order->customer_firstname = $shopify_order->customer->default_address->first_name;
+
+            if (!empty($shopify_order->customer->default_address->first_name)) {
+                $order->customer_firstname = $shopify_order->customer->default_address->first_name;
             }
-            
-            if(!empty($shopify_order->customer->default_address->last_name)){
-             $order->customer_lastname = $shopify_order->customer->default_address->last_name;
+
+            if (!empty($shopify_order->customer->default_address->last_name)) {
+                $order->customer_lastname = $shopify_order->customer->default_address->last_name;
             }
-            
+
             $order_id = $shopify_order->id;
             $ordersline_items = $shopify_order->line_items;
-        
+
             $order->save();
-        
+
             //save line item
             if ($ordersline_items) {
-              
                 foreach ($ordersline_items as $key => $order_line_item) {
-                    
-                    $line_item = Lineitems::where("id",$order_line_item->id)->get()->first();
-                    
-                    if(!$line_item){
-                     $line_item = new Lineitems();
+                    $line_item = Lineitems::where("id", $order_line_item->id)->get()->first();
+
+                    if (!$line_item) {
+                        $line_item = new Lineitems();
                     }
-                    
+
                     $line_item->id = $order_line_item->id;
                     $line_item->order_id = $order_id;
                     $line_item->variant_id = $order_line_item->variant_id;
@@ -339,14 +336,10 @@ class OrderController extends BaseController
                     $line_item->discount_allocations = "";
                     $line_item->admin_graphql_api_id = $order_line_item->admin_graphql_api_id;
                     $line_item->tax_lines = "";
-            
+
                     $line_item->save();
                 }
-                
             }
-            
         }
-        
-        
     }
 }

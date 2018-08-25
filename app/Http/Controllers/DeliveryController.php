@@ -48,7 +48,7 @@ class DeliveryController extends Controller
       $delivery = Delivery::join("orders","orders.id","=","delivery.order_id") 
         ->where("orders.order_id", $request->order_id);
       //load pdf view of the same
-      
+      $pdf = PDF::loadview();
       
 //      return pdf view of receipt
     }
