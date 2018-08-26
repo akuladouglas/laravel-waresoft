@@ -17,11 +17,11 @@ class DashboardController extends Controller
     }
 
     
-    public function test() {
+    public function index() {
       
       $data = [];
       
-      return view("dashboard/test");
+      return view("home.home");
       
     }
     

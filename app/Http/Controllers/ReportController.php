@@ -14,4 +14,12 @@ class ReportController extends Controller
       
         return view("reports/home", $data);
     }
+    
+    public function getVendorReports()
+    {
+        $data[] = '';
+      
+        return view("reports/vendor", $data);
+    }
+    
 }

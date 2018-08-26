@@ -27,6 +27,9 @@
 
     <!-- Custom Css -->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    
+    <!-- Bootstrap Material Datetime Picker Css -->
+    <link href="{{ asset('plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css') }} rel="stylesheet" />
 
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="{{ asset('css/themes/all-themes.css') }}" rel="stylesheet" />
@@ -110,8 +113,14 @@
     <script src="{{asset('plugins/flot-charts/jquery.flot.categories.js')}}"></script>
     <script src="{{asset('plugins/flot-charts/jquery.flot.time.js')}}"></script>
 
+     <!-- Bootstrap Material Datetime Picker Plugin Js -->
+    <script src="{{ asset('plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js') }}"></script>
+    
+    <!-- Bootstrap Select Css -->
+    <link href="{{ asset('plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet') }}" />
+    
     <!-- Sparkline Chart Plugin Js -->
-    <script src="{{asset('plugins/jquery-sparkline/jquery.sparkline.js')}}"></script>
+    <script src="{{ asset('plugins/jquery-sparkline/jquery.sparkline.js')}}"></script>
 
     <!-- Custom Js -->
     <script src="{{asset('js/admin.js')}}"></script>

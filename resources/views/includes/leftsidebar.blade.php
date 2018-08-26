@@ -7,9 +7,9 @@
     <li class="header"> Navigation </li>
 
     <li class="<?php echo Request::segment(1) == "home" ? "active" : ""; ?>" >
-      <a href="{{ url('home') }}">
-        <i class="material-icons">home</i>
-        <span> Dashboard </span>
+      <a href="{{ url('dashboard') }}">
+        <i class="material-icons">show_chart</i>
+        <span>Sales Dashboard </span>
       </a>
     </li>
 
@@ -80,6 +80,29 @@
       </ul>
     </li>
 
+    <li class="<?php echo Request::segment(1) == "leads" ? "active" : ""; ?>" >
+      <a href="#" class="menu-toggle">
+        <i class="material-icons">list</i>
+        <span> Leads </span>
+      </a>
+      <ul class="ml-menu">
+        <li>
+          <a class="" href="{{ url('leads') }}">
+            <i class="material-icons col-light-green">list</i>
+            <span> Leads </span>
+          </a>
+        </li>
+        <li>
+          <a href="{{ url('leads/stats') }}">
+            <i class="material-icons col-light-green">list</i>
+            <span> Leads Stats </span>
+          </a>
+        </li>
+        
+      </ul>
+    </li>
+    
+    
     <li class="<?php echo Request::segment(1) == "order" ? "active" : ""; ?>" >
       <a href="{{ url('order') }}">
         <i class="material-icons">view_headline</i>
@@ -122,25 +145,26 @@
       </a>
       <ul class="ml-menu">
         <li>
-          <a href="{{ url('report') }}">
+          <a href="{{ url('report/vendor-sales') }}">
             <i class="material-icons col-light-green">donut_large</i>
-            <span>Report 1</span>
+            <span> Sales By Vendor </span>
           </a>
         </li>
-        <li>
+        <li class="hidden">
           <a href="{{ url('report') }}">
             <i class="material-icons col-light-green">donut_large</i>
-            <span>Report 2</span>
+            <span> Another Report </span>
           </a>
         </li>
-        <li>
+        <li class="hidden">
           <a href="{{ url('report') }}">
             <i class="material-icons col-light-green">donut_large</i>
-            <span>Report 3</span>
+            <span> Another Report </span>
           </a>
         </li>
       </ul>
     </li>
+    <li> <a> &nbsp; </a> </li>
     <li> <a> &nbsp; </a> </li>
     <li> <a> &nbsp; </a> </li>
   </ul>
