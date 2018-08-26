@@ -2,11 +2,7 @@
 
 @section('content')
 <!-- Widgets -->
-            <div class="block-header">
-                <h2> Paid Sales Amount </h2>
-            </div>
-
-            <legend></legend>
+            
             
             <div class="row clearfix">
                 <!-- Task Info -->

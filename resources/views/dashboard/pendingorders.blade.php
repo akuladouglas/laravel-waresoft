@@ -2,11 +2,6 @@
 
 @section('content')
 <!-- Widgets -->
-            <div class="block-header">
-                <h2> Pending orders ex VAT per Staff </h2>
-            </div>
-
-            <legend></legend>
             
             <div class="row clearfix">
                 <!-- Task Info -->

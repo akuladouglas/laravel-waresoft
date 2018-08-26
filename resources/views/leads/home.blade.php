@@ -5,10 +5,17 @@
 <div class="row clearfix">
   <!-- Task Info -->
   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    
     <div class="card">
 
       <div class="header">
-        <h2> Leads </h2>
+        <div class="col-lg-6">
+          <h2> Leads </h2>
+        </div>
+        <div class="col-lg-6">
+          <a href="{{url("leads/add")}}" class="btn btn-primary pull-right"> Add New Lead </a>
+        </div>
+        <div class="clearfix"></div>
       </div>
 
       <div class="body">

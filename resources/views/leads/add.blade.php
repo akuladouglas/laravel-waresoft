@@ -8,7 +8,7 @@
     <div class="card">
 
       <div class="header">
-        <h2> New Leads </h2>
+        <h2> New Lead </h2>
       </div>
 
       <div class="body">
@@ -39,7 +39,7 @@
         
          <div class="form-group">
           <div class="form-line">
-            <textarea>
+            <textarea class="form-control" placeholder="Comments">
               
             </textarea>
           </div>

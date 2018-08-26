@@ -2,12 +2,6 @@
 
 @section('content')
 <!-- Widgets -->
-            <div class="block-header">
-                <h2> Products </h2>
-            </div>
-
-            <legend></legend>
-            
             <div class="row clearfix">
                 <!-- Task Info -->
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
