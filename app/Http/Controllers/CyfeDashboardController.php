@@ -52,9 +52,9 @@ class CyfeDashboardController extends Controller
      */
     public function __construct()
     {
-        $this->start_date = Carbon::parse("2018-08-01");
-        $this->end_date = Carbon::parse("2018-08-31");
-        $this->today = Carbon::now();
+        $this->start_date = Carbon::parse("2018-09-01");
+        $this->end_date = Carbon::parse("2018-09-30");
+        $this->today =  Carbon::now();
     }
     
     public function test()
@@ -700,12 +700,12 @@ class CyfeDashboardController extends Controller
     
     public function numberOfOrdersToday()
     {
-        $order_count = Order::where("shopify_created_at", "like", Carbon::now()->format("Y-m-d")."%")->count();
-        $order_total = Order::where("shopify_created_at", "like", Carbon::now()->format("Y-m-d")."%")->sum("total_price");
-        $order_count_paid = Order::where("financial_status","paid")->where("shopify_created_at", "like", Carbon::now()->format("Y-m-d")."%")->count();
-        $paid_order_total = Order::where("financial_status","paid")->where("shopify_created_at", "like", Carbon::now()->format("Y-m-d")."%")->sum("total_price");
-        $paid_tax = Order::where("financial_status","paid")->where("shopify_created_at", "like", Carbon::now()->format("Y-m-d")."%")->sum("total_tax");
-        $discounts = Order::where("shopify_created_at", "like", Carbon::now()->format("Y-m-d")."%")->sum("total_discounts");
+        $order_count = Order::where("shopify_created_at", "like", $this->today->format("Y-m-d")."%")->count();
+        $order_total = Order::where("shopify_created_at", "like", $this->today->format("Y-m-d")."%")->sum("total_price");
+        $order_count_paid = Order::where("financial_status","paid")->where("shopify_created_at", "like", $this->today->format("Y-m-d")."%")->count();
+        $paid_order_total = Order::where("financial_status","paid")->where("shopify_created_at", "like", $this->today->format("Y-m-d")."%")->sum("total_price");
+        $paid_tax = Order::where("financial_status","paid")->where("shopify_created_at", "like", $this->today->format("Y-m-d")."%")->sum("total_tax");
+        $discounts = Order::where("shopify_created_at", "like", $this->today->format("Y-m-d")."%")->sum("total_discounts");
           
         $ex_vat_order_total = round(($paid_order_total - $paid_tax),2);
         
