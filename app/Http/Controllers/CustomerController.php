@@ -18,7 +18,7 @@ class CustomerController extends BaseController
     
     public function getCustomers()
     {
-        $data["customers"] = Customer::select()->orderby("id", "desc")->get()->take(3000);
+        $data["customers"] = Customer::select()->orderby("id", "desc")->get();
       
         return view("customer/home", $data);
     }
