@@ -37,10 +37,10 @@
             <tbody>
               @foreach($customers as $customer)
               <tr>
+                <td> {{ date("Y/m/d h:m", strtotime($customer->created_at)) }}</td>
                 <td> {{ $customer->first_name." ".$customer->last_name }} </td>
                 <td> {{ $customer->phone }} </td>
                 <td> {{ $customer->email }} </td>
-                <td> {{ date("Y/m/d h:m", strtotime($customer->created_at)) }}</td>
               </tr>
               @endforeach
             </tbody>

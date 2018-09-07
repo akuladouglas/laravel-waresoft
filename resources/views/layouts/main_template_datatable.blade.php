@@ -115,8 +115,8 @@
     <script src="{{ asset('plugins/jquery-datatable/extensions/export/buttons.print.min.js') }}"></script>
 
     <!-- Custom Js -->
-    <script src="{{ asset('js/admin.js') }}"></script>
-    <script src="{{ asset('js/pages/tables/jquery-datatable.js') }}"></script>
+    <script src="{{ asset('js/admin_1.js') }}"></script>
+    <script src="{{ asset('js/pages/tables/jquery-datatable_1.js') }}"></script>
 
     <!-- Demo Js -->
     <script src="{{ asset('js/demo.js') }}"></script>
