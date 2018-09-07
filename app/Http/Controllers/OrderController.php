@@ -21,7 +21,7 @@ class OrderController extends BaseController
     public function getOrders()
     {
         $data["orders"] = Order::orderBy("id", "desc")->get()->take(2000);
-
+        
         return view("order/home", $data);
     }
 
