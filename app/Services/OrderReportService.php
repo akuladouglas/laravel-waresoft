@@ -5,8 +5,6 @@ namespace App\Services;
 use App\Models\Order;
 use App\Models\Lineitems;
 use Illuminate\Http\Request;
-use App\Models\Order;
-use App\Models\Lineitems;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Support\Facades\Mail;
@@ -46,17 +44,29 @@ class OrderReportService
     public $financial_status = [
       null, "authorized", "pending","paid","partially_paid","refunded","voided","partially_refunded","unpaid"
     ];
-
+    
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct($start_date, $end_date)
+    public function __construct($start_date = false, $end_date = false)
     {
-        $this->start_date = Carbon::parse($start_date);
-        $this->end_date = Carbon::parse($end_date);
+        
+        if(!$start_date){
+          $this->start_date = Carbon::parse($start_date)->format("Y-m-d");
+        } else {
+          $this->start_date = Carbon::now()->format("Y-m-01");
+        }
+        
+        if(!$end_date){
+          $this->end_date = Carbon::parse($end_date)->format("Y-m-d");
+        } else {
+          $this->end_date = Carbon::now()->endOfMonth()->endOfDay()->format("Y-m-d H:m");
+        }
+        
         $this->today = Carbon::now();
+        
     }
     
     /**
@@ -148,13 +158,11 @@ class OrderReportService
                  {$this->today->format("d/m/y")}, $paid_sales_count, $paid_sales_amount ,$ex_vat_total
                ";
                  
-        $data_array = [
-           "Number of Orders" => $paid_sales_count,
-           "Total Sales Inc VAT" => $paid_sales_amount,
-           "Total Sales Ex VAT" => $ex_vat_total
-        ];        
-        
-        return $data_array;
+        return [
+          "Number of Orders" => $paid_sales_count,
+          "Total Sales Inc VAT" => $paid_sales_amount,
+          "Total Sales Ex VAT" => $ex_vat_total
+        ];
         
     }
     
@@ -448,9 +456,16 @@ class OrderReportService
         
         $ex_vat_total = ($order_total_summation - $order_total_tax_summation);
         
-        $data .= "{$this->today->format("d/m/y")},$order_count_summation, $order_total_summation, $ex_vat_total"."<br>";
+        $data .= "{$this->today->format("d/m/y")},"
+        . "$order_count_summation,"
+          . " $order_total_summation,"
+          . " $ex_vat_total"."<br>";
         
-        return $data;
+        return [
+          "order_count_summation" => $order_count_summation,
+          "order_total_summation" => $order_total_summation,
+          "ex_vat_total" => $ex_vat_total
+        ];
         
     }
     
@@ -755,11 +770,13 @@ class OrderReportService
           
         $ex_vat_order_total = round(($paid_order_total - $paid_tax),2);
         
-        $data = "All Orders, Gross Amount, Paid Orders,  Paid Total Inc Vat, Paid Total ex Vat
-              $order_count, $order_total, $order_count_paid, $paid_order_total, $ex_vat_order_total 
-             ";
-        
-        return $data;
+        return [
+          "All Orders" => $order_count,
+          "Gross Amount" => $order_total,
+          "Paid Orders" => $order_count_paid,
+          "Paid Total Inc Vat" => $paid_order_total,
+          "Paid Total ex Vat" => $ex_vat_order_total
+        ];
     }
     
     /**

@@ -36,7 +36,8 @@ Route::group(array('prefix' => 'order'), function () {
 });
 
 Route::group(array('prefix' => 'dashboard'), function () {
-  Route::match(['get', 'post'], '/', 'DashboardController@index');
+  Route::match(['get', 'post'], '/', 'DashboardController@getDashboardInfo');
+  Route::match(['get', 'post'], '/getinfo', 'DashboardController@getDashboardInfo');
   Route::match(['get', 'post'], '/fullfillment', 'DashboardController@fullfillmentRate');
   Route::match(['get', 'post'], '/paidsalesamount', 'DashboardController@paidSalesAmount');
   Route::match(['get', 'post'], '/averagebasket', 'DashboardController@averageBasketExVat');
@@ -135,7 +136,8 @@ Route::group(array('prefix' => 'customer'), function () {
   Route::match(['get', 'post'], '/refresh', 'CustomerController@refresh');
 });
 
-Route::group(array('prefix' => 'reward'), function () {  
+Route::group(array('prefix' => 'reward'), function () { 
+  
   Route::match(['get', 'post'], '/coupon', 'RewardController@getCoupon');
   Route::match(['get', 'post'], '/customers', 'RewardController@getCustomers');
   Route::match(['get', 'post'], '/activitys', 'RewardController@getActivitys');

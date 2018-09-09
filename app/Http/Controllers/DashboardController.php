@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Order;
+use Carbon\Carbon;
+use App\Services\OrderReportService;
 
 class DashboardController extends Controller
 {
@@ -16,14 +17,26 @@ class DashboardController extends Controller
     {
         $this->middleware('auth');
     }
-
+    
+    public function getDashboardInfo(Request $request) {
+      
+      $start_date = $request->input("start_date");
+      $end_date = $request->input("end_date");
+      
+      $order_report = new OrderReportService($start_date, $end_date);
+      
+      $data["sales_today"] = $order_report->numberOfOrdersToday();
+      
+      return view("home.home",$data);
+      
+    }
+    
     
     public function index() {
       
       $data = [];
       
-      return view("home.home");
-      
+      return view("home.homes");
     }
     
     
