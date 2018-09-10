@@ -45,7 +45,7 @@
           <div class="col-sm-6">
             <div class="form-group">
               <div class="form-line">
-                <input type="text" id="start_date" name="start_date" class="datepicker form-control" placeholder="Please choose start date inclusive">
+                <input type="text" id="start_date" name="start_date" class="datepicker form-control" placeholder="Please choose start date ( inclusive )">
               </div>
             </div>
           </div>
@@ -53,7 +53,7 @@
           <div class="col-sm-6">
             <div class="form-group">
               <div class="form-line">
-                <input type="text" id="end_date" name="end_date" class="datepicker form-control" placeholder="Please choose end date inclusive">
+                <input type="text" id="end_date" name="end_date" class="datepicker form-control" placeholder="Please choose end date ( inclusive )">
               </div>
             </div>
           </div>
