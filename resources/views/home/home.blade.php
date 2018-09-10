@@ -167,9 +167,9 @@
                 <th> Total Ex VAT </th>
               </tr>
               <tr>
-                <td> {{ number_format($fulfillment_rate["CooD"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["CooD Not Cancelled"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["Paid Fullfilled Orders"])  }} </td>
+                <td> {{ number_format($pending_orders["Number of Orders"])  }} </td>
+                <td> {{ number_format($pending_orders["Total Inc VAT"])  }} </td>
+                <td> {{ number_format($pending_orders["Total Ex VAT"])  }} </td>
               </tr>
             </tbody>
           </table>
@@ -200,9 +200,9 @@
                 <th> Total Ex VAT </th>
               </tr>
               <tr>
-                <td> {{ number_format($fulfillment_rate["CooD"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["CooD Not Cancelled"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["Paid Fullfilled Orders"])  }} </td>
+                <td> {{ number_format($paid_sales["Number of Orders"])  }} </td>
+                <td> {{ number_format($paid_sales["Total Sales Inc VAT"])  }} </td>
+                <td> {{ number_format($paid_sales["Total Sales Ex VAT"])  }} </td>
               </tr>
             </tbody>
           </table>
@@ -234,9 +234,9 @@
                 <th> Total Ex VAT </th>
               </tr>
               <tr>
-                <td> {{ number_format($fulfillment_rate["CooD"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["CooD Not Cancelled"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["Paid Fullfilled Orders"])  }} </td>
+                <td> {{ number_format($delivered_orders["Number of orders"])  }} </td>
+                <td> {{ number_format($delivered_orders["Total Inc VAT"])  }} </td>
+                <td> {{ number_format($delivered_orders["Order Ex Vat Total"])  }} </td>
               </tr>
             </tbody>
           </table>
@@ -265,9 +265,9 @@
                 <th> Average Basket Size </th>
               </tr>
               <tr>
-                <td> {{ number_format($fulfillment_rate["CooD"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["CooD Not Cancelled"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["Paid Fullfilled Orders"])  }} </td>
+                <td> {{ number_format($average_basket_size["Total Sales ex VAT"])  }} </td>
+                <td> {{ number_format($average_basket_size["Number of Orders"])  }} </td>
+                <td> {{ number_format($average_basket_size["Average Basket size"])  }} </td>
               </tr>
             </tbody>
           </table>
@@ -299,9 +299,9 @@
                 <th> Total Ex VAT </th>
               </tr>
               <tr>
-                <td> {{ number_format($fulfillment_rate["All Orders"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["Cancelled"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["CooD"])  }} </td>
+                <td> {{ number_format($onlinesales["Number of orders"])  }} </td>
+                <td> {{ number_format($onlinesales["Total"])  }} </td>
+                <td> {{ number_format($onlinesales["Total ex Vat"])  }} </td>
               </tr>
             </tbody>
           </table>
@@ -331,9 +331,9 @@
                 <th> Total Ex VAT </th>
               </tr>
               <tr>
-                <td> {{ number_format($fulfillment_rate["All Orders"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["Cancelled"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["CooD"])  }} </td>
+                <td> {{ number_format($offlinesales["Number of orders"])  }} </td>
+                <td> {{ number_format($offlinesales["Total Inc Vat"])  }} </td>
+                <td> {{ number_format($offlinesales["Total ex Vat"])  }} </td>
               </tr>
             </tbody>
           </table>
@@ -365,9 +365,9 @@
                 <th> Total Ex VAT </th>
               </tr>
               <tr>
-                <td> {{ number_format($fulfillment_rate["CooD"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["CooD Not Cancelled"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["Paid Fullfilled Orders"])  }} </td>
+                <td> {{ number_format($untaggedsales["order_count_summation"])  }} </td>
+                <td> {{ number_format($untaggedsales["order_total_summation"])  }} </td>
+                <td> {{ number_format($untaggedsales["ex_vat_total"])  }} </td>
               </tr>
             </tbody>
           </table>
@@ -392,14 +392,14 @@
           <table class="table table-bordered">
             <tbody>
               <tr>
-                <th> Number Of Orders </th>
-                <th> Total Inc VAT </th>
-                <th> Total Ex VAT </th>
+                <th> All Customers </th>
+                <th> New Customers </th>
+                <th> Returning Customers </th>
               </tr>
               <tr>
-                <td> {{ number_format($fulfillment_rate["CooD"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["CooD Not Cancelled"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["Paid Fullfilled Orders"])  }} </td>
+                <td> {{ number_format($newvsreturning["All Customers"])  }} </td>
+                <td> {{ number_format($newvsreturning["New Customers"])  }} </td>
+                <td> {{ number_format($newvsreturning["Returning Customers"])  }} </td>
               </tr>
             </tbody>
           </table>
@@ -430,11 +430,15 @@
                 <th> Number of Orders </th>
                 <th> Total Ex VAT </th>
               </tr>
+              
+              @foreach($financial_breakdown as $financial)
               <tr>
-                <td> {{ number_format($fulfillment_rate["All Orders"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["Cancelled"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["CooD"])  }} </td>
+                <td> {{ $financial["name"]  }} </td>
+                <td> {{ number_format($financial["order_count"])  }} </td>
+                <td> {{ number_format($financial["total_ex_vat"])  }} </td>
               </tr>
+              @endforeach
+              
             </tbody>
           </table>
 
@@ -450,8 +454,8 @@
       <div class="header">
         <h2> Breakdown Fulfillment status  <a href="{{url("dashboard/salesperstaff")}}" class="btn btn-primary btn-xs pull-right hidden"> View More </a> </h2>
       </div>
-      <div style="margin:8px;">
-        <div class="table-responsive">
+      <div style="margin:8px;">        
+        <div class="table-responsive">          
           <table class="table table-bordered">
             <tbody>
               <tr>
@@ -459,14 +463,15 @@
                 <th> Number of Orders </th>
                 <th> Total Ex VAT </th>
               </tr>
+              @foreach($fullfillment_breakdown as $fullfillment)
               <tr>
-                <td> {{ number_format($fulfillment_rate["All Orders"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["Cancelled"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["CooD"])  }} </td>
+                <td> {{ ($fullfillment["name"])  }} </td>
+                <td> {{ number_format($fullfillment["order_count"])  }} </td>
+                <td> {{ number_format($fullfillment["total_ex_vat"])  }} </td>
               </tr>
+              @endforeach
             </tbody>
           </table>
-
         </div>
       </div>
     </div>
@@ -495,11 +500,15 @@
                 <th> Number of Orders </th>
                 <th> Total Ex VAT </th>
               </tr>
+              
+              @foreach($salesperstaff as $sales)
               <tr>
-                <td> {{ number_format($fulfillment_rate["All Orders"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["Cancelled"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["Paid Fullfilled Orders"])  }} </td>
+                <td> {{ ($sales["name"])  }} </td>
+                <td> {{ number_format($sales["order_count"])  }} </td>
+                <td> {{ ($sales["total_ex_vat"]) > 1 ? number_format($sales["total_ex_vat"]) : "-" }} </td>
               </tr>
+              @endforeach
+              
             </tbody>
           </table>
 
@@ -529,11 +538,16 @@
                 <th> Number of Orders </th>
                 <th> Total Ex VAT </th>
               </tr>
+              
+              @foreach($salesperstaff as $sales)
               <tr>
-                <td> {{ number_format($fulfillment_rate["CooD"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["CooD Not Cancelled"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["Paid Fullfilled Orders"])  }} </td>
+                <td> {{ ($sales["name"])  }} </td>
+                <td> {{ number_format($sales["order_count"])  }} </td>
+                <td> {{ ($sales["total_ex_vat"]) > 1 ? number_format($sales["total_ex_vat"]) : "-" }} </td>
               </tr>
+              @endforeach
+              
+              
             </tbody>
           </table>
 

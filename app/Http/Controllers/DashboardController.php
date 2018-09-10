@@ -27,7 +27,19 @@ class DashboardController extends Controller
       
       $data["sales_today"] = $order_report->numberOfOrdersToday();
       $data["fulfillment_rate"] = $order_report->fullfillmentRate();
-      
+      $data["pending_orders"] = $order_report->pendingOrders();
+      $data["paid_sales"] = $order_report->paidSalesAmount();
+      $data["delivered_orders"] = $order_report->deliveredOrders();
+      $data["average_basket_size"] = $order_report->averageBasketExVat();
+      $data["onlinesales"] = $order_report->onlineSales();
+      $data["offlinesales"] = $order_report->offlineSales();
+      $data["untaggedsales"] = $order_report->untaggedSales();
+      $data["newvsreturning"] = $order_report->breakdownReturningVsNew();
+      $data["financial_breakdown"] = $order_report->financialStatusBreakdown();
+      $data["fullfillment_breakdown"] = $order_report->fullfillmentStatusBreakdown();
+      $data["salesperstaff"] = $order_report->salesExVatPerStaff();
+      $data["deliveriesperstaff"] = $order_report->pendingDeliveriesExVatPerStaff();
+        
       return view("home.home",$data);
       
     }

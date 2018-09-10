@@ -212,9 +212,7 @@ class OrderReportService
     }
     
     /**
-     * 
      * deliveredorders
-     * 
      */
     
     public function deliveredOrders()
@@ -634,7 +632,23 @@ class OrderReportService
         
         $datax .= $this->today->format("d/m/y").", Total, $all_order_count, $all_order_total_ex_vat ";
         
-        return $datax;
+        $untagged_sales = [
+          "name" => "Untagged Sales",
+          "order_count" => $untagged_order_count,
+          "total_ex_vat" => "NAN"
+        ];
+        
+        array_push($data, $untagged_sales);
+        
+        $total_sales = [
+          "name" => "Total Sales",
+          "order_count" => $combined_orders,
+          "total_ex_vat" => $combined_sales
+        ];
+        
+        array_push($data, $total_sales);
+        
+        return $data;
         
     }
     
@@ -719,7 +733,23 @@ class OrderReportService
         
         $datax .= $this->today->format("d/m/y").", Total, $all_order_count, $all_order_total_ex_vat ";
         
-        return $datax;
+        $untagged_sales = [
+          "name" => "Untagged Sales",
+          "order_count" => $untagged_order_count,
+          "total_ex_vat" => "NAN"
+        ];
+        
+        array_push($data, $untagged_sales);
+        
+        $total_sales = [
+          "name" => "Total Sales",
+          "order_count" => $combined_orders,
+          "total_ex_vat" => $combined_sales
+        ];
+        
+        array_push($data, $total_sales);
+        
+        return $data;
         
     }
     
@@ -1177,7 +1207,15 @@ class OrderReportService
         
         $datax .= $this->today->format("d/m/y").", Total Sales, $combined_orders, $combined_sales ";
         
-        return $datax;
+        $total_sales = [
+          "name" => "Total Sales",
+          "order_count" => $combined_orders,
+          "total_ex_vat" => $combined_sales
+        ];
+        
+        array_push($data, $total_sales);
+        
+        return $data;
         
     }
     
@@ -1239,7 +1277,15 @@ class OrderReportService
         
         $datax .= $this->today->format("d/m/y").", All Sales, $combined_orders, $combined_sales ";
         
-        return $datax;
+        $total_sales = [
+          "name" => "Total Sales",
+          "order_count" => $combined_orders,
+          "total_ex_vat" => $combined_sales
+        ];
+        
+        array_push($data, $total_sales);
+        
+        return $data;
       
     }
     
