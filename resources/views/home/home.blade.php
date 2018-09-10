@@ -76,14 +76,14 @@
 
 <div class="row clearfix">
   
-  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="padding-left: 8px; padding-right: 8px;">
     <div class="card">
 
       <div class="header">
         <h2> Sales Today  <a href="{{url("dashboard/fullfillment")}}" class="btn btn-primary btn-xs pull-right hidden"> View More </a> </h2>
       </div>
 
-      <div class="body">
+      <div style="margin:8px;">
         <div class="table-responsive">
           <table class="table table-bordered">
             <tbody>
@@ -95,11 +95,11 @@
                 <th> Paid Total Ex Vat </th>
               </tr>
               <tr>
-                <td> {{ $sales_today["All Orders"]  }} </td>
-                <td> {{ $sales_today["Gross Amount"]  }} </td>
-                <td> {{ $sales_today["Paid Orders"]  }} </td>
-                <td> {{ $sales_today["Paid Total Inc Vat"]  }} </td>
-                <td> {{ $sales_today["Paid Total ex Vat"]  }} </td>
+                <td> {{ number_format($sales_today["All Orders"])  }} </td>
+                <td> {{ number_format($sales_today["Gross Amount"])  }} </td>
+                <td> {{ number_format($sales_today["Paid Orders"])  }} </td>
+                <td> {{ number_format($sales_today["Paid Total Inc Vat"]) }} </td>
+                <td> {{ number_format($sales_today["Paid Total ex Vat"]) }} </td>
               </tr>
             </tbody>
           </table>
@@ -109,14 +109,15 @@
 
   </div>
   
-  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="padding-left: 8px; padding-right: 8px;">
     <div class="card">
 
       <div class="header">
         <h2> Paid Fullfillment Rate </h2>
       </div>
 
-      <div class="body">
+      <div style="margin:8px;">
+        
         <div class="table-responsive">
           
           <table class="table table-bordered">
@@ -130,12 +131,12 @@
                 <th> Fullfilment Rate </th>
               </tr>
               <tr>
-                <td> {{ $fulfillment_rate["All Orders"]  }} </td>
-                <td> {{ $fulfillment_rate["Cancelled"]  }} </td>
-                <td> {{ $fulfillment_rate["CooD"]  }} </td>
-                <td> {{ $fulfillment_rate["CooD Not Cancelled"]  }} </td>
-                <td> {{ $fulfillment_rate["Paid Fullfilled Orders"]  }} </td>
-                <td> {{ $fulfillment_rate["Fullfillment Rate"]  }} </td>
+                <td> {{ number_format($fulfillment_rate["All Orders"])  }} </td>
+                <td> {{ number_format($fulfillment_rate["Cancelled"])  }} </td>
+                <td> {{ number_format($fulfillment_rate["CooD"])  }} </td>
+                <td> {{ number_format($fulfillment_rate["CooD Not Cancelled"])  }} </td>
+                <td> {{ number_format($fulfillment_rate["Paid Fullfilled Orders"])  }} </td>
+                <td> {{ number_format($fulfillment_rate["Fullfillment Rate"])  }} </td>
               </tr>
             </tbody>
           </table>
@@ -147,31 +148,32 @@
   </div>
   
   <!-- Task Info -->
-  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="padding-left: 8px; padding-right: 8px;">
     <div class="card">
 
       <div class="header">
         <h2> Fullfillment Rate  <a href="{{url("dashboard/fullfillment")}}" class="btn btn-primary btn-xs pull-right hidden"> View More </a> </h2>
       </div>
 
-      <div class="body">
+      <div style="margin:8px;">
         <div class="table-responsive">
 
         </div>
       </div>
+      
     </div>
-
   </div>
+  
   <!-- #END# Task Info -->
   <!-- Browser Usage -->
-  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="padding-left: 8px; padding-right: 8px;">
     <div class="card">
 
       <div class="header">
         <h2> Paid Sales Amount   <a href="{{url("dashboard/paidsalesamount")}}" class="btn btn-primary btn-xs pull-right hidden"> View More </a> </h2>
       </div>
 
-      <div class="body">
+      <div style="margin:8px;">
         <div class="table-responsive">
 
         </div>
@@ -183,14 +185,14 @@
 
 <div class="row clearfix">
   <!-- Task Info -->
-  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="padding-left: 8px; padding-right: 8px;">
     <div class="card">
 
       <div class="header">
         <h2> Avr Basket ex VAT  <a href="{{url("dashboard/averagebasket")}}" class="btn btn-primary btn-xs pull-right hidden"> View More </a> </h2>
       </div>
 
-      <div class="body">
+      <div style="margin:8px;">
         <div class="table-responsive">
 
         </div>
@@ -201,14 +203,14 @@
   <!-- #END# Task Info -->
 
   <!-- Browser Usage -->
-  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="padding-left: 8px; padding-right: 8px;">
     <div class="card">
 
       <div class="header">
         <h2> Delivered orders   <a href="{{url("dashboard/deliveredorders")}}" class="btn btn-primary btn-xs pull-right hidden"> View More </a> </h2>
       </div>
 
-      <div class="body">
+      <div style="margin:8px;">
         <div class="table-responsive">
 
         </div>
@@ -220,14 +222,14 @@
 
 <div class="row clearfix">
   <!-- Task Info -->
-  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="padding-left: 8px; padding-right: 8px;">
     <div class="card">
 
       <div class="header">
         <h2> Revenue ex VAT for Delivered orders  <a href="{{url("dashboard/revenuedeliveredorders")}}" class="btn btn-primary btn-xs pull-right hidden"> View More </a> </h2>
       </div>
 
-      <div class="body">
+      <div style="margin:8px;">
         <div class="table-responsive">
 
         </div>
@@ -237,14 +239,14 @@
   </div>
   <!-- #END# Task Info -->
   <!-- Browser Usage -->
-  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="padding-left: 8px; padding-right: 8px;">
     <div class="card">
 
       <div class="header">
         <h2> Offline Sales KES <a href="{{url("dashboard/offlinesales")}}" class="btn btn-primary btn-xs pull-right hidden"> View More </a> </h2>
       </div>
 
-      <div class="body">
+      <div style="margin:8px;">
         <div class="table-responsive">
 
         </div>
@@ -256,14 +258,14 @@
 
 <div class="row clearfix">
   <!-- Task Info -->
-  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="padding-left: 8px; padding-right: 8px;">
     <div class="card">
 
       <div class="header">
         <h2> Online sales KES <a href="{{url("dashboard/onlinesales")}}" class="btn btn-primary btn-xs pull-right hidden"> View More </a> </h2>
       </div>
 
-      <div class="body">
+      <div style="margin:8px;">
         <div class="table-responsive">
 
         </div>
@@ -273,14 +275,14 @@
   </div>
   <!-- #END# Task Info -->
   <!-- Browser Usage -->
-  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="padding-left: 8px; padding-right: 8px;">
     <div class="card">
 
       <div class="header">
         <h2> Number of Pending orders   <a href="{{url("dashboard/pendingorders")}}" class="btn btn-primary btn-xs pull-right hidden"> View More </a> </h2>
       </div>
 
-      <div class="body">
+      <div style="margin:8px;">
         <div class="table-responsive">
 
         </div>
@@ -292,14 +294,14 @@
 
 <div class="row clearfix">
   <!-- Task Info -->
-  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="padding-left: 8px; padding-right: 8px;">
     <div class="card">
 
       <div class="header">
         <h2> Sales ex VAT MTD per Staff  <a href="{{url("dashboard/salesperstaff")}}" class="btn btn-primary btn-xs pull-right hidden"> View More </a> </h2>
       </div>
 
-      <div class="body">
+      <div style="margin:8px;">
         <div class="table-responsive">
 
         </div>
@@ -309,12 +311,12 @@
   </div>
   <!-- #END# Task Info -->
   <!-- Browser Usage -->
-  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="padding-left: 8px; padding-right: 8px;">
     <div class="card">
       <div class="header">
         <h2> Pending orders ex VAT per Staff  <a href="{{url("dashboard/salesperstaff")}}" class="btn btn-primary btn-xs pull-right hidden"> View More </a> </h2>
       </div>
-      <div class="body">
+      <div style="margin:8px;">
         <div class="table-responsive">
 
         </div>
@@ -327,14 +329,14 @@
 
 <div class="row clearfix">
   <!-- Task Info -->
-  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="padding-left: 8px; padding-right: 8px;">
     <div class="card">
 
       <div class="header">
         <h2> Number of orders today  <a href="{{url("dashboard/orderstoday")}}" class="btn btn-primary btn-xs pull-right hidden"> View More </a> </h2>
       </div>
 
-      <div class="body">
+      <div style="margin:8px;">
         <div class="table-responsive">
 
         </div>
@@ -344,14 +346,14 @@
   </div>
   <!-- #END# Task Info -->
   <!-- Browser Usage -->
-  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="padding-left: 8px; padding-right: 8px;">
     <div class="card">
 
       <div class="header">
         <h2> Sales today ex VAT  <a href="{{url("dashboard/salestoday")}}" class="btn btn-primary btn-xs pull-right hidden"> View More </a> </h2>
       </div>
 
-      <div class="body">
+      <div style="margin:8px;">
         <div class="table-responsive">
 
         </div>
