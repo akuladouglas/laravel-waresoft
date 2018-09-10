@@ -53,13 +53,13 @@ class OrderReportService
     public function __construct($start_date = false, $end_date = false)
     {
         
-        if(!$start_date){
+        if($start_date){
           $this->start_date = Carbon::parse($start_date);
         } else {
-          $this->start_date = Carbon::now();
+          $this->start_date = Carbon::now()->startOfMonth();
         }
         
-        if(!$end_date){
+        if($end_date){
           $this->end_date = Carbon::parse($end_date);
         } else {
           $this->end_date = Carbon::now()->endOfMonth()->endOfDay();
