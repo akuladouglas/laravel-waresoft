@@ -11,9 +11,11 @@
     <div class="card">
 
       <div class="header">
-        <h2>
-          Select Period
-        </h2>
+        
+        <h2> {{ $report_title }} </h2>
+        
+        <hr>
+        
       </div>
 
       <div class="body">

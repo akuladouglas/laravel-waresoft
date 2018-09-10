@@ -62,7 +62,7 @@ class OrderReportService
         if($end_date){
           $this->end_date = Carbon::parse($end_date);
         } else {
-          $this->end_date = Carbon::now()->endOfMonth()->endOfDay();
+          $this->end_date = Carbon::now()->endOfDay();
         }
         
         $this->today = Carbon::now();
@@ -194,7 +194,7 @@ class OrderReportService
                                 ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                                 ->count();
       
-        $basket_size = round(($orders_total / $orders_count), 2);
+        $basket_size = round(@($orders_total / $orders_count), 2);
         $ex_vat_total = ($orders_total - $total_tax);
         
         $data = "As At, Total Sales ex VAT, Number of Orders, Average Basket size
@@ -1114,7 +1114,7 @@ class OrderReportService
                            ->where("financial_status","paid")
                            ->groupBy("customer_id")
                            ->get();
-      
+      $orders_made = [];
       foreach ($all_customer_orders as $key => $customer) {
         $orders_made[$customer->customer_id] = Order::where("financial_status","paid")->where("customer_id",$customer->customer_id)->count();
       }
@@ -1155,6 +1155,7 @@ class OrderReportService
     
     
     function fullfillmentStatusBreakdown() {
+        $data = [];
         
         foreach ($this->fullfillment_status as $key => $status) {
           
@@ -1225,7 +1226,8 @@ class OrderReportService
      */
     
     function financialStatusBreakdown() {
-      
+        $data = [];
+        
         foreach ($this->financial_status as $key => $status) {
           
             $order_count[$status] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
@@ -1262,9 +1264,11 @@ class OrderReportService
           }
         }
         
-        usort($data, function($a, $b){
-          return $a["total_ex_vat"] < $b["total_ex_vat"];
-        });
+        if(!empty($data) && is_array($data)){
+          usort($data, function($a, $b){
+            return $a["total_ex_vat"] < $b["total_ex_vat"];
+          });
+        }
         
         $combined_orders = 0;
         $combined_sales = 0;
@@ -1289,5 +1293,13 @@ class OrderReportService
       
     }
     
+    public function getReportTitle()
+    {
+        $title = "Sales Report from " . $this->start_date->format("D jS \of M Y") . " to " . $this->end_date->format("D jS \of M Y");
+        if (!$this->start_date->diffInDays($this->end_date)) {
+            $title = "Sales Report for " . $this->end_date->format("D jS \of M Y");
+        }
+        return $title;
+    }
     
 }
