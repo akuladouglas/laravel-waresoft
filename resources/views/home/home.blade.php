@@ -42,28 +42,26 @@
             </div>
           </div>
 
-          <div class="col-sm-6">
+          <div class="col-sm-4">
             <div class="form-group">
               <div class="form-line">
-                <input type="text" id="start_date" name="start_date" class="datepicker form-control" placeholder="Please choose start date ( inclusive )">
+                <input required type="text" id="start_date" name="start_date" class="datepicker form-control" placeholder="Please choose start date ( inclusive )">
               </div>
             </div>
           </div>
 
-          <div class="col-sm-6">
+          <div class="col-sm-4">
             <div class="form-group">
               <div class="form-line">
-                <input type="text" id="end_date" name="end_date" class="datepicker form-control" placeholder="Please choose end date ( inclusive )">
+                <input required type="text" id="end_date" name="end_date" class="datepicker form-control" placeholder="Please choose end date ( inclusive )">
               </div>
             </div>
           </div>
-
-          <div class="col-sm-12">
-
+          
+          <div class="col-sm-4">
             <button type="submit" class="btn btn-primary btn-lg">
               Filter Sales Report
             </button>
-
           </div>
           
          </form>
