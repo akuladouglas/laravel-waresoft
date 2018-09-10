@@ -539,7 +539,7 @@
                 <th> Total Ex VAT </th>
               </tr>
               
-              @foreach($salesperstaff as $sales)
+              @foreach($deliveriesperstaff as $sales)
               <tr>
                 <td> {{ ($sales["name"])  }} </td>
                 <td> {{ number_format($sales["order_count"])  }} </td>
