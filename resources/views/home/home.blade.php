@@ -229,15 +229,11 @@
           <table class="table table-bordered">
             <tbody>
               <tr>
-                <th> All Orders </th>
-                <th> Cancelled </th>
-                <th> CooD </th>
-                <th> CooD Not Cancelled </th>
-                <th> Paid Fullfilled </th>
+                <th> Number Of Orders </th>
+                <th> Total Inc VAT </th>
+                <th> Total Ex VAT </th>
               </tr>
               <tr>
-                <td> {{ number_format($fulfillment_rate["All Orders"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["Cancelled"])  }} </td>
                 <td> {{ number_format($fulfillment_rate["CooD"])  }} </td>
                 <td> {{ number_format($fulfillment_rate["CooD Not Cancelled"])  }} </td>
                 <td> {{ number_format($fulfillment_rate["Paid Fullfilled Orders"])  }} </td>
@@ -264,15 +260,11 @@
           <table class="table table-bordered">
             <tbody>
               <tr>
-                <th> All Orders </th>
-                <th> Cancelled </th>
-                <th> CooD </th>
-                <th> CooD Not Cancelled </th>
-                <th> Paid Fullfilled </th>
+                <th> Total Sales Ex VAT </th>
+                <th> Number Of Orders </th>
+                <th> Average Basket Size </th>
               </tr>
               <tr>
-                <td> {{ number_format($fulfillment_rate["All Orders"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["Cancelled"])  }} </td>
                 <td> {{ number_format($fulfillment_rate["CooD"])  }} </td>
                 <td> {{ number_format($fulfillment_rate["CooD Not Cancelled"])  }} </td>
                 <td> {{ number_format($fulfillment_rate["Paid Fullfilled Orders"])  }} </td>
@@ -293,7 +285,7 @@
     <div class="card">
 
       <div class="header">
-        <h2> Revenue ex VAT for Delivered orders  <a href="{{url("dashboard/revenuedeliveredorders")}}" class="btn btn-primary btn-xs pull-right hidden"> View More </a> </h2>
+        <h2> Online Sales KES  <a href="{{url("dashboard/revenuedeliveredorders")}}" class="btn btn-primary btn-xs pull-right hidden"> View More </a> </h2>
       </div>
 
       <div style="margin:8px;">
@@ -302,18 +294,14 @@
           <table class="table table-bordered">
             <tbody>
               <tr>
-                <th> All Orders </th>
-                <th> Cancelled </th>
-                <th> CooD </th>
-                <th> CooD Not Cancelled </th>
-                <th> Paid Fullfilled </th>
+                <th> Number Of Orders </th>
+                <th> Total Inc VAT </th>
+                <th> Total Ex VAT </th>
               </tr>
               <tr>
                 <td> {{ number_format($fulfillment_rate["All Orders"])  }} </td>
                 <td> {{ number_format($fulfillment_rate["Cancelled"])  }} </td>
                 <td> {{ number_format($fulfillment_rate["CooD"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["CooD Not Cancelled"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["Paid Fullfilled Orders"])  }} </td>
               </tr>
             </tbody>
           </table>
@@ -338,15 +326,77 @@
           <table class="table table-bordered">
             <tbody>
               <tr>
-                <th> All Orders </th>
-                <th> Cancelled </th>
-                <th> CooD </th>
-                <th> CooD Not Cancelled </th>
-                <th> Paid Fullfilled </th>
+                <th> Number Of Orders </th>
+                <th> Total Inc VAT </th>
+                <th> Total Ex VAT </th>
               </tr>
               <tr>
                 <td> {{ number_format($fulfillment_rate["All Orders"])  }} </td>
                 <td> {{ number_format($fulfillment_rate["Cancelled"])  }} </td>
+                <td> {{ number_format($fulfillment_rate["CooD"])  }} </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- #END# Browser Usage -->
+</div>
+
+<div class="row clearfix">
+  <!-- Task Info -->
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="padding-left: 8px; padding-right: 8px;">
+    <div class="card">
+
+      <div class="header">
+        <h2> Untagged Staff sales KES <a href="{{url("dashboard/onlinesales")}}" class="btn btn-primary btn-xs pull-right hidden"> View More </a> </h2>
+      </div>
+
+      <div style="margin:8px;">
+        <div class="table-responsive">
+          
+          <table class="table table-bordered">
+            <tbody>
+              <tr>
+                <th> Number Of Orders </th>
+                <th> Total Inc VAT </th>
+                <th> Total Ex VAT </th>
+              </tr>
+              <tr>
+                <td> {{ number_format($fulfillment_rate["CooD"])  }} </td>
+                <td> {{ number_format($fulfillment_rate["CooD Not Cancelled"])  }} </td>
+                <td> {{ number_format($fulfillment_rate["Paid Fullfilled Orders"])  }} </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- #END# Task Info -->
+  <!-- Browser Usage -->
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="padding-left: 8px; padding-right: 8px;">
+    <div class="card">
+
+      <div class="header">
+        <h2> New vs Returning Customers <a href="{{url("dashboard/pendingorders")}}" class="btn btn-primary btn-xs pull-right hidden"> View More </a> </h2>
+      </div>
+
+      <div style="margin:8px;">
+        <div class="table-responsive">
+          
+          <table class="table table-bordered">
+            <tbody>
+              <tr>
+                <th> Number Of Orders </th>
+                <th> Total Inc VAT </th>
+                <th> Total Ex VAT </th>
+              </tr>
+              <tr>
                 <td> {{ number_format($fulfillment_rate["CooD"])  }} </td>
                 <td> {{ number_format($fulfillment_rate["CooD Not Cancelled"])  }} </td>
                 <td> {{ number_format($fulfillment_rate["Paid Fullfilled Orders"])  }} </td>
@@ -367,7 +417,7 @@
     <div class="card">
 
       <div class="header">
-        <h2> Online sales KES <a href="{{url("dashboard/onlinesales")}}" class="btn btn-primary btn-xs pull-right hidden"> View More </a> </h2>
+        <h2> Breakdown Financial Status  <a href="{{url("dashboard/salesperstaff")}}" class="btn btn-primary btn-xs pull-right hidden"> View More </a> </h2>
       </div>
 
       <div style="margin:8px;">
@@ -376,92 +426,14 @@
           <table class="table table-bordered">
             <tbody>
               <tr>
-                <th> All Orders </th>
-                <th> Cancelled </th>
-                <th> CooD </th>
-                <th> CooD Not Cancelled </th>
-                <th> Paid Fullfilled </th>
+                <th> Financial </th>
+                <th> Number of Orders </th>
+                <th> Total Ex VAT </th>
               </tr>
               <tr>
                 <td> {{ number_format($fulfillment_rate["All Orders"])  }} </td>
                 <td> {{ number_format($fulfillment_rate["Cancelled"])  }} </td>
                 <td> {{ number_format($fulfillment_rate["CooD"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["CooD Not Cancelled"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["Paid Fullfilled Orders"])  }} </td>
-              </tr>
-            </tbody>
-          </table>
-
-        </div>
-      </div>
-    </div>
-
-  </div>
-  <!-- #END# Task Info -->
-  <!-- Browser Usage -->
-  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="padding-left: 8px; padding-right: 8px;">
-    <div class="card">
-
-      <div class="header">
-        <h2> Number of Pending orders   <a href="{{url("dashboard/pendingorders")}}" class="btn btn-primary btn-xs pull-right hidden"> View More </a> </h2>
-      </div>
-
-      <div style="margin:8px;">
-        <div class="table-responsive">
-          
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <th> All Orders </th>
-                <th> Cancelled </th>
-                <th> CooD </th>
-                <th> CooD Not Cancelled </th>
-                <th> Paid Fullfilled </th>
-              </tr>
-              <tr>
-                <td> {{ number_format($fulfillment_rate["All Orders"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["Cancelled"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["CooD"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["CooD Not Cancelled"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["Paid Fullfilled Orders"])  }} </td>
-              </tr>
-            </tbody>
-          </table>
-
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- #END# Browser Usage -->
-</div>
-
-<div class="row clearfix">
-  <!-- Task Info -->
-  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="padding-left: 8px; padding-right: 8px;">
-    <div class="card">
-
-      <div class="header">
-        <h2> Sales ex VAT MTD per Staff  <a href="{{url("dashboard/salesperstaff")}}" class="btn btn-primary btn-xs pull-right hidden"> View More </a> </h2>
-      </div>
-
-      <div style="margin:8px;">
-        <div class="table-responsive">
-          
-          <table class="table table-bordered">
-            <tbody>
-              <tr>
-                <th> All Orders </th>
-                <th> Cancelled </th>
-                <th> CooD </th>
-                <th> CooD Not Cancelled </th>
-                <th> Paid Fullfilled </th>
-              </tr>
-              <tr>
-                <td> {{ number_format($fulfillment_rate["All Orders"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["Cancelled"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["CooD"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["CooD Not Cancelled"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["Paid Fullfilled Orders"])  }} </td>
               </tr>
             </tbody>
           </table>
@@ -476,25 +448,21 @@
   <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="padding-left: 8px; padding-right: 8px;">
     <div class="card">
       <div class="header">
-        <h2> Pending orders ex VAT per Staff  <a href="{{url("dashboard/salesperstaff")}}" class="btn btn-primary btn-xs pull-right hidden"> View More </a> </h2>
+        <h2> Breakdown Fulfillment status  <a href="{{url("dashboard/salesperstaff")}}" class="btn btn-primary btn-xs pull-right hidden"> View More </a> </h2>
       </div>
       <div style="margin:8px;">
         <div class="table-responsive">
           <table class="table table-bordered">
             <tbody>
               <tr>
-                <th> All Orders </th>
-                <th> Cancelled </th>
-                <th> CooD </th>
-                <th> CooD Not Cancelled </th>
-                <th> Paid Fullfilled </th>
+                <th> Fulfillment </th>
+                <th> Number of Orders </th>
+                <th> Total Ex VAT </th>
               </tr>
               <tr>
                 <td> {{ number_format($fulfillment_rate["All Orders"])  }} </td>
                 <td> {{ number_format($fulfillment_rate["Cancelled"])  }} </td>
                 <td> {{ number_format($fulfillment_rate["CooD"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["CooD Not Cancelled"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["Paid Fullfilled Orders"])  }} </td>
               </tr>
             </tbody>
           </table>
@@ -513,7 +481,8 @@
     <div class="card">
 
       <div class="header">
-        <h2> Number of orders today  <a href="{{url("dashboard/orderstoday")}}" class="btn btn-primary btn-xs pull-right hidden"> View More </a> </h2>
+        <h2> Sales Per Staff - Paid Fulfilled
+        </h2>
       </div>
 
       <div style="margin:8px;">
@@ -522,17 +491,13 @@
           <table class="table table-bordered">
             <tbody>
               <tr>
-                <th> All Orders </th>
-                <th> Cancelled </th>
-                <th> CooD </th>
-                <th> CooD Not Cancelled </th>
-                <th> Paid Fullfilled </th>
+                <th> Staff </th>
+                <th> Number of Orders </th>
+                <th> Total Ex VAT </th>
               </tr>
               <tr>
                 <td> {{ number_format($fulfillment_rate["All Orders"])  }} </td>
                 <td> {{ number_format($fulfillment_rate["Cancelled"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["CooD"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["CooD Not Cancelled"])  }} </td>
                 <td> {{ number_format($fulfillment_rate["Paid Fullfilled Orders"])  }} </td>
               </tr>
             </tbody>
@@ -549,7 +514,9 @@
     <div class="card">
 
       <div class="header">
-        <h2> Sales today ex VAT  <a href="{{url("dashboard/salestoday")}}" class="btn btn-primary btn-xs pull-right hidden"> View More </a> </h2>
+        <h2> 
+          Pending Deliveries
+        </h2>
       </div>
 
       <div style="margin:8px;">
@@ -558,15 +525,11 @@
           <table class="table table-bordered">
             <tbody>
               <tr>
-                <th> All Orders </th>
-                <th> Cancelled </th>
-                <th> CooD </th>
-                <th> CooD Not Cancelled </th>
-                <th> Paid Fullfilled </th>
+                <th> Staff </th>
+                <th> Number of Orders </th>
+                <th> Total Ex VAT </th>
               </tr>
               <tr>
-                <td> {{ number_format($fulfillment_rate["All Orders"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["Cancelled"])  }} </td>
                 <td> {{ number_format($fulfillment_rate["CooD"])  }} </td>
                 <td> {{ number_format($fulfillment_rate["CooD Not Cancelled"])  }} </td>
                 <td> {{ number_format($fulfillment_rate["Paid Fullfilled Orders"])  }} </td>
