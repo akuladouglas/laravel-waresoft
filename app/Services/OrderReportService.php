@@ -122,7 +122,7 @@ class OrderReportService
           "CooD" => $cood_orders,
           "CooD Not Cancelled" => $cood_orders,
           "Paid Fullfilled Orders" => $paid_fullfilled_orders,
-          "Fullfillment Rate (%)" => $fullfillment_rate
+          "Fullfillment Rate" => $fullfillment_rate
         ];
         
        return $data_array;

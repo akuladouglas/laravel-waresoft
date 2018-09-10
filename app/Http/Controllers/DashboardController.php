@@ -26,6 +26,7 @@ class DashboardController extends Controller
       $order_report = new OrderReportService($start_date, $end_date);
       
       $data["sales_today"] = $order_report->numberOfOrdersToday();
+      $data["fulfillment_rate"] = $order_report->fullfillmentRate();
       
       return view("home.home",$data);
       

@@ -130,12 +130,12 @@
                 <th> Fullfilment Rate </th>
               </tr>
               <tr>
-                <td> {{ $sales_today["All Orders"]  }} </td>
-                <td> {{ $sales_today["Gross Amount"]  }} </td>
-                <td> {{ $sales_today["Paid Orders"]  }} </td>
-                <td> {{ $sales_today["Paid Total Inc Vat"]  }} </td>
-                <td> {{ $sales_today["Paid Total ex Vat"]  }} </td>
-                <td> {{ $sales_today["Paid Total ex Vat"]  }} </td>
+                <td> {{ $fulfillment_rate["All Orders"]  }} </td>
+                <td> {{ $fulfillment_rate["Cancelled"]  }} </td>
+                <td> {{ $fulfillment_rate["CooD"]  }} </td>
+                <td> {{ $fulfillment_rate["CooD Not Cancelled"]  }} </td>
+                <td> {{ $fulfillment_rate["Paid Fullfilled Orders"]  }} </td>
+                <td> {{ $fulfillment_rate["Fullfillment Rate"]  }} </td>
               </tr>
             </tbody>
           </table>
