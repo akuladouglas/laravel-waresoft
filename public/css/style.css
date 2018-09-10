@@ -2953,7 +2953,7 @@ section.content {
       color: #555; }
   .card .header {
     color: #555;
-    padding: 20px;
+    padding: 8px;
     position: relative;
     border-bottom: 1px solid rgba(204, 204, 204, 0.35); }
     .card .header .header-dropdown {
