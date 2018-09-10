@@ -7,15 +7,11 @@
 </div>
 
 <div class="row clearfix">
-  <div class="col-lg-12">
-    <div class="card">
+  <div class="col-lg-12" style="padding-left: 8px; padding-right: 8px;">
+    <div class="card" style="margin-bottom: 8px;">
 
       <div class="header">
-        
-        <h2> {{ $report_title }} </h2>
-        
-        <hr>
-        
+        <h4> {{ $report_title }} </h4>
       </div>
 
       <div class="body">
@@ -24,23 +20,6 @@
           <form action="{{ url('dashboard/getinfo') }}" method="post">
           
           @csrf
-          
-          <div class="col-md-12 hidden">
-            <div class="form-group">
-              <select class="form-control">
-                <option value="Today"> Today </option>
-                <option value="Yesterday"> Yesterday </option>
-                <option value="Last 7 Days"> Last 7 Days </option>
-                <option value="Last 14 Days"> Last 14 Days </option>
-                <option value="Last 30 Days"> Last 30 Days </option>
-                <option value="This Week"> This Week </option>
-                <option value="Last Week"> Last Week </option>
-                <option value="This Month"> This Month </option>
-                <option value="Last Month"> Last Month </option>
-                <option value="Custom Range"> Custom Range </option>
-              </select>
-            </div>
-          </div>
 
           <div class="col-sm-4">
             <div class="form-group">
