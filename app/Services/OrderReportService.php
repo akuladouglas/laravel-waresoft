@@ -54,15 +54,15 @@ class OrderReportService
     {
         
         if(!$start_date){
-          $this->start_date = Carbon::parse($start_date)->format("Y-m-d");
+          $this->start_date = Carbon::parse($start_date);
         } else {
-          $this->start_date = Carbon::now()->format("Y-m-01");
+          $this->start_date = Carbon::now();
         }
         
         if(!$end_date){
-          $this->end_date = Carbon::parse($end_date)->format("Y-m-d");
+          $this->end_date = Carbon::parse($end_date);
         } else {
-          $this->end_date = Carbon::now()->endOfMonth()->endOfDay()->format("Y-m-d H:m");
+          $this->end_date = Carbon::now()->endOfMonth()->endOfDay();
         }
         
         $this->today = Carbon::now();
