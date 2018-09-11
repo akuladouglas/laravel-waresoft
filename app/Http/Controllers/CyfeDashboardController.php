@@ -1157,6 +1157,70 @@ class CyfeDashboardController extends Controller
       
     }
     
+    /*
+     * untaggedsalesorderids
+     */
+    
+    public function untaggedSalesOrderIds()
+    {      
+        //all numbers
+        
+        $all_orders = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                               ->where("cancelled_at", null)
+                               ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                               ->select(["number"])
+                               ->get();
+        $all_order_numbers = [];
+        
+        foreach ($all_orders as $order) {
+            array_push($all_order_numbers, $order->number);
+        }
+        
+        foreach ($this->online_tags as $key => $tag) {          
+            $online_orders[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                             ->where("tags", "like", "%$tag%")
+                             ->where("cancelled_at", null)
+                             ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                             ->select(["number"])
+                             ->get();
+        }
+        
+        $online_order_numbers = [];
+        
+        foreach ($online_orders as $tag => $online_order_array) {
+          foreach ($online_order_array as $key => $online_order) {
+            array_push($online_order_numbers, $online_order->number);
+          }
+        }
+        
+        $offline_order_numbers = [];
+        
+        foreach ($this->offline_tags as $key => $tag) {
+            $offline_orders[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                             ->where("tags", "like", "%$tag%")
+                             ->where("cancelled_at", null)
+                             ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                             ->select(["number"])
+                             ->get();
+        }
+        
+        foreach ($offline_orders as $tag => $offline_order_array) {
+          foreach ($offline_order_array as $key => $offline_order) {
+            array_push($offline_order_numbers, $offline_order->number);
+          }
+        }
+        
+        $combined_offline_online = array_merge($online_order_numbers, $offline_order_numbers);
+        
+        $difference = array_diff($all_order_numbers, $combined_offline_online);
+        
+        $datax = "As At, Order Ids"."<br>";
+        
+        $datax .= $this->today->format("d/m/y").",".json_encode(array_values($difference));
+        
+        echo $datax;
+        
+    }
     
     function getPaymentPost($postdata) {
       
