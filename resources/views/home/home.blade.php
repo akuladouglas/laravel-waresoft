@@ -537,4 +537,79 @@
   <!-- #END# Browser Usage -->
 </div>
 
+
+<div class="row clearfix">
+  <!-- Task Info -->
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="padding-left: 8px; padding-right: 8px;">
+    <div class="card">
+
+      <div class="header">
+        <h2> 
+          Untagged Sales Ids
+        </h2>
+      </div>
+
+      <div style="margin:8px;">
+        <div class="table-responsive">
+          
+          <table class="table table-bordered">
+            <tbody>
+              <tr>
+                <th> Order Ids </th>
+              </tr>
+              <tr>
+                <td> 
+                @foreach($untaggedsalesids as $key => $id)
+                  {{ $key == 0 ? "" : " ," }} {{$id}}
+                @endforeach
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- #END# Task Info -->
+  <!-- Browser Usage -->
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 hidden" style="padding-left: 8px; padding-right: 8px;">
+    <div class="card">
+
+      <div class="header">
+        <h2> 
+        </h2>
+      </div>
+
+      <div style="margin:8px;">
+        <div class="table-responsive">
+          
+          <table class="table table-bordered">
+            <tbody>
+              <tr>
+                <th> Staff </th>
+                <th> Number of Orders </th>
+                <th> Total Ex VAT </th>
+              </tr>
+              
+              @foreach($deliveriesperstaff as $sales)
+              <tr>
+                <td> {{ ($sales["name"])  }} </td>
+                <td> {{ number_format($sales["order_count"])  }} </td>
+                <td> {{ ($sales["total_ex_vat"]) > 1 ? number_format($sales["total_ex_vat"]) : "-" }} </td>
+              </tr>
+              @endforeach
+              
+              
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- #END# Browser Usage -->
+</div>
+
 @endsection

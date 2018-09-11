@@ -39,6 +39,7 @@ class DashboardController extends Controller
       $data["fullfillment_breakdown"] = $order_report->fullfillmentStatusBreakdown();
       $data["salesperstaff"] = $order_report->salesExVatPerStaff();
       $data["deliveriesperstaff"] = $order_report->pendingDeliveriesExVatPerStaff();
+      $data["untaggedsalesids"] = $order_report->untaggedSalesOrderIds();
       
       $data["report_title"] = $order_report->getReportTitle();
         
