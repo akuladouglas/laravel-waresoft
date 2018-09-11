@@ -1214,9 +1214,11 @@ class CyfeDashboardController extends Controller
         
         $difference = array_diff($all_order_numbers, $combined_offline_online);
         
-        $datax = "As At, Order Ids"."<br>";
+        $datax = "Order Ids"."<br>";
         
-        $datax .= $this->today->format("d/m/y").",".json_encode(array_values($difference));
+        foreach ($difference as $key => $diff) {
+          $datax .= $diff."<br>";
+        }
         
         echo $datax;
         
