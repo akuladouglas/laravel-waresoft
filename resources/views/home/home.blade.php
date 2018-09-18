@@ -59,31 +59,34 @@
     <div class="card">
 
       <div class="header">
-        <h2> Sales Today  <a href="{{url("dashboard/fullfillment")}}" class="btn btn-primary btn-xs pull-right hidden"> View More </a> </h2>
+        <h2>   
+          Sales Today
+        </h2>
       </div>
 
       <div style="margin:8px;">
         <div class="table-responsive">
-          <table class="table table-bordered">
+          <table class="table table-hover">
             <tbody>
-              <tr>
-                <th> All Orders </th>
-                <th> Gross Amount </th>
-                <th> Paid Orders </th>
-                <th> Paid Total Inc Vat </th>
-                <th> Paid Total Ex Vat </th>
+              <tr style="font-size: 18px;">
+                <th> {{ number_format($sales_today["All Orders"])  }} </th>
+                <th> {{ number_format($sales_today["Gross Amount"])  }} </th>
+                <th> {{ number_format($sales_today["Paid Orders"])  }} </th>
+                <th> {{ number_format($sales_today["Paid Total Inc Vat"]) }} </th>
+                <th> {{ number_format($sales_today["Paid Total ex Vat"]) }} </th>
               </tr>
-              <tr>
-                <td> {{ number_format($sales_today["All Orders"])  }} </td>
-                <td> {{ number_format($sales_today["Gross Amount"])  }} </td>
-                <td> {{ number_format($sales_today["Paid Orders"])  }} </td>
-                <td> {{ number_format($sales_today["Paid Total Inc Vat"]) }} </td>
-                <td> {{ number_format($sales_today["Paid Total ex Vat"]) }} </td>
+              <tr style="font-size: 11px;">
+                <td> All Orders </td>
+                <td> Gross Amount </td>
+                <td> Paid Orders </td>
+                <td> Paid Total Inc Vat </td>
+                <td> Paid Total Ex Vat </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
+      
     </div>
 
   </div>
@@ -99,24 +102,27 @@
         
         <div class="table-responsive">
           
-          <table class="table table-bordered">
+          <table class="table table-hover">
             <tbody>
-              <tr>
-                <th> All Orders </th>
-                <th> Cancelled </th>
-                <th> CooD </th>
-                <th> CooD Not Cancelled </th>
-                <th> Paid Fullfilled </th>
-                <th> Fullfilment Rate </th>
+              
+              <tr style="font-size: 18px;">
+                <th> {{ number_format($fulfillment_rate["All Orders"])  }} </th>
+                <th> {{ number_format($fulfillment_rate["Cancelled"])  }} </th>
+                <th> {{ number_format($fulfillment_rate["CooD"])  }} </th>
+                <!--<th> {{ number_format($fulfillment_rate["CooD Not Cancelled"])  }} </th>-->
+                <th> {{ number_format($fulfillment_rate["Paid Fullfilled Orders"])  }} </th>
+                <th> {{ number_format($fulfillment_rate["Fullfillment Rate"])  }} </th>
               </tr>
-              <tr>
-                <td> {{ number_format($fulfillment_rate["All Orders"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["Cancelled"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["CooD"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["CooD Not Cancelled"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["Paid Fullfilled Orders"])  }} </td>
-                <td> {{ number_format($fulfillment_rate["Fullfillment Rate"])  }} </td>
+              
+              <tr style="font-size: 11px;">
+                <td> All Orders </td>
+                <td> Cancelled </td>
+                <td> CooD </td>
+                <!--<td> CooD Not Cancelled </td>-->
+                <td> Paid Fullfilled </td>
+                <td> Fullfilment Rate </td>
               </tr>
+              
             </tbody>
           </table>
           
@@ -138,17 +144,17 @@
       <div style="margin:8px;">
         <div class="table-responsive">
           
-          <table class="table table-bordered">
+          <table class="table table-hover">
             <tbody>
-              <tr>
-                <th> Number Of Orders </th>
-                <th> Total Inc VAT </th>
-                <th> Total Ex VAT </th>
+              <tr style="font-size: 18px;">
+                <th> {{ number_format($pending_orders["Number of Orders"])  }} </th>
+                <th> {{ number_format($pending_orders["Total Inc VAT"])  }} </th>
+                <th> {{ number_format($pending_orders["Total Ex VAT"])  }} </th>
               </tr>
-              <tr>
-                <td> {{ number_format($pending_orders["Number of Orders"])  }} </td>
-                <td> {{ number_format($pending_orders["Total Inc VAT"])  }} </td>
-                <td> {{ number_format($pending_orders["Total Ex VAT"])  }} </td>
+              <tr style="font-size: 11px;">
+                <td> Number Of Orders </td>
+                <td> Total Inc VAT </td>
+                <td> Total Ex VAT </td>
               </tr>
             </tbody>
           </table>
@@ -171,17 +177,17 @@
       <div style="margin:8px;">
         <div class="table-responsive">
           
-          <table class="table table-bordered">
+          <table class="table table-hover">
             <tbody>
-              <tr>
-                <th> Number Of Orders </th>
-                <th> Total Inc VAT </th>
-                <th> Total Ex VAT </th>
+              <tr style="font-size: 18px;">
+                <th> {{ number_format($paid_sales["Number of Orders"])  }} </th>
+                <th> {{ number_format($paid_sales["Total Sales Inc VAT"])  }} </th>
+                <th> {{ number_format($paid_sales["Total Sales Ex VAT"])  }} </th>
               </tr>
-              <tr>
-                <td> {{ number_format($paid_sales["Number of Orders"])  }} </td>
-                <td> {{ number_format($paid_sales["Total Sales Inc VAT"])  }} </td>
-                <td> {{ number_format($paid_sales["Total Sales Ex VAT"])  }} </td>
+              <tr style="font-size: 11px;">
+                <td> Number Of Orders </td>
+                <td> Total Inc VAT </td>
+                <td> Total Ex VAT </td>
               </tr>
             </tbody>
           </table>
@@ -205,17 +211,17 @@
       <div style="margin:8px;">
         <div class="table-responsive">
           
-          <table class="table table-bordered">
+          <table class="table table-hover">
             <tbody>
-              <tr>
-                <th> Number Of Orders </th>
-                <th> Total Inc VAT </th>
-                <th> Total Ex VAT </th>
+              <tr style="font-size: 18px;">
+                <th> {{ number_format($delivered_orders["Number of orders"])  }} </th>
+                <th> {{ number_format($delivered_orders["Total Inc VAT"])  }} </th>
+                <th> {{ number_format($delivered_orders["Order Ex Vat Total"])  }} </th>
               </tr>
-              <tr>
-                <td> {{ number_format($delivered_orders["Number of orders"])  }} </td>
-                <td> {{ number_format($delivered_orders["Total Inc VAT"])  }} </td>
-                <td> {{ number_format($delivered_orders["Order Ex Vat Total"])  }} </td>
+              <tr style="font-size: 11px;">
+                <td> Number Of Orders </td>
+                <td> Total Inc VAT </td>
+                <td> Total Ex VAT </td>
               </tr>
             </tbody>
           </table>
@@ -230,23 +236,23 @@
     <div class="card">
 
       <div class="header">
-        <h2> Avr Basket ex VAT  <a href="{{url("dashboard/averagebasket")}}" class="btn btn-primary btn-xs pull-right hidden"> View More </a> </h2>
+        <h2> Avr Basket Size ex VAT  <a href="{{url("dashboard/averagebasket")}}" class="btn btn-primary btn-xs pull-right hidden"> View More </a> </h2>
       </div>
 
       <div style="margin:8px;">
         <div class="table-responsive">
           
-          <table class="table table-bordered">
+          <table class="table table-hover">
             <tbody>
-              <tr>
-                <th> Total Sales Ex VAT </th>
-                <th> Number Of Orders </th>
-                <th> Average Basket Size </th>
+              <tr style="font-size: 18px;">
+                <th> {{ number_format($average_basket_size["Total Sales ex VAT"])  }} </th>
+                <th> {{ number_format($average_basket_size["Number of Orders"])  }} </th>
+                <th> {{ number_format($average_basket_size["Average Basket size"])  }} </th>
               </tr>
-              <tr>
-                <td> {{ number_format($average_basket_size["Total Sales ex VAT"])  }} </td>
-                <td> {{ number_format($average_basket_size["Number of Orders"])  }} </td>
-                <td> {{ number_format($average_basket_size["Average Basket size"])  }} </td>
+              <tr style="font-size: 11px;">
+                <td> Total Sales Ex VAT </td>
+                <td> Number Of Orders </td>
+                <td> Average Basket Size </td>
               </tr>
             </tbody>
           </table>
@@ -270,18 +276,21 @@
       <div style="margin:8px;">
         <div class="table-responsive">
           
-          <table class="table table-bordered">
+          <table class="table table-hover">
             <tbody>
-              <tr>
-                <th> Number Of Orders </th>
-                <th> Total Inc VAT </th>
-                <th> Total Ex VAT </th>
+              
+              <tr style="font-size: 18px;">
+                <th> {{ number_format($onlinesales["Number of orders"])  }} </th>
+                <th> {{ number_format($onlinesales["Total"])  }} </th>
+                <th> {{ number_format($onlinesales["Total ex Vat"])  }} </th>
               </tr>
-              <tr>
-                <td> {{ number_format($onlinesales["Number of orders"])  }} </td>
-                <td> {{ number_format($onlinesales["Total"])  }} </td>
-                <td> {{ number_format($onlinesales["Total ex Vat"])  }} </td>
+              
+              <tr style="font-size: 11px;">
+                <td> Number Of Orders </td>
+                <td> Total Inc VAT </td>
+                <td> Total Ex VAT </td>
               </tr>
+              
             </tbody>
           </table>
 
@@ -302,18 +311,21 @@
       <div style="margin:8px;">
         <div class="table-responsive">
           
-          <table class="table table-bordered">
+          <table class="table table-hover">
             <tbody>
-              <tr>
-                <th> Number Of Orders </th>
-                <th> Total Inc VAT </th>
-                <th> Total Ex VAT </th>
+              
+              <tr style="font-size: 18px;">
+                <th> {{ number_format($offlinesales["Number of orders"])  }} </th>
+                <th> {{ number_format($offlinesales["Total Inc Vat"])  }} </th>
+                <th> {{ number_format($offlinesales["Total ex Vat"])  }} </th>
               </tr>
-              <tr>
-                <td> {{ number_format($offlinesales["Number of orders"])  }} </td>
-                <td> {{ number_format($offlinesales["Total Inc Vat"])  }} </td>
-                <td> {{ number_format($offlinesales["Total ex Vat"])  }} </td>
+              
+              <tr style="font-size: 11px;">
+                <td> Number Of Orders </td>
+                <td> Total Inc VAT </td>
+                <td> Total Ex VAT </td>
               </tr>
+              
             </tbody>
           </table>
 
@@ -336,18 +348,20 @@
       <div style="margin:8px;">
         <div class="table-responsive">
           
-          <table class="table table-bordered">
+          <table class="table table-hover">
             <tbody>
-              <tr>
-                <th> Number Of Orders </th>
-                <th> Total Inc VAT </th>
-                <th> Total Ex VAT </th>
+              <tr style="font-size: 18px;">
+                <th> {{ number_format($untaggedsales["order_count_summation"])  }} </th>
+                <th> {{ number_format($untaggedsales["order_total_summation"])  }} </th>
+                <th> {{ number_format($untaggedsales["ex_vat_total"])  }} </th>
               </tr>
-              <tr>
-                <td> {{ number_format($untaggedsales["order_count_summation"])  }} </td>
-                <td> {{ number_format($untaggedsales["order_total_summation"])  }} </td>
-                <td> {{ number_format($untaggedsales["ex_vat_total"])  }} </td>
+              
+              <tr style="font-size: 11px;">
+                <td> Number Of Orders </td>
+                <td> Total Inc VAT </td>
+                <td> Total Ex VAT </td>
               </tr>
+              
             </tbody>
           </table>
 
@@ -368,17 +382,17 @@
       <div style="margin:8px;">
         <div class="table-responsive">
           
-          <table class="table table-bordered">
+          <table class="table table-hover">
             <tbody>
-              <tr>
-                <th> All Customers </th>
-                <th> New Customers </th>
-                <th> Returning Customers </th>
+              <tr style="font-size: 18px;">
+                <th> {{ number_format($newvsreturning["All Customers"])  }} </th>
+                <th> {{ number_format($newvsreturning["New Customers"])  }} </th>
+                <th> {{ number_format($newvsreturning["Returning Customers"])  }} </th>
               </tr>
-              <tr>
-                <td> {{ number_format($newvsreturning["All Customers"])  }} </td>
-                <td> {{ number_format($newvsreturning["New Customers"])  }} </td>
-                <td> {{ number_format($newvsreturning["Returning Customers"])  }} </td>
+              <tr style="font-size: 11px;">
+                <td> All Customers </td>
+                <td> New Customers </td>
+                <td> Returning Customers </td>
               </tr>
             </tbody>
           </table>
@@ -402,10 +416,10 @@
       <div style="margin:8px;">
         <div class="table-responsive">
           
-          <table class="table table-bordered">
+          <table class="table table-hover">
             <tbody>
               <tr>
-                <th> Financial </th>
+                <th> Status </th>
                 <th> Number of Orders </th>
                 <th> Total Ex VAT </th>
               </tr>
@@ -435,10 +449,10 @@
       </div>
       <div style="margin:8px;">        
         <div class="table-responsive">          
-          <table class="table table-bordered">
+          <table class="table table-hover">
             <tbody>
               <tr>
-                <th> Fulfillment </th>
+                <th> Status </th>
                 <th> Number of Orders </th>
                 <th> Total Ex VAT </th>
               </tr>
@@ -472,7 +486,7 @@
       <div style="margin:8px;">
         <div class="table-responsive">
           
-          <table class="table table-bordered">
+          <table class="table table-hover">
             <tbody>
               <tr>
                 <th> Staff </th>

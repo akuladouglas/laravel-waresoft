@@ -97,6 +97,9 @@
 
     <!-- Waves Effect Plugin Js -->
     <script src="{{ asset('plugins/node-waves/waves.js') }}"></script>
+    
+    <!-- Jquery CountTo Plugin Js -->
+    <script src="{{ asset('plugins/jquery-countto/jquery.countTo.js') }}"></script>
 
     <!-- Autosize Plugin Js -->
     <script src="{{ asset('plugins/autosize/autosize.js') }}"></script>
