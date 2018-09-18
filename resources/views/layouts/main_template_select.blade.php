@@ -81,8 +81,7 @@
         </div>
       
     </section>
-    
-    
+  
     <!-- Jquery Core Js -->
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 
@@ -110,11 +109,29 @@
     <!-- Bootstrap Material Datetime Picker Plugin Js -->
     <script src="{{ asset('plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js') }}"></script>
 
+    <!-- Flot Charts Plugin Js -->
+    <script src="{{asset('plugins/flot-charts/jquery.flot.js')}}"></script>
+    <script src="{{asset('plugins/flot-charts/jquery.flot.resize.js')}}"></script>
+    <script src="{{asset('plugins/flot-charts/jquery.flot.pie.js')}}"></script>
+    <script src="{{asset('plugins/flot-charts/jquery.flot.categories.js')}}"></script>
+    <script src="{{asset('plugins/flot-charts/jquery.flot.time.js')}}"></script>
+
+     <!-- Bootstrap Material Datetime Picker Plugin Js -->
+    <script src="{{ asset('plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js') }}"></script>
+    
+    <!-- Bootstrap Select Css -->
+    <link href="{{ asset('plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet') }}" />
+    
+    <!-- Sparkline Chart Plugin Js -->
+    <script src="{{ asset('plugins/jquery-sparkline/jquery.sparkline.js')}}"></script>
+      
     <!-- Custom Js -->
     <script src="{{ asset('js/admin.js') }}"></script>
     <script src="{{ asset('js/pages/forms/basic-form-elements.js') }}"></script>
 
     <!-- Demo Js -->
+    
     <script src="{{ asset('js/demo.js') }}"></script>
+    
 </body>
 </html>
