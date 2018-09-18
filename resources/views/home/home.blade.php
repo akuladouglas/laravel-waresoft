@@ -111,7 +111,7 @@
                 <th> {{ number_format($fulfillment_rate["CooD"])  }} </th>
                 <!--<th> {{ number_format($fulfillment_rate["CooD Not Cancelled"])  }} </th>-->
                 <th> {{ number_format($fulfillment_rate["Paid Fullfilled Orders"])  }} </th>
-                <th> {{ number_format($fulfillment_rate["Fullfillment Rate"])  }} </th>
+                <th> {{ number_format($fulfillment_rate["Fullfillment Rate"])  }}% </th>
               </tr>
               
               <tr style="font-size: 11px;">
