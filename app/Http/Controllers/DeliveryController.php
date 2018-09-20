@@ -31,8 +31,15 @@ class DeliveryController extends Controller {
    * First step of order management
    */
   public function createDelivery($order_id, Request $request) {
-
-    $delivery = new Delivery();
+    
+    $order = Order::where("id",$order_id)->get()->first();
+    $order->scheduled_delivery = 1;
+    $order->save();
+    
+    $delivery = Delivery::where("order_id",$order_id)->get()->first();
+    if(!$delivery){      
+      $delivery = new Delivery();
+    }
     $delivery->order_id = $order_id;
     $delivery->save();
 

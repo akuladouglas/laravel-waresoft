@@ -22,8 +22,8 @@
                 <th>Customer </th>
                 <th>Order </th>
                 <th>Phone </th>
-                <th>Total Price </th>
-                <th>Financial Status </th>
+                <th>Price </th>
+                <th>Fin. Status </th>
                 <th>Rider </th>
                 <th>Delivered</th>
                 <th></th>
@@ -36,7 +36,7 @@
                 <td> {{ $order->customer_firstname }} {{ $order->customer_lastname }} </td>
                 <td> <a href="{{url("order/view/{$order->id}")}}"> {{ $order->name }} </a> </td>
                 <td> {{ $order->customer_phone }} </td>
-                <td> {{ $order->total_price }} </td>
+                <td> {{ number_format($order->total_price) }} </td>
                 <td> {{ $order->financial_status }} </td>
                 <td> 
                   <!--modal button-->

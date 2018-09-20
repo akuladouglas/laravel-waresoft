@@ -31,9 +31,10 @@
                 <th>Customer</th>
                 <th>Order</th>
                 <th>Phone</th>
-                <th>Total Price</th>
-                <th>Financial Status </th>
+                <th>Price</th>
+                <th>Fin. status </th>
                 <th>Tags </th>
+                <th>Note</th>
                 <th>Send Pay Info</th>
                 <th>Push STK</th>
                 <th></th>
@@ -47,9 +48,10 @@
                 <td> {{ $order->customer_firstname }} {{ $order->customer_lastname }} </td>
                 <td> <a href="{{url("order/view/{$order->id}")}}"> {{ $order->name }} </a> </td>
                 <td> {{ $order->customer_phone }} </td>
-                <td> {{ $order->total_price }}</td>
+                <td> {{ number_format($order->total_price) }}</td>
                 <td> {{ $order->financial_status }}</td>
                 <td> {{ $order->tags }} </td>
+                <td> {{ $order->note }}</td>
                 <td> 
                   @if($order->financial_status != "paid" && $order->customer_phone)
                   <a onclick="return confirm('You are about to send Payment Information. Proceed ?')" href="{{url("payment/process-send-pay-info/{$order->id}")}}" class="btn btn-xs btn-primary"> Send Info </a>
@@ -61,7 +63,7 @@
                   @endif
                 </td>
                 <td>    
-                  <a href="{{url("delivery/delivery/{$order->id}")}}" class="btn btn-xs btn-default"> For Delivery </a> 
+                  <a href="{{url("delivery/create/{$order->id}")}}" class="btn btn-xs btn-default"> For Delivery </a> 
                 </td>
               </tr>
               @endforeach
