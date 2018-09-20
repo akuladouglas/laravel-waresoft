@@ -26,6 +26,7 @@
                 <th>Fin. Status </th>
                 <th>Rider </th>
                 <th>Delivered</th>
+                <th>Payment</th>
                 <th></th>
               </tr>
             </thead>
@@ -87,10 +88,14 @@
                   <!--end modal-->
                 </td>
                 
-                 <td> 
+                <td> 
+                   <a class="btn btn-primary btn-xs" href="{{ url("delivery/mark-delivered/".$order->id) }}"> Mark Delivered </a>
+                </td>
+                
+                <td> 
                   <!--modal button-->
                   <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#deliveryModal">
-                    Mark Delivered
+                    Update Payment
                   </button>
                   <!--end modal button-->
                   
@@ -108,7 +113,7 @@
                             </button>
                           </div>
                           
-                          <form action="{{ url("delivery/mark-delivered") }}">
+                          <form action="{{ url("delivery/mark-paid") }}">
                             
                           <div class="modal-body">
                             @csrf
@@ -137,7 +142,7 @@
                 </td>
                 
                 <td> 
-                 <a href="{{url("delivery/update/{$order->id}")}}" class="btn btn-xs btn-primary"> Edit Delivery </a> 
+                 <a href="{{url("delivery/edit/{$order->id}")}}" class="btn btn-xs btn-default"> Edit </a> 
                 </td>
               </tr>
               @endforeach

@@ -74,10 +74,24 @@ class DeliveryController extends Controller {
   /**
    * Fourth step of order management
    */
-  public function markDelivered(Request $request) {
+  public function markDelivered($order_id, Request $request) {
+
+    $delivery = Delivery::where("order_id", $order_id)->get()->first();
+    $delivery->delivered = 1;
+    $delivery->save();
+    
+    $request->session()->flash("success", "Delivery status information updated successfully");
+
+    return redirect(url("delivery"));
+  }
+
+  /**
+   * Fourth step of order management
+   */
+  public function markPaid(Request $request) {
 
     $delivery = Delivery::where("order_id", $request->input("order_id"))->get()->first();
-    $delivery->delivered = 1;
+    $delivery->paid = 1;
     $delivery->payment_method_id = $request->payment_method_id;
     $delivery->save();
 
@@ -85,7 +99,7 @@ class DeliveryController extends Controller {
 
     return redirect(url("delivery"));
   }
-
+  
   /**
    * 
    * @param Request $request
@@ -149,4 +163,38 @@ class DeliveryController extends Controller {
     return view("delivery/update", $data);
   }
 
+  public function postEdit(Request $request) {
+    
+    if($request->all()){
+      
+      $order_id = $request->input("order_id");
+      $delivery = Delivery::where("order_id", $order_id)->get()->first();
+      
+      $delivery->paid = $request->input("paid");
+      $delivery->rider_id = $request->input("rider_id");
+      $delivery->delivered = $request->input("delivered");
+      $delivery->payment_method_id = $request->input("payment_method_id");
+      $delivery->save();
+      
+      $request->session()->flash("success","Delivery information updated successfully");
+      return redirect(url("delivery"));
+      
+    }
+    
+  }
+  
+  
+  public function edit($order_id) {
+    
+    $data["delivery"] = Delivery::join("orders", "orders.id", "deliverys.order_id")
+      ->where("deliverys.order_id",$order_id)
+      ->get()->first();
+    $data["riders"] = Rider::get();
+    $data["payment_methods"] = PaymentMethod::get();
+    
+    return view("delivery/edit", $data);
+    
+  }
+  
+  
 }
