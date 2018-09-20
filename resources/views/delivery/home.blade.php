@@ -39,7 +39,7 @@
                 <td> {{ $order->financial_status }} </td>
                 <td> 
                   <!--modal button-->
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#riderModal">
+                  <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#riderModal">
                     Assign Rider
                   </button>
                   <!--end modal button-->
@@ -57,19 +57,29 @@
                               <span aria-hidden="true">&times;</span>
                             </button>
                           </div>
-                          <div class="modal-body">
+                          
+                          <form action="{{ url("delivery/assign-rider") }}">
                             
-                            <select class="form-control">
+                          <div class="modal-body">
+                            @csrf
+                                
+                            <input name="order_id" type="hidden" value="{{ $order->id }}">
+                                              
+                            <select name="rider_id" id="rider_id" class="form-control">
                               <option value=""> -- select rider below -- </option>
-                              <option value="1"> Rider One </option>
-                              <option value="2"> Rider Two </option>
+                              @foreach($riders as $rider)
+                              <option value="{{ $rider->rider_id }}"> {{ $rider->name }} ( {{ $rider->phone }} ) </option>
+                              @endforeach
                             </select>
                             
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary"> Save Rider </button>
+                            <button type="submit" class="btn btn-primary"> Save Rider </button>
                           </div>
+                            
+                          </form>
+                          
                         </div>
                       </div>
                     </div>

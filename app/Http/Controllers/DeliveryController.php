@@ -7,6 +7,7 @@ use App\Models\Delivery;
 use App\Models\Order;
 use App\Models\Stock;
 use App\Models\Warehouse;
+use App\Models\Rider;
 use DB;
 use Auth;
 use PDF;
@@ -23,7 +24,7 @@ class DeliveryController extends Controller
     {
         $data["deliveries"] = Delivery::join("orders","orders.id","deliverys.order_id")
           ->get();
-        
+        $data["riders"] = Rider::get();
         return view("delivery/home", $data);
     }
     
@@ -59,11 +60,11 @@ class DeliveryController extends Controller
      */
     public function assignRider(Request $request) {
       
-      $delivery = Delivery::find($request->input("delivery_id"));
+      $delivery = Delivery::where("order_id",$request->input("order_id"))->get()->first();
       $delivery->rider_id = $request->input("rider_id");
       $delivery->save();
-      
-      return redirect();
+      $request->session()->flash("success","Updated rider for delivery");
+      return redirect(url("delivery"));
       
     }
     
