@@ -181,8 +181,7 @@ class DeliveryController extends Controller {
       
     }
     
-  }
-  
+  }  
   
   public function edit($order_id) {
     
@@ -196,5 +195,19 @@ class DeliveryController extends Controller {
     
   }
   
+  /**
+   * 
+   */
+  public function commitStock($order_id, Request $request) {
+    
+    $delivery = Delivery::join("orders", "orders.id", "deliverys.order_id")
+      ->where("deliverys.order_id",$order_id)
+      ->get()->first();
+     
+    $request->session()->flash("success","Stock updated successfully"); 
+     
+    return redirect(url("delivery"));
+    
+  }
   
 }

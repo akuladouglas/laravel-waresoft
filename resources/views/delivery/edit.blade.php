@@ -1,4 +1,4 @@
-@extends("layouts.main_template_datatable")
+@extends("layouts.main_template_select")
 
 @section('content')
 <!-- Widgets -->
@@ -31,26 +31,40 @@
         </div>
         
         <div class="form-group">
+          <label>
+            Rider
+          </label>
           <div class="form-line">
-            <input type="text" class="form-control" placeholder="Customer Name" />
+            <select class="form-control" name="rider_id">
+              @foreach($riders as $rider)
+               <option value="{{ $rider->rider_id }}"> {{ $rider->name }} </option>
+              @endforeach
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label>
+            Payment Method
+          </label>
+          <div class="form-line">
+            <select class="form-control" name="rider_id">
+              @foreach($payment_methods as $payment_method)
+               <option value="{{ $payment_method->payment_method_id }}"> {{ $payment_method->name }} </option>
+              @endforeach
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          
+          <div class="form-line">
+            
           </div>
         </div>
         
         <div class="form-group">
           <div class="form-line">
-            <input type="text" class="form-control" placeholder="Username" />
-          </div>
-        </div>
-        
-        <div class="form-group">
-          <div class="form-line">
-            <input type="text" class="form-control" placeholder="Username" />
-          </div>
-        </div>
-        
-        <div class="form-group">
-          <div class="form-line">
-            <input type="text" class="form-control" placeholder="Username" />
           </div>
         </div>
         

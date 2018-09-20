@@ -97,6 +97,7 @@ Route::group(array('prefix' => 'delivery'), function () {
   Route::match(['get', 'post'], '/mark-delivered/{order_id}', 'DeliveryController@markDelivered');
   Route::match(['get', 'post'], '/mark-paid', 'DeliveryController@markPaid');
   Route::match(['get', 'post'], '/edit/{order_id}', 'DeliveryController@edit');
+  Route::match(['get', 'post'], '/commit-stock/{order_id}', 'DeliveryController@commitStock');
   Route::match(['get', 'post'], '/post-edit', 'DeliveryController@postEdit');
   Route::match(['get', 'post'], '/update/{order_id}', 'DeliveryController@updateDelivery');
 });

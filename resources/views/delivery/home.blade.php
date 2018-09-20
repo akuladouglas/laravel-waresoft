@@ -27,6 +27,7 @@
                 <th>Rider </th>
                 <th>Delivered</th>
                 <th>Payment</th>
+                <th>Stock</th>
                 <th></th>
               </tr>
             </thead>
@@ -89,7 +90,7 @@
                 </td>
                 
                 <td> 
-                   <a class="btn btn-primary btn-xs" href="{{ url("delivery/mark-delivered/".$order->id) }}"> Mark Delivered </a>
+                   <a onclick="return confirm('Mark this order as delivered. Proceed ?')" class="btn btn-primary btn-xs" href="{{ url("delivery/mark-delivered/".$order->id) }}"> Mark Delivered </a>
                 </td>
                 
                 <td> 
@@ -139,6 +140,10 @@
                       </div>
                     </div>
                   <!--end modal-->
+                </td>
+                
+                <td> 
+                   <a onclick="return confirm('Update stock from this delivery. Proceed ?')" class="btn btn-primary btn-xs" href="{{ url("delivery/commit-stock/".$order->id) }}"> Commit Stock </a>
                 </td>
                 
                 <td> 
