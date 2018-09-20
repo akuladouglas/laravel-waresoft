@@ -17,17 +17,11 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Customer</th>
-                                            <th>Amount</th>
-                                            <th>Date Made</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>1</td>
-                                            <td>John Doe</td>
-                                            <td><?php echo "150";?></td>
-                                            <td><?php echo date("Y-m-d"); ?></td>
+                                            <td>&nbsp;</td>
                                         </tr>
                                     </tbody>
                                 </table>
