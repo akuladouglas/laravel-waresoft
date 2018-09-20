@@ -25,6 +25,7 @@
                 <th>Total Price </th>
                 <th>Financial Status </th>
                 <th>Rider </th>
+                <th>Delivered</th>
                 <th></th>
               </tr>
             </thead>
@@ -83,10 +84,58 @@
                         </div>
                       </div>
                     </div>
-                  
                   <!--end modal-->
-                  
                 </td>
+                
+                 <td> 
+                  <!--modal button-->
+                  <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#deliveryModal">
+                    Mark Delivered
+                  </button>
+                  <!--end modal button-->
+                  
+                  <!--modal-->
+                  
+                  <!-- Modal -->
+                  
+                    <div class="modal fade" id="deliveryModal" tabindex="-1" role="dialog" aria-labelledby="deliveryModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="deliveryModalLabel"> Mark delivered and update payment status </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          
+                          <form action="{{ url("delivery/mark-delivered") }}">
+                            
+                          <div class="modal-body">
+                            @csrf
+                                
+                            <input name="order_id" type="hidden" value="{{ $order->id }}">
+                                              
+                            <select name="rider_id" id="rider_id" class="form-control">
+                              <option value=""> -- select payment method below -- </option>
+                              @foreach($payment_methods as $payment_method)
+                              <option value="{{ $payment_method->payment_method_id }}"> {{ $payment_method->name }} </option>
+                              @endforeach
+                            </select>
+                            
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary"> Save Payment method </button>
+                          </div>
+                            
+                          </form>
+                          
+                        </div>
+                      </div>
+                    </div>
+                  <!--end modal-->
+                </td>
+                
                 <td> 
                  <a href="{{url("delivery/update/{$order->id}")}}" class="btn btn-xs btn-primary"> Edit Delivery </a> 
                 </td>

@@ -61,7 +61,7 @@
                   @endif
                 </td>
                 <td>    
-                  <a href="{{url("delivery/create-delivery/{$order->id}")}}" class="btn btn-xs btn-default"> For Delivery </a> 
+                  <a href="{{url("delivery/delivery/{$order->id}")}}" class="btn btn-xs btn-default"> For Delivery </a> 
                 </td>
               </tr>
               @endforeach
