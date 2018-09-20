@@ -121,7 +121,6 @@ class DeliveryController extends Controller
     public function updateDelivery($order_id, Request $request) {
       
       $data["order_id"] = $order_id;
-        
       if($request->all()){
         
        $delivery = Delivery::where("order_id",$order_id)->get()->first();

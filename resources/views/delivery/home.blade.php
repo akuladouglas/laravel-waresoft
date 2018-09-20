@@ -1,4 +1,4 @@
-@extends("layouts.main_template")
+@extends("layouts.main_template_select")
 
 @section('content')
 
@@ -24,7 +24,8 @@
                 <th>Phone </th>
                 <th>Total Price </th>
                 <th>Financial Status </th>
-                <th>Edit </th>
+                <th>Rider </th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -36,6 +37,46 @@
                 <td> {{ $order->customer_phone }} </td>
                 <td> {{ $order->total_price }} </td>
                 <td> {{ $order->financial_status }} </td>
+                <td> 
+                  <!--modal button-->
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#riderModal">
+                    Assign Rider
+                  </button>
+                  <!--end modal button-->
+                  
+                  <!--modal-->
+                  
+                  <!-- Modal -->
+                  
+                    <div class="modal fade" id="riderModal" tabindex="-1" role="dialog" aria-labelledby="riderModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="riderModalLabel"> Assign Rider to this delivery </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            
+                            <select class="form-control">
+                              <option value=""> -- select rider below -- </option>
+                              <option value="1"> Rider One </option>
+                              <option value="2"> Rider Two </option>
+                            </select>
+                            
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary"> Save Rider </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  
+                  <!--end modal-->
+                  
+                </td>
                 <td> 
                  <a href="{{url("delivery/update/{$order->id}")}}" class="btn btn-xs btn-primary"> Edit Delivery </a> 
                 </td>

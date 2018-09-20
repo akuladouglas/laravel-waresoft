@@ -117,7 +117,7 @@
     <script src="{{ asset('plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js') }}"></script>
     
     <!-- Bootstrap Select Css -->
-    <link href="{{ asset('plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet') }}" />
+    <!--<link href="{{ asset('plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet') }}" />-->
     
     <!-- Sparkline Chart Plugin Js -->
     <script src="{{ asset('plugins/jquery-sparkline/jquery.sparkline.js')}}"></script>
