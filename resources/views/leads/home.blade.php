@@ -23,29 +23,27 @@
           <table class="table table-bordered table-striped table-hover dataTable js-exportable">
             <thead>
               <tr>
-                <th>#</th>
-                <th>Date</th>
-                <th>Staff Name</th>
-                <th>Client Name</th>
-                <th>Client Phone</th>
-                <th>Client FB Name</th>
-                <th>Interested In </th>
-                <th>Converted</th>
-                <th></th>
+                <th> # </th>
+                <th> Date </th>
+                <th> Client Name </th>
+                <th> Client Phone </th>
+                <th> Client FB Name </th>
+                <th> Interested In </th>
+                <th> Converted </th>
               </tr>
             </thead>
             <tbody>
+              @foreach($stats as $stat)
               <tr>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
+                <td> {{ $stat->lead_id }} </td>
+                <td> {{ $stat->created_at }} </td>
+                <td> {{ $stat->client_name }} </td>
+                <td> {{ $stat->client_phone }} </td>
+                <td> {{ $stat->client_facebook_name }} </td>
+                <td> {{ $stat->interested_in }} </td>
+                <td> {{ $stat->converted }} </td>
               </tr>
+              @endforeach
             </tbody>
           </table>
 

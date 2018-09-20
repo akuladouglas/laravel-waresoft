@@ -89,7 +89,7 @@
         <li>
           <a class="" href="{{ url('leads') }}">
             <i class="material-icons col-light-green">list</i>
-            <span> Leads </span>
+            <span> My Leads </span>
           </a>
         </li>
         <li>

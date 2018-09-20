@@ -11,8 +11,9 @@ use Carbon\Carbon;
 class LeadsController extends Controller {
 
   public function index() {
-
-    return View("leads.home");
+    $data['stats'] = Lead::join("users","leads.user_id","users.id")
+      ->get();
+    return View("leads.home", $data);
   }
 
   public function stats() {
