@@ -86,11 +86,58 @@
                         </div>
                       </div>
                     </div>
-                  <!--end modal-->
+                  <!--end modal-->                  
                 </td>
                 
                 <td> 
-                   <a onclick="return confirm('Mark this order as delivered. Proceed ?')" class="btn btn-primary btn-xs" href="{{ url("delivery/mark-delivered/".$order->id) }}"> Mark Delivered </a>
+                   <!--<a onclick="return confirm('Mark this order as delivered. Proceed ?')" class="btn btn-primary btn-xs" href="{{ url("delivery/mark-delivered/".$order->id) }}"> Mark Delivered </a>-->
+                  <!--modal button-->
+                  <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#deliveredModal">
+                    Mark Delivered
+                  </button>
+                  <!--end modal button-->
+                  
+                  <!--modal-->
+                  
+                  <!-- Modal -->
+                  
+                    <div class="modal fade" id="deliveredModal" tabindex="-1" role="dialog" aria-labelledby="deliveryModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="deliveryModalLabel"> Update this Order Delivered </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          
+                          <form action="{{ url("delivery/mark-delivered") }}">
+                            
+                          <div class="modal-body">
+                            @csrf
+                                
+                            <input name="order_id" type="hidden" value="{{ $order->id }}">
+                                              
+                            <select name="rider_id" id="rider_id" class="form-control">
+                              <option value="null" selected > No Delivery Partner </option>
+                              @foreach($delivery_partners as $partner)
+                                <option value="{{ $partner->delivery_partner_id }}"> {{ $partner->name }} </option>
+                              @endforeach
+                            </select>
+                            
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary"> Update Delivery Information </button>
+                          </div>
+                            
+                          </form>
+                          
+                        </div>
+                      </div>
+                    </div>
+                  <!--end modal-->
+                  
                 </td>
                 
                 <td> 

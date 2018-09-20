@@ -9,6 +9,7 @@ use App\Models\Stock;
 use App\Models\Warehouse;
 use App\Models\Rider;
 use App\Models\PaymentMethod;
+use App\Models\DeliveryPartner;
 use DB;
 use Auth;
 use PDF;
@@ -24,6 +25,8 @@ class DeliveryController extends Controller {
       ->get();
     $data["riders"] = Rider::get();
     $data["payment_methods"] = PaymentMethod::get();
+    $data["delivery_partners"] = DeliveryPartner::get();
+    
     return view("delivery/home", $data);
   }
 
@@ -74,9 +77,11 @@ class DeliveryController extends Controller {
   /**
    * Fourth step of order management
    */
-  public function markDelivered($order_id, Request $request) {
-
+  public function markDelivered(Request $request) {
+    
+    $order_id = $request->input("order_id");
     $delivery = Delivery::where("order_id", $order_id)->get()->first();
+    $delivery->delivery_partner_id = $request->input("delivery_partner_id");
     $delivery->delivered = 1;
     $delivery->save();
     

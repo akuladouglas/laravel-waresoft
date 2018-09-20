@@ -16,7 +16,7 @@
         </div>
 
         <div class="col-lg-6">
-          <a href="{{url("order/refresh")}}" class="btn btn-primary pull-right"> Refresh Orders List </a>
+          <a href="{{ url("order/refresh") }}" class="btn btn-primary pull-right"> Refresh Orders List </a>
         </div>
         <div class="clearfix"></div>
 
@@ -37,6 +37,7 @@
                 <th>Send Pay Info</th>
                 <th>Push STK</th>
                 <th>Queue for <br> Delivery </th>
+                <th> </th>
               </tr>
             </thead>
             <tbody>
@@ -64,6 +65,9 @@
                   @if(!$order->scheduled_delivery)
                     <a href="{{url("delivery/create/{$order->id}")}}" class="btn btn-xs btn-default"> For Delivery </a> 
                   @endif
+                </td>
+                <td>
+                  <input type="checkbox" class="form-control" name="selected_order[]" value="{{ $order->id }}" >
                 </td>
               </tr>
               @endforeach
