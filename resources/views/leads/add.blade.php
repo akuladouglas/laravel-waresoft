@@ -1,4 +1,4 @@
-@extends("layouts.main_template_datatable")
+@extends("layouts.main_template_select")
 
 @section('content')
 <!-- Widgets -->
@@ -8,46 +8,53 @@
     <div class="card">
 
       <div class="header">
-        <h2> New Lead </h2>
+        <h2> Add New Lead </h2>
       </div>
 
+      <form action="{{ url("leads/process-add") }}">
+      
       <div class="body">
         
         <div class="form-group">
           <div class="form-line">
-            <input type="text" class="form-control" placeholder="Customer Name" />
+            <input type="text" name="client_name" class="form-control" placeholder="Customer Name" />
           </div>
         </div>
         
         <div class="form-group">
           <div class="form-line">
-            <input type="text" class="form-control" placeholder="Username" />
+            <input type="number" name="client_phone" class="form-control" placeholder="Customer Phone" />
           </div>
         </div>
         
         <div class="form-group">
           <div class="form-line">
-            <input type="text" class="form-control" placeholder="Username" />
+            <input type="text" name="client_facebook_name" class="form-control" placeholder="Customer Facebook Name" />
           </div>
         </div>
         
         <div class="form-group">
           <div class="form-line">
-            <input type="text" class="form-control" placeholder="Username" />
+            <select class="form-control" name="interested_in">
+              @foreach($interested_reasons as $reasons)
+              <option value="{{ $reasons }}"> {{ $reasons }} </option>
+              @endforeach
+            </select>
           </div>
         </div>
         
-         <div class="form-group">
+        <div class="form-group">
           <div class="form-line">
-            <textarea class="form-control" placeholder="Comments">
-              
-            </textarea>
+            <textarea class="form-control" placeholder="Comments"></textarea>
           </div>
         </div>
         
+        <button type="submit" class="btn btn-primary"> Submit </button>
         
       </div>
-
+      
+      </form>
+      
     </div>
 
   </div>

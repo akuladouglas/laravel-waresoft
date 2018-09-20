@@ -53,7 +53,7 @@
         <span> Payments & Vouchers </span>
       </a>
       <ul class="ml-menu">
-        <li>
+        <li class="hidden">
           <a class="" href="{{ url('payment/list') }}">
             <i class="material-icons col-light-green">list</i>
             <span> Payments List </span>
@@ -150,16 +150,22 @@
             <span> Sales By Vendor </span>
           </a>
         </li>
-        <li class="hidden">
-          <a href="{{ url('report') }}">
+        <li>
+          <a href="{{ url('report/vendor-sales') }}">
             <i class="material-icons col-light-green">donut_large</i>
-            <span> Another Report </span>
+            <span> Deliveries Cash Report </span>
           </a>
         </li>
-        <li class="hidden">
-          <a href="{{ url('report') }}">
+        <li>
+          <a href="{{ url('report/vendor-sales') }}">
             <i class="material-icons col-light-green">donut_large</i>
-            <span> Another Report </span>
+            <span> General Deliveries Report </span>
+          </a>
+        </li>
+        <li>
+          <a href="{{ url('report/vendor-sales') }}">
+            <i class="material-icons col-light-green">donut_large</i>
+            <span> Stock Report </span>
           </a>
         </li>
       </ul>

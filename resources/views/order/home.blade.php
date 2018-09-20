@@ -30,14 +30,13 @@
                 <th>Date Made</th>
                 <th>Customer</th>
                 <th>Order</th>
-                <th>Phone</th>
                 <th>Price</th>
                 <th>Fin. status </th>
                 <th>Tags </th>
                 <th>Note</th>
                 <th>Send Pay Info</th>
                 <th>Push STK</th>
-                <th></th>
+                <th>Queue for <br> Delivery </th>
               </tr>
             </thead>
             <tbody>
@@ -47,23 +46,24 @@
                 <td> {{ date("y/m/d", strtotime($order->shopify_created_at)) }} </td>
                 <td> {{ $order->customer_firstname }} {{ $order->customer_lastname }} </td>
                 <td> <a href="{{url("order/view/{$order->id}")}}"> {{ $order->name }} </a> </td>
-                <td> {{ $order->customer_phone }} </td>
                 <td> {{ number_format($order->total_price) }}</td>
                 <td> {{ $order->financial_status }}</td>
                 <td> {{ $order->tags }} </td>
                 <td> {{ $order->note }}</td>
                 <td> 
                   @if($order->financial_status != "paid" && $order->customer_phone)
-                  <a onclick="return confirm('You are about to send Payment Information. Proceed ?')" href="{{url("payment/process-send-pay-info/{$order->id}")}}" class="btn btn-xs btn-primary"> Send Info </a>
+                    <a onclick="return confirm('You are about to send Payment Information. Proceed ?')" href="{{url("payment/process-send-pay-info/{$order->id}")}}" class="btn btn-xs btn-primary"> Send Info </a>
                   @endif
                 </td>
                 <td> 
                   @if($order->financial_status != "paid" && $order->customer_phone)
-                  <a onclick="return confirm('You are about to send an STK Push. Proceed ?')" href="{{url("payment/process-stk-push/{$order->id}")}}" class="btn btn-xs btn-success"> Push </a>
+                    <a onclick="return confirm('You are about to send an STK Push. Proceed ?')" href="{{url("payment/process-stk-push/{$order->id}")}}" class="btn btn-xs btn-success"> Push </a>
                   @endif
                 </td>
-                <td>    
-                  <a href="{{url("delivery/create/{$order->id}")}}" class="btn btn-xs btn-default"> For Delivery </a> 
+                <td>  
+                  @if(!$order->scheduled_delivery)
+                    <a href="{{url("delivery/create/{$order->id}")}}" class="btn btn-xs btn-default"> For Delivery </a> 
+                  @endif
                 </td>
               </tr>
               @endforeach

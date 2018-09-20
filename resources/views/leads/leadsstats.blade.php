@@ -17,20 +17,26 @@
             <thead>
               <tr>
                 <th> # </th>
-                <th> Order Name </th>
-                <th> Staff </th>
-                <th> Pushes Made </th>
-                <th> Created At </th>
+                <th> Date </th>
+                <th> Staff Name </th>
+                <th> Client Name </th>
+                <th> Client Phone </th>
+                <th> Client FB Name </th>
+                <th> Interested In </th>
+                <th> Converted </th>
               </tr>
             </thead>
             <tbody>
               @foreach($stats as $stat)
               <tr>
-                <td> {{ $stat->stk_stats_id }} </td>
-                <td> {{ $stat->order_name }} </td>
-                <td> {{ $stat->name }} </td>
-                <td> {{ $stat->total_pushes }} </td>
+                <td> {{ $stat->lead_id }} </td>
                 <td> {{ $stat->created_at }} </td>
+                <td> {{ $stat->name }} </td> 
+                <td> {{ $stat->client_name }} </td>
+                <td> {{ $stat->client_phone }} </td>
+                <td> {{ $stat->client_facebook_name }} </td>
+                <td> {{ $stat->interested_in }} </td>
+                <td> {{ $stat->converted }} </td>
               </tr>
               @endforeach
             </tbody>

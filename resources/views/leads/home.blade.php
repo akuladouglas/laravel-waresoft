@@ -24,13 +24,13 @@
             <thead>
               <tr>
                 <th>#</th>
-                <th>Total Price</th>
-                <th>Total Price</th>
-                <th>Total Discounts</th>
-                <th>Tax</th>
-                <th>Date Made</th>
-                <th>Financial Status </th>
-                <th>Tags </th>
+                <th>Date</th>
+                <th>Staff Name</th>
+                <th>Client Name</th>
+                <th>Client Phone</th>
+                <th>Client FB Name</th>
+                <th>Interested In </th>
+                <th>Converted</th>
                 <th></th>
               </tr>
             </thead>
