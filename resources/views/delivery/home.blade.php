@@ -18,19 +18,29 @@
           <table class="table table-hover table-bordered dashboard-task-infos">
             <thead>
               <tr>
-                <th>#</th>
-                <th>Customer</th>
-                <th>Amount</th>
-                <th>Date Made</th>
+                <th>Date Made </th>
+                <th>Customer </th>
+                <th>Order </th>
+                <th>Phone </th>
+                <th>Total Price </th>
+                <th>Financial Status </th>
+                <th>Edit </th>
               </tr>
             </thead>
             <tbody>
+              @foreach($deliveries as $order)
               <tr>
-                <td>1</td>
-                <td>John Doe</td>
-                <td><?php echo "150"; ?></td>
-                <td><?php echo date("Y-m-d"); ?></td>
+                <td> {{ date("y/m/d", strtotime($order->shopify_created_at)) }} </td>
+                <td> {{ $order->customer_firstname }} {{ $order->customer_lastname }} </td>
+                <td> <a href="{{url("order/view/{$order->id}")}}"> {{ $order->name }} </a> </td>
+                <td> {{ $order->customer_phone }} </td>
+                <td> {{ $order->total_price }} </td>
+                <td> {{ $order->financial_status }} </td>
+                <td> 
+                 <a href="{{url("delivery/edit/{$order->id}")}}" class="btn btn-xs btn-primary"> Edit Delivery </a> 
+                </td>
               </tr>
+              @endforeach
             </tbody>
           </table>
         </div>

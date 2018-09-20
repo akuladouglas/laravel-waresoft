@@ -25,7 +25,6 @@
       <div class="body">
         <div class="table-responsive">
           <table class="table table-bordered table-striped table-hover dataTable js-exportable">
-            
             <thead>
               <tr>
                 <th>Date Made</th>
@@ -35,33 +34,34 @@
                 <th>Total Price</th>
                 <th>Financial Status </th>
                 <th>Tags </th>
-                <th></th>
-                <th></th>
+                <th>Send Pay Info</th>
+                <th>Push STK</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
               @foreach($orders as $order)
+              
               <tr>
-                <td> {{ date("Y/m/d", strtotime($order->shopify_created_at)) }} </td>
+                <td> {{ date("y/m/d", strtotime($order->shopify_created_at)) }} </td>
                 <td> {{ $order->customer_firstname }} {{ $order->customer_lastname }} </td>
-                <td> {{ $order->name }}</td>
+                <td> <a href="{{url("order/view/{$order->id}")}}"> {{ $order->name }} </a> </td>
                 <td> {{ $order->customer_phone }} </td>
                 <td> {{ $order->total_price }}</td>
                 <td> {{ $order->financial_status }}</td>
                 <td> {{ $order->tags }} </td>
                 <td> 
                   @if($order->financial_status != "paid" && $order->customer_phone)
-                  <a onclick="return confirm('You are about to send Payment Information. Proceed ?')" href="{{url("payment/process-send-pay-info/{$order->id}")}}" class="btn btn-xs btn-primary"> Send Pay <br> Info </a>
+                  <a onclick="return confirm('You are about to send Payment Information. Proceed ?')" href="{{url("payment/process-send-pay-info/{$order->id}")}}" class="btn btn-xs btn-primary"> Send Info </a>
                   @endif
                 </td>
                 <td> 
                   @if($order->financial_status != "paid" && $order->customer_phone)
-                  <a onclick="return confirm('You are about to send an STK Push. Proceed ?')" href="{{url("payment/process-stk-push/{$order->id}")}}" class="btn btn-xs btn-success"> Push STK </a>
+                  <a onclick="return confirm('You are about to send an STK Push. Proceed ?')" href="{{url("payment/process-stk-push/{$order->id}")}}" class="btn btn-xs btn-success"> Push </a>
                   @endif
                 </td>
                 <td>    
-                  <a href="{{url("order/view/{$order->id}")}}" class="btn btn-xs btn-default">View More</a> 
+                  <a href="{{url("delivery/create-delivery/{$order->id}")}}" class="btn btn-xs btn-default"> For Delivery </a> 
                 </td>
               </tr>
               @endforeach

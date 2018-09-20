@@ -21,8 +21,9 @@ class DeliveryController extends Controller
   
     public function getDeliverys()
     {
-        $data["deliveries"] = Delivery::get();
-      
+        $data["deliveries"] = Delivery::join("orders","orders.id","deliverys.order_id")
+          ->get();
+        
         return view("delivery/home", $data);
     }
     
@@ -30,13 +31,13 @@ class DeliveryController extends Controller
      * First step of order management
      */
     
-    public function createDelivery(Request $request) {
+    public function createDelivery($order_id, Request $request) {
       
       $delivery = new Delivery(); 
-      $delivery->order_id = $request->input("order_id");
+      $delivery->order_id = $order_id;
       $delivery->save();
       
-      return redirect();
+      return redirect(url("delivery"));
     }
     
     /**
