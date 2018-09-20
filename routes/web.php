@@ -107,6 +107,7 @@ Route::group(array('prefix' => 'leads'), function () {
   Route::match(['get', 'post'], '/stats', 'LeadsController@stats');
   Route::match(['get', 'post'], '/add', 'LeadsController@add');
   Route::match(['get', 'post'], '/process-add', 'LeadsController@processAdd');
+  Route::match(['get', 'post'], '/mark-converted', 'LeadsController@markConverted');
 });
 
 Route::group(array('prefix' => 'product'), function () {

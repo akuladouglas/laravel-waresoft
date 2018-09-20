@@ -41,7 +41,7 @@
                 <td> {{ $stat->client_phone }} </td>
                 <td> {{ $stat->client_facebook_name }} </td>
                 <td> {{ $stat->interested_in }} </td>
-                <td> {{ $stat->converted }} </td>
+                <td> <a class="btn btn-primary btn-xs" href="{{ url('') }}"> Converted </a> </td>
               </tr>
               @endforeach
             </tbody>

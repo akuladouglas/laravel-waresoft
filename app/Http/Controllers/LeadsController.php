@@ -61,5 +61,17 @@ class LeadsController extends Controller {
     
   }
   
+  public function markConverted($lead_id, Request $request) {
+    
+    $lead = Lead::where("lead_id",$lead_id)->get()->first();
+    $lead->converted = 1;
+    $lead->save();
+    
+    $request->session()->flash("success","Lead updated successfully"); 
+     
+    return redirect(url("leads"));
+    
+  }
+  
 
 }
