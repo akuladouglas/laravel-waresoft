@@ -37,7 +37,7 @@
                 <td> {{ $order->total_price }} </td>
                 <td> {{ $order->financial_status }} </td>
                 <td> 
-                 <a href="{{url("delivery/edit/{$order->id}")}}" class="btn btn-xs btn-primary"> Edit Delivery </a> 
+                 <a href="{{url("delivery/update/{$order->id}")}}" class="btn btn-xs btn-primary"> Edit Delivery </a> 
                 </td>
               </tr>
               @endforeach

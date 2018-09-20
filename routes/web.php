@@ -93,7 +93,7 @@ Route::group(array('prefix' => 'cyfe-dash'), function () {
 Route::group(array('prefix' => 'delivery'), function () {
   Route::match(['get', 'post'], '/', 'DeliveryController@getDeliverys');
   Route::match(['get', 'post'], '/create/{order_id}', 'DeliveryController@createDelivery');
-  Route::match(['get', 'post'], '/update/{order_id}', 'DeliveryController@createDelivery');
+  Route::match(['get', 'post'], '/update/{order_id}', 'DeliveryController@updateDelivery');
 });
 
 Route::group(array('prefix' => 'leads'), function () {
