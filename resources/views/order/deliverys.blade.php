@@ -12,7 +12,7 @@
       <div class="header">
 
         <div class="col-lg-6">
-          <h2> Orders List </h2>
+          <h2> Filter Deliveries List </h2>
         </div>
 
         <div class="col-lg-6">
@@ -61,7 +61,7 @@
                     <a onclick="return confirm('You are about to send an STK Push. Proceed ?')" href="{{url("payment/process-stk-push/{$order->id}")}}" class="btn btn-xs btn-success"> Push </a>
                   @endif
                 </td>
-                <td>  
+                <td>  {{ $order->scheduled_delivery }}
                   @if(!$order->scheduled_delivery)
                     <a href="{{url("delivery/create/{$order->id}")}}" class="btn btn-xs btn-default"> For Delivery </a> 
                   @endif

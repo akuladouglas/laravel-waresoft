@@ -27,11 +27,11 @@ class OrderController extends BaseController
 
     public function deliverys()
     {
-        $data["orders"] = Order::where("scheduled_delivery",1)
+        $data["orders"] = Order::where("scheduled_delivery",null)
                                 ->orderBy("id", "desc")
                                 ->get()->take(2000);
         
-        return view("order/home", $data);
+        return view("order/deliverys", $data);
     }
     
     public function viewOrder($order_id)
