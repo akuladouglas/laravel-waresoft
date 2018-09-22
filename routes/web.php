@@ -33,6 +33,9 @@ Route::group(array('prefix' => 'order'), function () {
   Route::match(['get', 'post'], '/test', 'OrderController@getDashboard');
   Route::match(['get', 'post'], '/view/{id}', 'OrderController@viewOrder');
   Route::match(['get', 'post'], '/refresh', 'OrderController@refresh');
+  Route::match(['get', 'post'], '/deliverys', 'OrderController@deliverys');
+  
+  
 });
 
 Route::group(array('prefix' => 'dashboard'), function () {

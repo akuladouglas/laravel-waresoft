@@ -25,6 +25,15 @@ class OrderController extends BaseController
         return view("order/home", $data);
     }
 
+    public function deliverys()
+    {
+        $data["orders"] = Order::where("scheduled_delivery",1)
+                                ->orderBy("id", "desc")
+                                ->get()->take(2000);
+        
+        return view("order/home", $data);
+    }
+    
     public function viewOrder($order_id)
     {
         $data["order"] = Order::find($order_id);

@@ -102,12 +102,25 @@
       </ul>
     </li>
     
-    
     <li class="<?php echo Request::segment(1) == "order" ? "active" : ""; ?>" >
-      <a href="{{ url('order') }}">
+      <a href="#" class="menu-toggle">
         <i class="material-icons">view_headline</i>
-        <span> Shopify Orders</span>
+        <span> Orders </span>
       </a>
+      <ul class="ml-menu">
+        <li>
+          <a href="{{ url('order') }}">
+            <i class="material-icons">view_headline</i>
+            <span> Shopify Orders </span>
+          </a>
+        </li>
+        <li>
+          <a href="{{ url('order/deliverys') }}">
+            <i class="material-icons col-light-green">list</i>
+            <span> Filter Deliveries </span>
+          </a>
+        </li>
+      </ul>
     </li>
 
     <li class="<?php echo Request::segment(1) == "delivery" ? "active" : ""; ?>" >

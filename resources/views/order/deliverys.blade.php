@@ -36,6 +36,7 @@
                 <th>Note</th>
                 <th>Send Pay Info</th>
                 <th>Push STK</th>
+                <th>Queue for <br> Delivery </th>
                 <th> </th>
               </tr>
             </thead>
@@ -58,6 +59,11 @@
                 <td> 
                   @if($order->financial_status != "paid" && $order->customer_phone)
                     <a onclick="return confirm('You are about to send an STK Push. Proceed ?')" href="{{url("payment/process-stk-push/{$order->id}")}}" class="btn btn-xs btn-success"> Push </a>
+                  @endif
+                </td>
+                <td>  
+                  @if(!$order->scheduled_delivery)
+                    <a href="{{url("delivery/create/{$order->id}")}}" class="btn btn-xs btn-default"> For Delivery </a> 
                   @endif
                 </td>
                 <td>
