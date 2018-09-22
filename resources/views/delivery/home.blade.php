@@ -18,12 +18,14 @@
           <table class="table table-hover table-bordered dashboard-task-infos">
             <thead>
               <tr>
-                <th>Date Made </th>
+                <th>Order Made </th>
+                <th>Dlvry. Date</th>
                 <th>Customer </th>
                 <th>Order </th>
                 <th>Phone </th>
                 <th>Price </th>
                 <th>Fin. Status </th>
+                <th>Invoice</th>
                 <th>Rider </th>
                 <th>Delivered</th>
                 <th>Payment</th>
@@ -35,11 +37,13 @@
               @foreach($deliveries as $order)
               <tr>
                 <td> {{ date("y/m/d", strtotime($order->shopify_created_at)) }} </td>
+                <td> {{ date("y/m/d", strtotime($order->created_at)) }} </td>
                 <td> {{ $order->customer_firstname }} {{ $order->customer_lastname }} </td>
                 <td> <a href="{{url("order/view/{$order->id}")}}"> {{ $order->name }} </a> </td>
                 <td> {{ $order->customer_phone }} </td>
                 <td> {{ number_format($order->total_price) }} </td>
                 <td> {{ $order->financial_status }} </td>
+                <td> <a class="btn btn-primary btn-xs" href="{{url("delivery/download-invoice/".$order->order_id)}}"> <small> Pdf </small> </a> </td>
                 <td> 
                   <!--modal button-->
                   @if($order->rider_id)
@@ -79,7 +83,7 @@
                             <select name="rider_id" id="rider_id" class="form-control">
                               <option value=""> -- select rider below -- </option>
                               @foreach($riders as $rider)
-                              <option value="{{ $rider->rider_id }}"> {{ $rider->rider_name }} ( {{ $rider->phone }} ) </option>
+                              <option value="{{ $rider->rider_id }}"> {{ $rider->rider_name }} </option>
                               @endforeach
                             </select>
                             

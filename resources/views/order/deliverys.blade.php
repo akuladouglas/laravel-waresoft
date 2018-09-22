@@ -27,7 +27,7 @@
           <table class="table table-bordered table-striped table-hover dataTable js-exportable">
             <thead>
               <tr>
-                <th>Date Made</th>
+                <th>Order Date</th>                
                 <th>Customer</th>
                 <th>Order</th>
                 <th>Price</th>
@@ -44,7 +44,7 @@
               @foreach($orders as $order)
               
               <tr>
-                <td> {{ date("y/m/d", strtotime($order->shopify_created_at)) }} </td>
+                <td> {{ date("y/m/d", strtotime($order->shopify_created_at)) }} </td>              
                 <td> {{ $order->customer_firstname }} {{ $order->customer_lastname }} </td>
                 <td> <a href="{{url("order/view/{$order->id}")}}"> {{ $order->name }} </a> </td>
                 <td> {{ number_format($order->total_price) }}</td>

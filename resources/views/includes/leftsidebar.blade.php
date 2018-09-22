@@ -110,7 +110,7 @@
       <ul class="ml-menu">
         <li>
           <a href="{{ url('order') }}">
-            <i class="material-icons">view_headline</i>
+            <i class="material-icons col-light-green">list</i>
             <span> Shopify Orders </span>
           </a>
         </li>

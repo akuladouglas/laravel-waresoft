@@ -15,6 +15,15 @@
         
         <div class="">
           <div class="well">
+            
+            <div>
+              <a class="btn btn-primary btn-mini" href="{{ url("order/undo-for-delivery/".$delivery->order_id) }}">
+                Undo "For Delivery"
+              </a>
+            </div>
+            
+            <hr>
+            
             <table class="table">
               <tbody>
                 <tr> 
@@ -37,7 +46,7 @@
           <div class="form-line">
             <select class="form-control" name="rider_id">
               @foreach($riders as $rider)
-               <option value="{{ $rider->rider_id }}"> {{ $rider->name }} </option>
+               <option value="{{ $rider->rider_id }}"> {{ $rider->rider_name }} </option>
               @endforeach
             </select>
           </div>
@@ -57,18 +66,6 @@
         </div>
         
         <div class="form-group">
-          
-          <div class="form-line">
-            
-          </div>
-        </div>
-        
-        <div class="form-group">
-          <div class="form-line">
-          </div>
-        </div>
-        
-         <div class="form-group">
           <div class="form-line">
             <textarea class="form-control" placeholder="Comments">
               

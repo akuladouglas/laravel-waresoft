@@ -34,8 +34,7 @@ Route::group(array('prefix' => 'order'), function () {
   Route::match(['get', 'post'], '/view/{id}', 'OrderController@viewOrder');
   Route::match(['get', 'post'], '/refresh', 'OrderController@refresh');
   Route::match(['get', 'post'], '/deliverys', 'OrderController@deliverys');
-  
-  
+  Route::match(['get', 'post'], '/undo-for-delivery/{order_id}', 'OrderController@undoForDelivery');
 });
 
 Route::group(array('prefix' => 'dashboard'), function () {
@@ -103,6 +102,7 @@ Route::group(array('prefix' => 'delivery'), function () {
   Route::match(['get', 'post'], '/commit-stock/{order_id}', 'DeliveryController@commitStock');
   Route::match(['get', 'post'], '/post-edit', 'DeliveryController@postEdit');
   Route::match(['get', 'post'], '/update/{order_id}', 'DeliveryController@updateDelivery');
+  Route::match(['get', 'post'], '/download-invoice/{order_id}', 'DeliveryController@downloadInvoice');
 });
 
 Route::group(array('prefix' => 'leads'), function () {

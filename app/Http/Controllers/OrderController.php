@@ -34,6 +34,18 @@ class OrderController extends BaseController
         return view("order/deliverys", $data);
     }
     
+    public function undoForDelivery($order_id, Request $request) {
+      
+      $order = Order::where("id",$order_id)->get()->first();
+      $order->scheduled_delivery = null;
+      $order->save();
+      
+      $request->session()->flash("success","Delivery send back to scheduled section");
+      
+      return redirect(url("order/deliverys"));
+      
+    }
+    
     public function viewOrder($order_id)
     {
         $data["order"] = Order::find($order_id);
