@@ -524,7 +524,7 @@
       <div style="margin:8px;">
         <div class="table-responsive">
           
-          <table class="table table-bordered">
+          <table class="table table-hover">
             <tbody>
               <tr>
                 <th> Staff </th>

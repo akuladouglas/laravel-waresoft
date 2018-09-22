@@ -21,13 +21,18 @@ class DeliveryController extends Controller {
    * @return type
    */
   public function getDeliverys() {
-    $data["deliveries"] = Delivery::join("orders", "orders.id", "deliverys.order_id")
-      ->get();
+    
+    $data["deliveries"] = Delivery::join("orders", "orders.id", "deliverys.order_id")->get();
     $data["riders"] = Rider::get();
     $data["payment_methods"] = PaymentMethod::get();
     $data["delivery_partners"] = DeliveryPartner::get();
     
+    foreach ($data["riders"] as $key => $rider) {
+      $data["riders_array"][$rider->rider_id] = $rider->rider_name; 
+    }
+      
     return view("delivery/home", $data);
+    
   }
 
   /**
@@ -70,7 +75,7 @@ class DeliveryController extends Controller {
     $delivery = Delivery::where("order_id", $request->input("order_id"))->get()->first();
     $delivery->rider_id = $request->input("rider_id");
     $delivery->save();
-    $request->session()->flash("success", "Updated rider for delivery");
+    $request->session()->flash("success", "Rider for delivery updated successfully");
     return redirect(url("delivery"));
   }
 

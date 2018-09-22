@@ -42,9 +42,17 @@
                 <td> {{ $order->financial_status }} </td>
                 <td> 
                   <!--modal button-->
-                  <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#riderModal">
-                    Assign Rider
-                  </button>
+                  @if($order->rider_id)
+                  <small style="font-size: 10px;"> {{ $riders_array[$order->rider_id] }} </small>
+                      <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#riderModal">
+                        <small> Change Rider </small>
+                      </button>                
+                  @else
+                    <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#riderModal">
+                       <small> Assign Rider </small>
+                    </button>
+                  @endif
+                  
                   <!--end modal button-->
                   
                   <!--modal-->
@@ -71,7 +79,7 @@
                             <select name="rider_id" id="rider_id" class="form-control">
                               <option value=""> -- select rider below -- </option>
                               @foreach($riders as $rider)
-                              <option value="{{ $rider->rider_id }}"> {{ $rider->name }} ( {{ $rider->phone }} ) </option>
+                              <option value="{{ $rider->rider_id }}"> {{ $rider->rider_name }} ( {{ $rider->phone }} ) </option>
                               @endforeach
                             </select>
                             
@@ -93,7 +101,7 @@
                    <!--<a onclick="return confirm('Mark this order as delivered. Proceed ?')" class="btn btn-primary btn-xs" href="{{ url("delivery/mark-delivered/".$order->id) }}"> Mark Delivered </a>-->
                   <!--modal button-->
                   <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#deliveredModal">
-                    Mark Delivered
+                    <small style="font-size: 10px;"> Mark Delivered </small>
                   </button>
                   <!--end modal button-->
                   
@@ -118,7 +126,7 @@
                                 
                             <input name="order_id" type="hidden" value="{{ $order->id }}">
                                               
-                            <select name="rider_id" id="rider_id" class="form-control">
+                            <select name="delivery_partner_id" id="delivery_partner_id" class="form-control">
                               <option value="null" selected > No Delivery Partner </option>
                               @foreach($delivery_partners as $partner)
                                 <option value="{{ $partner->delivery_partner_id }}"> {{ $partner->name }} </option>
@@ -143,7 +151,7 @@
                 <td> 
                   <!--modal button-->
                   <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#deliveryModal">
-                    Update Payment
+                    <small style="font-size: 10px;"> Update Payment </small>
                   </button>
                   <!--end modal button-->
                   
@@ -168,7 +176,7 @@
                                 
                             <input name="order_id" type="hidden" value="{{ $order->id }}">
                                               
-                            <select name="rider_id" id="rider_id" class="form-control">
+                            <select name="payment_method_id" id="rider_id" class="form-control">
                               <option value=""> -- select payment method below -- </option>
                               @foreach($payment_methods as $payment_method)
                               <option value="{{ $payment_method->payment_method_id }}"> {{ $payment_method->name }} </option>
@@ -190,11 +198,11 @@
                 </td>
                 
                 <td> 
-                   <a onclick="return confirm('Update stock from this delivery. Proceed ?')" class="btn btn-primary btn-xs" href="{{ url("delivery/commit-stock/".$order->id) }}"> Commit Stock </a>
+                  <a onclick="return confirm('Update stock from this delivery. Proceed ?')" class="btn btn-primary btn-xs" href="{{ url("delivery/commit-stock/".$order->id) }}"> <small> Commit Stock </small> </a>
                 </td>
                 
                 <td> 
-                 <a href="{{url("delivery/edit/{$order->id}")}}" class="btn btn-xs btn-default"> Edit </a> 
+                  <a href="{{url("delivery/edit/{$order->id}")}}" class="btn btn-xs btn-default"> <small> Edit </small> </a> 
                 </td>
               </tr>
               @endforeach
