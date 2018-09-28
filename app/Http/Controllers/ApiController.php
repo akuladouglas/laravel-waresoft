@@ -12,9 +12,6 @@ class ApiController extends BaseController
   
   function shortCodeCallback(Request $request)
   {
-    
-    mail("akulad19@gmail.com","test subject", "my other items");
-    
     $smsLead = new SmsLead();
     $smsLead->sms_to = $request->input("to");
     $smsLead->sms_from = $request->input("from");
@@ -23,7 +20,6 @@ class ApiController extends BaseController
     $smsLead->link_id = $request->input("linkId");
     $smsLead->sms_id = $request->input("id");
     $smsLead->save();
-    
   }
   
   
