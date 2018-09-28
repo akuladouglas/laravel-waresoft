@@ -113,6 +113,11 @@ Route::group(array('prefix' => 'leads'), function () {
   Route::match(['get', 'post'], '/mark-converted', 'LeadsController@markConverted');
 });
 
+Route::group(array('prefix' => 'api'), function () {
+  Route::match(['get', 'post'], '/short-code-callback', 'ApiController@shortCodeCallback');
+});
+
+
 Route::group(array('prefix' => 'product'), function () {
   Route::match(['get', 'post'], '/', 'ProductController@getProducts');
 });
