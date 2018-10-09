@@ -114,7 +114,7 @@ Route::group(array('prefix' => 'leads'), function () {
 });
 
 Route::group(array('prefix' => 'api'), function () {
-  Route::match(['get', 'post'], '/short-code-callback', 'ApiController@shortCodeCallback');
+  Route::any('/short-code-callback', 'ApiController@shortCodeCallback');
 });
 
 
