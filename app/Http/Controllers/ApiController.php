@@ -10,15 +10,15 @@ use App\Models\SmsLead;
 class ApiController extends BaseController
 {
   
-  function shortCodeCallback($json_string)
+  function shortCodeCallback()
   { 
 
-    mail("akulad19@gmail.com","I was hit now !", $json_string);
+    mail("akulad19@gmail.com","I was hit now at BC Server !","to do :");
     
     $smsLead = new SmsLead();
     $smsLead->text = $json_string;
     $smsLead->save();
-    
+
     /*
     $smsLead = new SmsLead();
     $smsLead->sms_to = $request->input("to");
@@ -29,6 +29,7 @@ class ApiController extends BaseController
     $smsLead->sms_id = $request->input("id");
     $smsLead->save();
     */
+
   }
   
   
