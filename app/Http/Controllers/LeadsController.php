@@ -17,7 +17,7 @@ class LeadsController extends Controller {
 
   public function stats() {
     $data['stats'] = SmsLead::get();
-    
+
     return View("leads.leadsstats", $data);
   }
 
@@ -59,13 +59,13 @@ class LeadsController extends Controller {
     
   }
   
-  public function markConverted($lead_id, Request $request) {
+  public function markConverted($smslead_id, Request $request) {
     
-    $lead = Lead::where("lead_id",$lead_id)->get()->first();
+    $lead = SmsLead::where("smslead_id",$smslead_id)->get()->first();
     $lead->converted = 1;
     $lead->save();
     
-    $request->session()->flash("success","Lead updated successfully"); 
+    $request->session()->flash("success","Sms Lead updated successfully"); 
      
     return redirect(url("leads"));
     

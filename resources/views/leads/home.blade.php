@@ -31,7 +31,6 @@
                 <th> Sent To </th>
                 <th> Text </th>
                 <th> Converted </th>
-                <th> </th>
               </tr>
             </thead>
             <tbody>
@@ -42,8 +41,13 @@
                 <td> {{ $stat->sms_from }} </td>
                 <td> {{ $stat->sms_to }} </td>
                 <td> {{ $stat->text }} </td>
-                <td> {{ $stat->converted }} </td>
-                <td> <a class="btn btn-primary btn-xs" href="{{ url('') }}"> Converted </a> </td>
+                <td> 
+                  @if($stat->converted)
+                    <i class="material-icons">check</i>
+                  @else
+                   <a onclick="return confirm('You will mark this Lead as converted. Proceed ? ')" class="btn btn-primary btn-xs" href="{{ url('leads/mark-converted/'.$stat->smslead_id) }}"> Mark as Converted </a> 
+                  @endif
+                </td>
               </tr>
               @endforeach
             </tbody>
