@@ -13,6 +13,8 @@ class ApiController extends BaseController
   function shortCodeCallback()
   {
 
+    $json_string = json_encode($_POST);
+
     mail("akulad19@gmail.com","I was hit now at BC Server !","to do :");
     
     $smsLead = new SmsLead();
