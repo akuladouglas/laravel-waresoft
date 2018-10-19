@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Lead;
+use App\Models\SmsLead;
 use Validator;
 use Auth;
 use Carbon\Carbon;
@@ -11,14 +11,12 @@ use Carbon\Carbon;
 class LeadsController extends Controller {
 
   public function index() {
-    $data['stats'] = Lead::join("users","leads.user_id","users.id")
-      ->get();
+    $data['stats'] = SmsLead::get();
     return View("leads.home", $data);
   }
 
   public function stats() {
-    $data['stats'] = Lead::join("users","leads.user_id","users.id")
-      ->get();
+    $data['stats'] = SmsLead::get();
     
     return View("leads.leadsstats", $data);
   }

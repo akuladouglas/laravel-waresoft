@@ -12,9 +12,11 @@
         <div class="col-lg-6">
           <h2> Leads </h2>
         </div>
+        <!--
         <div class="col-lg-6">
           <a href="{{url("leads/add")}}" class="btn btn-primary pull-right"> Add New Lead </a>
         </div>
+        -->
         <div class="clearfix"></div>
       </div>
 
@@ -25,22 +27,22 @@
               <tr>
                 <th> # </th>
                 <th> Date </th>
-                <th> Client Name </th>
                 <th> Client Phone </th>
-                <th> Client FB Name </th>
-                <th> Interested In </th>
+                <th> Sent To </th>
+                <th> Text </th>
                 <th> Converted </th>
+                <th> </th>
               </tr>
             </thead>
             <tbody>
               @foreach($stats as $stat)
               <tr>
-                <td> {{ $stat->lead_id }} </td>
+                <td> {{ $stat->smslead_id }} </td>
                 <td> {{ $stat->created_at }} </td>
-                <td> {{ $stat->client_name }} </td>
-                <td> {{ $stat->client_phone }} </td>
-                <td> {{ $stat->client_facebook_name }} </td>
-                <td> {{ $stat->interested_in }} </td>
+                <td> {{ $stat->sms_from }} </td>
+                <td> {{ $stat->sms_to }} </td>
+                <td> {{ $stat->text }} </td>
+                <td> {{ $stat->converted }} </td>
                 <td> <a class="btn btn-primary btn-xs" href="{{ url('') }}"> Converted </a> </td>
               </tr>
               @endforeach
