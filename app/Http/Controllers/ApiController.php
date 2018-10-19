@@ -16,6 +16,11 @@ class ApiController extends BaseController
     mail("akulad19@gmail.com","I was hit now !", $json_string);
     
     $smsLead = new SmsLead();
+    $smsLead->text = $json_string;
+    $smsLead->save();
+    
+    /*
+    $smsLead = new SmsLead();
     $smsLead->sms_to = $request->input("to");
     $smsLead->sms_from = $request->input("from");
     $smsLead->created_at = $request->input("date");
@@ -23,6 +28,7 @@ class ApiController extends BaseController
     $smsLead->link_id = $request->input("linkId");
     $smsLead->sms_id = $request->input("id");
     $smsLead->save();
+    */
   }
   
   
