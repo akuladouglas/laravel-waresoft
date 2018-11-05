@@ -23,20 +23,18 @@ class ApiController extends BaseController
   function shortCodeCallback()
   {
     
-    $smsRedemptionsHelper = new SmsRedemptions();
-    $smsRedemptionsHelper->redeemLoyaltyPoints();
-    
-    dd("here");
-    
     $linkId = $_POST["linkId"];
-    $text = strtolower(["text"]);
+    $text = strtolower($_POST["text"]);
     $to = $_POST["to"];
     $id = $_POST["id"];
     $date = Carbon::parse($_POST["date"])->format("Y-m-d h:m:s");
     $from = $_POST["from"];
     
     if (strpos($text, 'redeem') !== false) {
-       $smsredemption = SmsRedemptions::redeemPoints($from, $text);
+       $smsRedemption = new SmsRedemptions();
+       $smsRedemption->redeemPoints($from, $text);
+       
+       
     }
     
     $smsLead = new SmsLead();

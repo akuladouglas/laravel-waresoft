@@ -1,6 +1,11 @@
 <?php
 namespace App\Helpers;
 
+use App\Models\RewardCustomer;
+use App\Services\SmsService;
+use App\Models\Customer;
+use App\Models\Reward;
+
 /**
  * SmsRedemptions
  * @author epic-code
@@ -29,24 +34,49 @@ class SmsRedemptions {
      
   }
   
-  public static function redeemPoints($from, $text){
+  public function redeemPoints($from, $text){
     
     $pointsToRedeem = $this->getPointsToRedeem($text);
-    $customerObj = RewardCustomer::join("customers","reward_customers.emailAddress", "=", "customers.email")
-                                      ->where("customers.phone", $from)
+    
+    $customerObj = RewardCustomer::join("customers","rewards_customers.emailAddress", "=", "customers.email")
+                                      ->where("customers.phone", "like", "%". substr($from, -9)."%")
                                       ->get()
                                       ->first();
     
+//    dd($customerObj);
+    
     $customerPoints = $customerObj->pointsBalance;
     
-    if($pointsToRedeem > $customerPoints){
-      $smsText = "Sorry, the points you wish to redeem are less than your total points";
+    if($pointsToRedeem > $customerPoints) {
+      
+      $smsText = "Sorry, the points you wish to redeem ($pointsToRedeem) are more than your total points of $customerPoints";
+      $sms = new SmsService();
+      $sms->sendNewSms("254". substr($from, -9), $smsText);
       
     } else {
-       $redeemPoints = $this->redeemLoyaltyPoints($from);
-       $discountCoupon = $this->getDiscountCode($customerObj->accountId);
+      
+       $customerId = $customerObj->customerId;
        
-       $smsText = "Thank you for redeeming your discount. Your coupon is $discountCoupon";
+       $reward = Reward::where("points_required", $pointsToRedeem)->get()->first();
+       
+       if($reward){
+         $rewardId = $reward->id;
+       } else {
+         $smsText = "Sorry, the points you are trying to redeem are out of range. please contact us.";
+         $sms = new SmsService();
+         $sms->sendNewSms("254". substr($from, -9), $smsText);
+       }
+       
+       $redeemPoints = $this->redeemLoyaltyPoints($customerId, $rewardId);
+       
+       $results = json_decode($redeemPoints);
+       
+       $couponCode = $results->CouponCode;
+       $couponTitle = $results->Title;
+       
+       $smsText = "Redemption Successful. Your coupon is $couponCode which gives you a $couponTitle. Call 0700552456 to place your order.";
+       $sms = new SmsService();
+       $sms->sendNewSms("254". substr($from, -9), $smsText);
        
     }
     
@@ -56,7 +86,14 @@ class SmsRedemptions {
     
     $explodedText = explode(" ", $text);
     
-    $points = $explodedText[1];
+    $points = 0;
+    foreach ($explodedText as $key => $text) {
+      if(is_numeric($text)){
+        $points = $text;
+        break;
+      }
+    }
+    
     return $points;
   }
   
