@@ -72,6 +72,10 @@ class SmsRedemptions {
        $couponCode = $results->CouponCode;
        $couponTitle = $results->Title;
        
+       $rewardsCustomer = RewardCustomer::where("customerId",$customerId)->get()->first();
+       $rewardsCustomer->pointsBalance = ($customerPoints - $pointsToRedeem);
+       $rewardsCustomer->save();
+       
        $smsText = "Redemption Successful. Your coupon is $couponCode which gives you a $couponTitle. Call 0700552456 to place your order.";
        $sms = new SmsService();
        $sms->sendNewSms("254". substr($from, -9), $smsText);
