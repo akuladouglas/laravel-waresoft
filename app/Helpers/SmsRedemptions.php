@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Helpers;
 
 use App\Models\RewardCustomer;
@@ -34,7 +35,33 @@ class SmsRedemptions {
      
   }
   
+  public function updateCustomerPoints($from) {
+    
+    $customerObj = RewardCustomer::join("customers","rewards_customers.emailAddress", "=", "customers.email")
+                                      ->where("customers.phone", "like", "%". substr($from, -9)."%")
+                                      ->get()
+                                      ->first();
+    
+    $customerId = $customerObj->customerId;
+    
+    $url = "https://app.marsello.com/api/v1/customers/$customerId";
+    
+    $results = $this->get_data($url);
+    
+    $decodedResults = json_decode($results);
+    
+    $rewardsCustomer = RewardCustomer::where()->get()->first();
+    $rewardsCustomer->pointsBalance =$decodedResults->PointsBalance;
+    $rewardsCustomer->save();
+    
+    return true;
+    
+  }
+  
+  
   public function redeemPoints($from, $text){
+    
+    $this->updateCustomerPoints($from);
     
     $pointsToRedeem = $this->getPointsToRedeem($text);
     
@@ -42,6 +69,8 @@ class SmsRedemptions {
                                       ->where("customers.phone", "like", "%". substr($from, -9)."%")
                                       ->get()
                                       ->first();
+    
+    $customerId = $customerObj->customerId;
     
     $customerPoints = $customerObj->pointsBalance;
     
@@ -53,7 +82,7 @@ class SmsRedemptions {
       
     } else {
       
-       $customerId = $customerObj->customerId;
+       
        
        $reward = Reward::where("points_required", $pointsToRedeem)->get()->first();
        
