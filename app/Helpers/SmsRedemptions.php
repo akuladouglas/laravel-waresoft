@@ -43,8 +43,6 @@ class SmsRedemptions {
                                       ->get()
                                       ->first();
     
-//    dd($customerObj);
-    
     $customerPoints = $customerObj->pointsBalance;
     
     if($pointsToRedeem > $customerPoints) {
@@ -98,18 +96,7 @@ class SmsRedemptions {
   }
   
   
-  public function getPhoneNumber() {
-    
-    
-  }
-  
-  public function getLoyaltyPoints() {
-    
-    
-  }
-  
-  
-  public function redeemLoyaltyPoints($customerId = "5b3f8ae18e2bf3162006e77e", $rewardId = "5b29c5798e2bf30fe0e11ed0") {
+  public function redeemLoyaltyPoints($customerId, $rewardId) {
    
    $url = "https://app.marsello.com/api/v1/rewards/claim";
    
