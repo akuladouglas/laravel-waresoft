@@ -10,6 +10,7 @@ use App\Models\Customer;
 use App\Models\Reward;
 use DB;
 use App\Models\RewardCoupon;
+use App\Models\SmsLead;
 use Carbon\Carbon;
 
 class RewardController extends Controller
@@ -355,4 +356,15 @@ class RewardController extends Controller
       
         return view("reward/activity", $data);
     }
+    
+    
+    public function smsRedemptions() {
+      
+      $data["sms_redemptions"] = SmsLead::where('text', 'like', '%' . 'redeem' . '%')->get();
+      
+      return view("reward/sms-redemptions", $data);
+      
+    }
+    
+    
 }

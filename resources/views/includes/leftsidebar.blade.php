@@ -22,19 +22,25 @@
         <li>
           <a class="" href="{{ url('reward/customers') }}">
             <i class="material-icons col-light-green">group</i>
-            <span>Rewards Customers</span>
+            <span> Rewards Customers </span>
           </a>
         </li>
         <li>
           <a href="{{ url('reward/activitys') }}">
             <i class="material-icons col-light-green">view_headline</i>
-            <span>Rewards Activities</span>
+            <span> Rewards Activities </span>
           </a>
         </li>
         <li>
           <a href="{{ url('reward/sms') }}">
             <i class="material-icons col-light-green">notifications_active</i>
-            <span>Rewards Sms Outbox</span>
+            <span> Rewards Sms Outbox </span>
+          </a>
+        </li>
+        <li>
+          <a href="{{ url('reward/sms-redemptions') }}">
+            <i class="material-icons col-light-green">all_inbox</i>
+            <span> Rewards Sms Redemptions </span>
           </a>
         </li>
       </ul>
