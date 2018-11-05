@@ -12,6 +12,7 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        'api/short-code-callback'
+        'api/short-code-callback',
+        'api/test'
     ];
 }

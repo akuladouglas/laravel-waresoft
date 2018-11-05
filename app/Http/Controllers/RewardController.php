@@ -334,6 +334,7 @@ class RewardController extends Controller
                                             ->take(3000);
       
         return view("reward/customer", $data);
+        
     }
   
   
