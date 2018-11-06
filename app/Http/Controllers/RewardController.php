@@ -62,7 +62,7 @@ class RewardController extends Controller
                    ->where("rewards_customers.pointsBalance",">=", 1000)
                    ->where("points_sms_sent", null)
                    ->get()
-                   ->take(2);
+                   ->take(40);
       
       foreach ($customers as $key => $customer) {
         
