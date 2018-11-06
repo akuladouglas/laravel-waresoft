@@ -74,9 +74,11 @@ class SmsRedemptions {
       $decodedResults = json_decode($results);
 
       $rewardsCustomer = RewardCustomer::where("customerId",$customerId)->get()->first();
-      $rewardsCustomer->pointsBalance =$decodedResults->PointsBalance;
+      $rewardsCustomer->pointsBalance = $decodedResults->PointsBalance;
       $rewardsCustomer->points_synced = 1;
       $rewardsCustomer->birthDate = $decodedResults->BirthDate;
+      $rewardsCustomer->totalSpent = $decodedResults->TotalSpent;
+      $rewardsCustomer->totalOrders = $decodedResults->TotalOrders;
       $rewardsCustomer->save();
       
     }
