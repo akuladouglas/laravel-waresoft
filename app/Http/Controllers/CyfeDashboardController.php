@@ -52,8 +52,8 @@ class CyfeDashboardController extends Controller
      */
     public function __construct()
     {
-        $this->start_date = Carbon::parse("2018-10-01");
-        $this->end_date = Carbon::parse("2018-10-31");
+        $this->start_date = Carbon::parse("2018-11-01");
+        $this->end_date = Carbon::parse("2018-11-30");
         $this->today =  Carbon::now();
     }
     
