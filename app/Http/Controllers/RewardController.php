@@ -59,7 +59,8 @@ class RewardController extends Controller
     public function sendLoyaltyStatementSms() {
       
       $customers = RewardCustomer::join("customers","customers.email", "rewards_customers.emailAddress")
-                   ->where("rewards_customers.pointsBalance",">=", 1000)
+                   ->where("rewards_customers.pointsBalance","<", 1000)
+                   ->where("rewards_customers.pointsBalance",">", 0)
                    ->where("points_sms_sent", null)
                    ->get()
                    ->take(40);
@@ -71,7 +72,11 @@ class RewardController extends Controller
         $pointsToRedeem = $rewardObj->points_required;
         $reward = $rewardObj->title;
         
-        $smsText = "Hi Beauty, you have earned {$customer->pointsBalance} points in the BeautyClick Loyalty program. For {$pointsToRedeem} points you qualify for {$reward} discount. Send the text 'BeautyClick claim $pointsToRedeem' to 22384 to claim your discount code.";
+        $smsText_old = "Hi Beauty, you have earned {$customer->pointsBalance} points in the BeautyClick Loyalty program. For {$pointsToRedeem} points you qualify for {$reward} discount. Send the text 'BeautyClick claim $pointsToRedeem' to 22384 to claim your discount code.";
+        
+        $pointsBalance = (1000 - $customer->pointsBalance);
+        
+        $smsText = "Hi Beauty, you have a balance of {$customer->pointsBalance} points in the BeautyClick Loyalty program. Make more purchases to earn {$pointsBalance} points to qualify for your next reward.";
         
         $sms = new SmsService();
         $sms->sendNewSms("254". substr($customer->phone, -9), $smsText);

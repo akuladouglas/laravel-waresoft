@@ -29,6 +29,7 @@ class Reward extends Model
         $results = Reward::where("points_required", 10000)->get()->first();
         break;
       default:
+        $results = Reward::where("points_required", 1000)->get()->first();
         break;
       
     }
