@@ -61,7 +61,7 @@ class SmsRedemptions {
   
   public function updateCustomerDetails() {
     
-    $customerObjs = RewardCustomer::where("points_synced", null)->get()->take(30);
+    $customerObjs = RewardCustomer::where("points_synced", null)->get()->take(100);
     
     foreach ($customerObjs as $key => $customerObj) {
       
