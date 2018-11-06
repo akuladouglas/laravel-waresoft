@@ -51,8 +51,38 @@ class RewardController extends Controller
       $smsRedemptions = new SmsRedemptions();
       $smsRedemptions->updateCustomerDetails();
       
+    }
+    
+    
+    
+    public function sendLoyaltyStatementSms() {
+      
+      $customers = RewardCustomer::join("customers","customers.email", "rewards_customers.emailAddress")
+                   ->where("rewards_customers.pointsBalance",">=", 1000)
+                   ->where("points_sms_sent", null)
+                   ->get()
+                   ->take(2);
+      
+      foreach ($customers as $key => $customer) {
+        
+        $rewardObj = Reward::getClaimableReward($customer->pointsBalance);
+        
+        $pointsToRedeem = $rewardObj->points_required;
+        $reward = $rewardObj->title;
+        
+        $smsText = "Hi Beauty, you have earned {$customer->pointsBalance} points in the BeautyClick Loyalty program. For {$pointsToRedeem} points you qualify for {$reward} discount. Send the text 'BeautyClick claim $pointsToRedeem' to 22384 to claim your discount code.";
+        
+        $sms = new SmsService();
+        $sms->sendNewSms("254". substr($customer->phone, -9), $smsText);
+      
+        $customerObj = RewardCustomer::where("customerId", $customer->customerId)->get()->first();
+        $customerObj->points_sms_sent = 1;
+        $customerObj->save();
+        
+      }
       
     }
+    
     
     /**
      *
