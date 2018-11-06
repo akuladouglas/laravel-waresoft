@@ -13,6 +13,7 @@ use App\Models\RewardCoupon;
 use App\Models\SmsLead;
 use Carbon\Carbon;
 use App\Helpers\SmsRedemptions;
+use App\Services\SmsService;
 
 class RewardController extends Controller
 {
