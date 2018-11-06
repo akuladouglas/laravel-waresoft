@@ -81,8 +81,6 @@ class SmsRedemptions {
       $sms->sendNewSms("254". substr($from, -9), $smsText);
       
     } else {
-      
-       
        
        $reward = Reward::where("points_required", $pointsToRedeem)->get()->first();
        
@@ -105,7 +103,7 @@ class SmsRedemptions {
        $rewardsCustomer->pointsBalance = ($customerPoints - $pointsToRedeem);
        $rewardsCustomer->save();
        
-       $smsText = "Redemption Successful. Your coupon is $couponCode which gives you a $couponTitle. Login to https://beautyclick.co.ke or call 0700552456 to place your order.";
+       $smsText = "Claim Successful. Your discount code $couponCode gives you $couponTitle OFF your next order. Visit http://beautyclick.co.ke or call 0700552456 to place your order.";
        $sms = new SmsService();
        $sms->sendNewSms("254". substr($from, -9), $smsText);
        

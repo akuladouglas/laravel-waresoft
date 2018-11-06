@@ -30,7 +30,7 @@ class ApiController extends BaseController
     $date = Carbon::parse($_POST["date"])->format("Y-m-d h:m:s");
     $from = $_POST["from"];
     
-    if (strpos($text, 'redeem') !== false) {
+    if (strpos($text, 'claim') !== false) {
        $smsRedemption = new SmsRedemptions();
        $smsRedemption->redeemPoints($from, $text);
        
