@@ -12,6 +12,7 @@ use DB;
 use App\Models\RewardCoupon;
 use App\Models\SmsLead;
 use Carbon\Carbon;
+use App\Helpers\SmsRedemptions;
 
 class RewardController extends Controller
 {
@@ -39,6 +40,18 @@ class RewardController extends Controller
         $data = curl_exec($ch);
         curl_close($ch);
         return $data;
+    }
+    
+     /*
+      * Cron job to update customers with latest points / birthday info
+     */
+    
+    public function syncCustomerPoints() {
+      
+      $smsRedemptions = new SmsRedemptions();
+      $smsRedemptions->updateCustomerDetails();
+      
+      
     }
     
     /**

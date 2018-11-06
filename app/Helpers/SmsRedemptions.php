@@ -59,6 +59,33 @@ class SmsRedemptions {
   }
   
   
+  public function updateCustomerDetails() {
+    
+    $customerObjs = RewardCustomer::where("points_synced", null)->get()->take(1);
+    
+    foreach ($customerObjs as $key => $customerObj) {
+      
+      $customerId = $customerObj->customerId;
+      
+      $url = "https://app.marsello.com/api/v1/customers/$customerId";
+
+      $results = $this->get_data($url);
+
+      $decodedResults = json_decode($results);
+
+      $rewardsCustomer = RewardCustomer::where("customerId",$customerId)->get()->first();
+      $rewardsCustomer->pointsBalance =$decodedResults->PointsBalance;
+      $rewardsCustomer->points_synced = 1;
+      $rewardsCustomer->birthDate = $decodedResults->BirthDate;
+      $rewardsCustomer->save();
+      
+    }
+    
+    return true;
+    
+  }
+  
+  
   public function redeemPoints($from, $text){
     
     $this->updateCustomerPoints($from);

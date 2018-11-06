@@ -167,7 +167,7 @@ Route::group(array('prefix' => 'reward'), function () {
   Route::match(['get', 'post'], '/sync-coupons', 'RewardController@syncCoupons');
   Route::match(['get', 'post'], '/sms-redemptions', 'RewardController@smsRedemptions');
   Route::match(['get', 'post'], '/create-coupon-sms/{id}', 'RewardController@createCouponSms');  
-  
+  Route::match(['get', 'post'], '/sync-customer-points', 'RewardController@syncCustomerPoints');
 });
 
 Route::group(array('prefix' => 'queues'), function () {
