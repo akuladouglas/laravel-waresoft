@@ -11,7 +11,7 @@ use Carbon\Carbon;
 class LeadsController extends Controller {
 
   public function index() {
-    $data['stats'] = SmsLead::where('text', 'not like', '%' . 'redeem' . '%')->get();
+    $data['stats'] = SmsLead::where('text', 'not like', '%' . 'claim' . '%')->get();
     return View("leads.home", $data);
   }
 

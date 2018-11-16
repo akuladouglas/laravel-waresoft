@@ -103,6 +103,7 @@ Route::group(array('prefix' => 'delivery'), function () {
   Route::match(['get', 'post'], '/post-edit', 'DeliveryController@postEdit');
   Route::match(['get', 'post'], '/update/{order_id}', 'DeliveryController@updateDelivery');
   Route::match(['get', 'post'], '/download-invoice/{order_id}', 'DeliveryController@downloadInvoice');
+  Route::match(['get', 'post'], '/mark-dispatched/{order_id}', 'DeliveryController@markDispatched');
 });
 
 Route::group(array('prefix' => 'leads'), function () {

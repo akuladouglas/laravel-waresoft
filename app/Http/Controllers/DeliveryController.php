@@ -7,6 +7,7 @@ use App\Models\Delivery;
 use App\Models\Order;
 use App\Models\Stock;
 use App\Models\Warehouse;
+use App\Models\Lineitems;
 use App\Models\Rider;
 use App\Models\PaymentMethod;
 use App\Models\DeliveryPartner;
@@ -28,11 +29,11 @@ class DeliveryController extends Controller
         $data["riders"] = Rider::get();
         $data["payment_methods"] = PaymentMethod::get();
         $data["delivery_partners"] = DeliveryPartner::get();
-    
+        
         foreach ($data["riders"] as $key => $rider) {
             $data["riders_array"][$rider->rider_id] = $rider->rider_name;
         }
-      
+        
         return view("delivery/home", $data);
     }
 
@@ -54,8 +55,11 @@ class DeliveryController extends Controller
         $delivery->updated_at = Carbon::now()->format("Y-m-d h:m:s");
         $delivery->order_id = $order_id;
         $delivery->save();
-    
+        
+        $request->session()->flash("success", "Delivery created successfully");
+        
         return redirect(url("delivery"));
+        
     }
 
     /**
@@ -90,8 +94,9 @@ class DeliveryController extends Controller
     {
         $order_id = $request->input("order_id");
         $delivery = Delivery::where("order_id", $order_id)->get()->first();
-        $delivery->delivery_partner_id = $request->input("delivery_partner_id");
+        $delivery->delivery_partner_id = (int)$request->input("delivery_partner_id");
         $delivery->delivered = 1;
+        $delivery->delivery_date = Carbon::now()->format("Y-m-d h:i:s");
         $delivery->save();
     
         $request->session()->flash("success", "Delivery status information updated successfully");
@@ -106,6 +111,7 @@ class DeliveryController extends Controller
     {
         $delivery = Delivery::where("order_id", $request->input("order_id"))->get()->first();
         $delivery->paid = 1;
+        $delivery->paid_date = Carbon::now()->format("Y-m-d h:i:s");
         $delivery->payment_method_id = $request->payment_method_id;
         $delivery->save();
 
@@ -114,6 +120,23 @@ class DeliveryController extends Controller
         return redirect(url("delivery"));
     }
   
+    
+    /**
+     * Other step of order management
+     */
+    public function markDispatched(Request $request, $orderId)
+    {
+        $delivery = Delivery::where("order_id", $orderId)->get()->first();
+        $delivery->dispatched = 1;
+        $delivery->dispatched_date = Carbon::now()->format("Y-m-d h:i:s");
+        $delivery->save();
+
+        $request->session()->flash("success", "Dispatch information updated successfully");
+
+        return redirect(url("delivery"));
+    }
+    
+    
     /**
      *
      * @param Request $request
@@ -156,8 +179,11 @@ class DeliveryController extends Controller
         $sql = "update stocks set quantity=quantity-1 where sku=$sku";
         //      decrement stocks in warehouse
         DB::Raw($sql);
-
-        return redirect();
+        
+        $request->session()->flash("success", "Decremented stock successfully");
+        
+        return redirect("deliverys");
+        
     }
 
     /**
@@ -197,8 +223,8 @@ class DeliveryController extends Controller
     public function edit($order_id)
     {
         $data["delivery"] = Delivery::join("orders", "orders.id", "deliverys.order_id")
-      ->where("deliverys.order_id", $order_id)
-      ->get()->first();
+            ->where("deliverys.order_id", $order_id)
+            ->get()->first();
         $data["riders"] = Rider::get();
         $data["payment_methods"] = PaymentMethod::get();
     
@@ -211,9 +237,12 @@ class DeliveryController extends Controller
     public function commitStock($order_id, Request $request)
     {
         $delivery = Delivery::join("orders", "orders.id", "deliverys.order_id")
-      ->where("deliverys.order_id", $order_id)
-      ->get()->first();
-     
+          ->where("deliverys.order_id", $order_id)
+          ->get()
+          ->first();
+        $delivery->stock_commited = 1;
+        $delivery->save();
+        
         $request->session()->flash("success", "Stock updated successfully");
      
         return redirect(url("delivery"));
@@ -222,9 +251,14 @@ class DeliveryController extends Controller
     public function downloadInvoice($order_id)
     {
         if ($order_id) {
-          
+              
             $order = Order::where("id", $order_id)->get()->first();
             $data["order"] = $order;
+            
+            $orderItems = Lineitems::where("order_id", $order->id)->get();
+            $data["orderItems"] = $orderItems;
+             
+            //return View("delivery.invoice_pdf", $data);
             
             $pdf = PDF::loadView("delivery.invoice_pdf", $data);
             

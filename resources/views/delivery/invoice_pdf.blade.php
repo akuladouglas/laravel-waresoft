@@ -2,96 +2,141 @@
 @section('content')
 <div class="row">
   <div class="col-lg-12">
+
+    <div class="row">
+      
+      <div class="col-lg-5 pull-left" style="padding-left: 0px; padding-right: 0px;">
+        <img width="250px" src="{{ asset('images/print_logo.png') }}"> 
+      </div>
+          
+      <div class="col-lg-5 pull-right" style="text-align: right; float: right; padding-left: 0px; padding-right: 0px;">
+        <small> {{ date("d/m/y") }} </small> <br>
+        <small> Invoice for #{{ $order->number }}  </small>
+      </div>
+      
+    </div>
+    
     <table>
-      <tbody>
+      <tbody>        
         <tr>
           <th> Website: www.beautyclick.co.ke </th>
         </tr>
         <tr>
-          <td> Mistumi Business Park, along Mutithi Road, Westlands </td>
+          <td> Mitsumi Business Park, along Mutithi Road, Westlands </td>
         </tr>
         <tr>
           <td> Nairobi - Kenya </td>
-        </tr>
-        <tr>
-          <td> &nbsp; </td>
-        </tr>
-        <tr>
-          <td> M-PESA Paybill Number 638620 Account Number .... </td>
-        </tr>
+        </tr>        
       </tbody>
     </table>
+    
     <hr>
     
-    <h4> Item Details </h4>
+    <p class="pdf_title"> Item Details </p>
     
-    <table class="table table-bordered">
+    <table class="table table-bordered table-sm">
       
       <tr>
-        <th> Quantity </th>
         <th> Item </th>
-        <th> Taxes </th>
+        <th> Sku </th>
+        <th> Quantity </th>
         <th> Price </th>
       </tr>
       
+      @foreach($orderItems as $orderItem)
       <tr>
-        <td> </td>
-        <td> </td>
-        <td> </td>
-        <td> </td>
+        <td> {{ $orderItem->name }} </td>
+        <td> {{ $orderItem->sku }}  </td>
+        <td> {{ $orderItem->quantity }} </td>
+        <td> {{ $orderItem->price }} </td>
       </tr>
+      @endforeach
       
     </table>
     
-    <h4> Payment Details </h4>
+    <p class="pdf_title"> Payment Details </p>
     
-    <table class="table table-bordered"> 
-    
+    <table class="table table-bordered table-sm"> 
+      
       <tr>
-        <th> Sub total price </th>
-        <td> </td>
+        <th> Payment Status </th>
+        <th style="text-transform: uppercase;"> {{ $order->financial_status }} </th>
       </tr>
       
       <tr>
-        <th> Total tax </th>
-        <td> </td>
-      </tr>
+        <th> Sub total price </th>
+        <td> {{ $order->subtotal_price }} </td>
+      </tr>            
       
       <tr>
         <th> Shipping </th>
-        <td> </td>
+        <td> 
+          {{ number_format( ($order->total_price-$order->subtotal_price), 2) }}
+        </td>
       </tr>
       
       <tr>
-        <th>Total Price </th>
-        <td> </td>
+        <th> Total Price </th>
+        <td> {{ $order->total_price }} </td>
       </tr>
       
       <tr>
-        <th>Total Paid </th>
-        <td> </td>
+        <th> Total Tax </th>
+        <td> {{ $order->total_tax }} </td>
+      </tr>
+      
+      <tr>
+        <th> Total Paid </th>
+        <td> 
+          {{ number_format($order->total_paid, 2) }} 
+        </td>
       </tr>
       
       <tr>
         <th> Outstanding Amount </th>
-        <td> </td>
+        <td> 
+          {{ number_format( ($order->total_price - $order->total_paid),2) }} 
+        </td>
+      </tr>
+      
+      <tr>
+        <th> Payment Instruction </th>
+        <td> M-PESA Paybill Number 638620 Account Number {{ $order->number }} </td>
       </tr>
       
     </table>
     
-    <h4> Note </h4>
+    @if($order->note)
+    <p class="pdf_title"> Note </p>
     
+    <table class="table table-bordered table-sm"> 
+    
+      <tr>
+        <td colspan="100"> 
+          <p> {{ $order->note }} </p>
+        </td>
+      </tr>
+      
+    </table>
+    @endif
     <p> </p>
     
-    <h4> Shipping Details </h4>
+    <p class="pdf_title"> Shipping Details </p>
     
-    <div class="well">
-      &nbsp;
-    </div>
+    <table class="table table-bordered table-sm"> 
+    
+      <tr>
+        <td colspan="100"> 
+          Customer Name : <b> {{ $order->customer_firstname." ".$order->customer_lastname }} </b> <br>
+          Mobile Phone :  <b> {{ $order->customer_phone }} </b> <br>
+        </td>
+      </tr>
+      
+    </table>
     
     <p> If you have any questions, please contact us on <u> 0700552456 </u> </p>
     
-    
   </div>
+  
 </div>
 @endsection

@@ -28,6 +28,8 @@ class OrderController extends BaseController
     public function deliverys()
     {
         $data["orders"] = Order::where("scheduled_delivery",null)
+                                ->where("financial_status", "pending")
+                                ->where("fulfillment_status", null)
                                 ->orderBy("id", "desc")
                                 ->get()->take(2000);
         

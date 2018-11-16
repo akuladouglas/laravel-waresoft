@@ -58,8 +58,12 @@
                 <td> {{ $order->total_price }} </td>
               </tr>
               <tr>
-                <th> Total Price </th>
+                <th> Sub Total Price </th>
                 <td> {{ $order->subtotal_price }} </td>
+              </tr>
+              <tr>
+                <th> Shipping </th>
+                <td> {{ number_format( ($order->total_price-$order->subtotal_price), 2)  }} </td>
               </tr>
               <tr>
                 <th> Total Tax </th>

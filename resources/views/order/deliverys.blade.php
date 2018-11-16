@@ -34,10 +34,7 @@
                 <th>Fin. status </th>
                 <th>Tags </th>
                 <th>Note</th>
-                <th>Send Pay Info</th>
-                <th>Push STK</th>
                 <th>Queue for <br> Delivery </th>
-                <th> </th>
               </tr>
             </thead>
             <tbody>
@@ -51,27 +48,16 @@
                 <td> {{ $order->financial_status }}</td>
                 <td> {{ $order->tags }} </td>
                 <td> {{ $order->note }}</td>
-                <td> 
-                  @if($order->financial_status != "paid" && $order->customer_phone)
-                    <a onclick="return confirm('You are about to send Payment Information. Proceed ?')" href="{{url("payment/process-send-pay-info/{$order->id}")}}" class="btn btn-xs btn-primary"> Send Info </a>
-                  @endif
-                </td>
-                <td> 
-                  @if($order->financial_status != "paid" && $order->customer_phone)
-                    <a onclick="return confirm('You are about to send an STK Push. Proceed ?')" href="{{url("payment/process-stk-push/{$order->id}")}}" class="btn btn-xs btn-success"> Push </a>
-                  @endif
-                </td>
                 <td>  {{ $order->scheduled_delivery }}
                   @if(!$order->scheduled_delivery)
-                    <a href="{{url("delivery/create/{$order->id}")}}" class="btn btn-xs btn-default"> For Delivery </a> 
+                  <a onclick="return confirm('Queue order for delivery. Proceed ?')" href="{{url("delivery/create/{$order->id}")}}" class="btn btn-xs btn-default"> For Delivery </a> 
                   @endif
-                </td>
-                <td>
-                  <input type="checkbox" class="form-control" name="selected_order[]" value="{{ $order->id }}" >
                 </td>
               </tr>
               @endforeach
             </tbody>
+            
+            
           </table>
 
         </div>

@@ -27,10 +27,12 @@
                 <th>Fin. Status </th>
                 <th>Invoice</th>
                 <th>Rider </th>
+                <th>Dispatched </th>
                 <th>Delivered</th>
                 <th>Payment</th>
                 <th>Stock</th>
                 <th></th>
+                <th>Bulk</th>
               </tr>
             </thead>
             <tbody>
@@ -43,6 +45,7 @@
                 <td> {{ $order->customer_phone }} </td>
                 <td> {{ number_format($order->total_price) }} </td>
                 <td> {{ $order->financial_status }} </td>
+                
                 <td> <a class="btn btn-primary btn-xs" href="{{url("delivery/download-invoice/".$order->order_id)}}"> <small> Pdf </small> </a> </td>
                 <td> 
                   <!--modal button-->
@@ -73,7 +76,7 @@
                             </button>
                           </div>
                           
-                          <form action="{{ url("delivery/assign-rider") }}">
+                          <form action="{{ url("delivery/assign-rider") }}" method="post" enctype="multipart/form-data">
                             
                           <div class="modal-body">
                             @csrf
@@ -101,12 +104,24 @@
                   <!--end modal-->                  
                 </td>
                 
+                <td>
+                  @if($order->dispatched)
+                  <span> <small> <i class="material-icons" style="font-size: 12px;">check</i> {{ date("d/m/y", strtotime($order->dispatched_date)) }} </small> </span>
+                  @else
+                  <a onclick="return confirm('Dispatch Order. Proceed ?')" class="btn btn-xs btn-primary" href="{{ url("delivery/mark-dispatched/{$order->order_id}") }}"> <small> Dispatch </small> </a>
+                  @endif
+                </td>
+                
                 <td> 
                    <!--<a onclick="return confirm('Mark this order as delivered. Proceed ?')" class="btn btn-primary btn-xs" href="{{ url("delivery/mark-delivered/".$order->id) }}"> Mark Delivered </a>-->
                   <!--modal button-->
-                  <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#deliveredModal">
+                  @if($order->delivered)
+                  <span> <small> <i class="material-icons" style="font-size: 14px;">check</i> {{ date("d/m/y", strtotime($order->delivery_date)) }} </small> </span>
+                  @else 
+                    <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#deliveredModal">
                     <small style="font-size: 10px;"> Mark Delivered </small>
-                  </button>
+                    </button>
+                  @endif
                   <!--end modal button-->
                   
                   <!--modal-->
@@ -123,7 +138,7 @@
                             </button>
                           </div>
                           
-                          <form action="{{ url("delivery/mark-delivered") }}">
+                          <form action="{{ url("delivery/mark-delivered") }}" method="post" enctype="multipart/form-data">
                             
                           <div class="modal-body">
                             @csrf
@@ -154,14 +169,14 @@
                 
                 <td> 
                   <!--modal button-->
-                  <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#deliveryModal">
-                    <small style="font-size: 10px;"> Update Payment </small>
-                  </button>
+                  @if(!$order->paid)
+                    <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#deliveryModal">
+                      <small style="font-size: 10px;"> Update Payment </small>
+                    </button>
+                  @else
+                    <span> <small> <i class="material-icons" style="font-size: 12px;">check</i> {{ date("d/m/y", strtotime($order->paid_date)) }} </small> </span>
+                  @endif
                   <!--end modal button-->
-                  
-                  <!--modal-->
-                  
-                  <!-- Modal -->
                   
                     <div class="modal fade" id="deliveryModal" tabindex="-1" role="dialog" aria-labelledby="deliveryModalLabel" aria-hidden="true">
                       <div class="modal-dialog" role="document">
@@ -173,7 +188,7 @@
                             </button>
                           </div>
                           
-                          <form action="{{ url("delivery/mark-paid") }}">
+                          <form action="{{ url("delivery/mark-paid") }}" method="post" enctype="multipart/form-data">
                             
                           <div class="modal-body">
                             @csrf
@@ -202,15 +217,66 @@
                 </td>
                 
                 <td> 
-                  <a onclick="return confirm('Update stock from this delivery. Proceed ?')" class="btn btn-primary btn-xs" href="{{ url("delivery/commit-stock/".$order->id) }}"> <small> Commit Stock </small> </a>
+                  @if(!$order->stock_commited)
+                    <a onclick="return confirm('Update stock from this delivery. Proceed ?')" class="btn btn-primary btn-xs" href="{{ url("delivery/commit-stock/".$order->id) }}"> <small> Commit Stock </small> </a>
+                  @else
+                  <span> <small> <i class="material-icons" style="font-size: 12px;">check</i> </small> </span>
+                  @endif
                 </td>
                 
                 <td> 
                   <a href="{{url("delivery/edit/{$order->id}")}}" class="btn btn-xs btn-default"> <small> Edit </small> </a> 
                 </td>
+                
+                <td>
+                  <input type="checkbox" name="bulk_selected[]" id="bulk_selected" value="{{ $order->order_id }}" />
+                </td>
+                
               </tr>
               @endforeach
             </tbody>
+            
+            <tfoot>
+              <td colspan="8"> Bulk Actions </td>
+              
+              <td> 
+              <!--bulk change rider -->
+              <form action="">
+                <button type="submit" class="btn btn-xs btn-success"> Assign Rider </button>
+              </form>
+              </td>
+              
+              <td> 
+              <!--bulk dispatch-->
+              <form action="">
+                <button type="submit" class="btn btn-xs btn-success"> Dispatch </button>
+              </form>
+              </td>
+              
+              <td>
+              <!--bulk deliver--> 
+              <form action="">
+                <button type="submit" class="btn btn-xs btn-success"> Mark Delivered </button>
+              </form>
+              </td>
+              
+              <td> 
+              <!--bulk payment-->
+              <form action="">
+                <button type="submit" class="btn btn-xs btn-success"> Mark Paid </button>
+              </form>
+              </td>
+              
+              <td> 
+              <!--bulk stock-->
+              <form action="">
+                <button type="submit" class="btn btn-xs btn-success"> Commit Stock </button>
+              </form>
+              </td>
+              
+              <td colspan="2"> </td>
+            </tfoot>
+            
           </table>
         </div>
       </div>

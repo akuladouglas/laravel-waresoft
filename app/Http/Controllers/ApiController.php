@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Models\SmsLead;
 use Carbon\Carbon;
 use App\Helpers\SmsRedemptions;
+use App\Services\SmsService;
 
 class ApiController extends BaseController
 {
@@ -22,7 +23,6 @@ class ApiController extends BaseController
   
   function shortCodeCallback()
   {
-    
     $linkId = $_POST["linkId"];
     $text = strtolower($_POST["text"]);
     $to = $_POST["to"];
@@ -30,11 +30,15 @@ class ApiController extends BaseController
     $date = Carbon::parse($_POST["date"])->format("Y-m-d h:m:s");
     $from = $_POST["from"];
     
-    if (strpos($text, 'claim') !== false) {
+    if (strpos($text, 'claim') !== false ||strpos($text, 'claiming') !== false) {
        $smsRedemption = new SmsRedemptions();
        $smsRedemption->redeemPoints($from, $text);
-       
-       
+    }
+    
+    if (strpos($text, 'offer') !== false || strpos($text, 'offers') !== false) {
+       $smsText = "Hi Beauty, we have received your message and we will call you shortly.";
+       $sms = new SmsService();
+       $sms->sendNewSms("254". substr($from, -9), $smsText);
     }
     
     $smsLead = new SmsLead();
