@@ -30,7 +30,7 @@ class ApiController extends BaseController
     $date = Carbon::parse($_POST["date"])->format("Y-m-d h:m:s");
     $from = $_POST["from"];
     
-    if (strpos($text, 'offers') !== false /*|| strpos($text, 'offers') !== false || strpos($text, 'offering') !== false*/) {
+    if (strpos($text, 'offers') !== false || strpos($text, 'offers') !== false || strpos($text, 'offering') !== false ) {
        $smsRedemption = new SmsRedemptions();
        $smsRedemption->offerInfo($from);
     }
