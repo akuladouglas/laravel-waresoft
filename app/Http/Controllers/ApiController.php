@@ -35,7 +35,7 @@ class ApiController extends BaseController
        $smsRedemption->redeemPoints($from, $text);
     }
     
-    if (strpos($text, 'offer') !== false || strpos($text, 'offers') !== false) {
+    if (strpos($text, 'offer') !== false || strpos($text, 'offers') !== false || strpos($text, 'offering') !== false) {
        $smsText = "Hi Beauty, we have received your message and we will call you shortly.";
        $sms = new SmsService();
        $sms->sendNewSms("254". substr($from, -9), $smsText);
