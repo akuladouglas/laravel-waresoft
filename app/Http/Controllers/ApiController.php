@@ -13,13 +13,9 @@ class ApiController extends BaseController
 {
  
   function test() {
-    
     $smsRedemptionsHelper = new SmsRedemptions();
     $smsRedemptionsHelper->redeemLoyaltyPoints();
-    
   }
-  
-  
   
   function shortCodeCallback()
   {
@@ -35,16 +31,11 @@ class ApiController extends BaseController
        $smsRedemption->offerInfo($from);
     }
     
-    if (strpos($text, 'claim') !== false) {
+    if (strpos($text, 'claim') !== false || strpos($text, 'claiming') !== false) {
        $smsRedemption = new SmsRedemptions();
        $smsRedemption->redeemPoints($from, $text);
     }
     
-    if(strpos($text, 'claiming') !== false){
-      $smsRedemption = new SmsRedemptions();
-      $smsRedemption->redeemPoints($from, $text);
-    }
-
     $smsLead = new SmsLead();
     $smsLead->sms_to = $to;
     $smsLead->sms_from = $from;
