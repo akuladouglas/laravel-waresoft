@@ -228,5 +228,14 @@ class SmsRedemptions {
       
         return true;
     }
-  
+ 
+    
+    function offerInfo($from) {
+       
+       $smsText = "Hi Beauty, we have received your message and we will call you shortly.";
+       $sms = new SmsService();
+       $sms->sendNewSms("254". substr($from, -9), $smsText);
+       
+    }
+    
 }
