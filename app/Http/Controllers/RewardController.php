@@ -136,17 +136,18 @@ class RewardController extends Controller
       
         $last_reward_customer = RewardCustomer::orderBy("rewards_customer_id", "desc")->get()->take(1)->first();
     
-        //        $created_after = $last_reward_customer->createdAt;
+//        $created_after = $last_reward_customer->createdAt;
         
         $last_sync = RewardCustomer::orderBy("rewards_customer_id", "desc")->get()->take(1)->first();
         
-        $created_after = "2018-06-16T09:21:56.867Z";
+        $created_after = "2018-07-16T09:21:56.867Z";
         
         $created_before = "";
         
-        $page_number = rand(1, 20);
+//        $page_number = rand(1, 20);
+        $page_number = 504;
         
-        $link = "https://app.marsello.com/api/v1/customers?PageNumber=$page_number&PageSize=100&CreatedAfter=$created_after&CreatedBefore=$created_before";
+        $link = "https://app.marsello.com/api/v1/customers?PageNumber=$page_number&PageSize=10&CreatedAfter=$created_after&CreatedBefore=$created_before";
     
         $response = $this->get_data($link, $this->headers);
     
@@ -377,8 +378,7 @@ class RewardController extends Controller
     {
         $data["customers"] = RewardCustomer::join("customers", "rewards_customers.emailAddress", "=", "customers.email")
                                             ->orderby("rewards_customers.rewards_customer_id", "desc")
-                                            ->get()
-                                            ->take(3000);
+                                            ->get();
       
         return view("reward/customer", $data);
         
