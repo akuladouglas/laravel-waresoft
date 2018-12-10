@@ -227,7 +227,7 @@ class OrderController extends BaseController
           
           $shopify_orders = json_decode($contents);
           
-          if(is_object($shopify_orders->order)){
+          if(isset($shopify_orders->order) && is_object($shopify_orders->order)){
             $this->updateSyncedOrders($shopify_orders);
           }
           
