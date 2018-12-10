@@ -27,17 +27,21 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 
 Route::group(array('prefix' => 'order'), function () {
+  
   Route::match(['get', 'post'], '/', 'OrderController@getOrders');
   Route::match(['get', 'post'], '/sync', 'OrderController@syncOrders');
+  Route::match(['get', 'post'], '/sync-by-id', 'OrderController@syncOrderById');
   Route::match(['get', 'post'], '/sync-updated', 'OrderController@syncUpdatedOrders');
   Route::match(['get', 'post'], '/test', 'OrderController@getDashboard');
   Route::match(['get', 'post'], '/view/{id}', 'OrderController@viewOrder');
   Route::match(['get', 'post'], '/refresh', 'OrderController@refresh');
   Route::match(['get', 'post'], '/deliverys', 'OrderController@deliverys');
   Route::match(['get', 'post'], '/undo-for-delivery/{order_id}', 'OrderController@undoForDelivery');
+  
 });
 
 Route::group(array('prefix' => 'dashboard'), function () {
+  
   Route::match(['get', 'post'], '/', 'DashboardController@getDashboardInfo');
   Route::match(['get', 'post'], '/getinfo', 'DashboardController@getDashboardInfo');
   Route::match(['get', 'post'], '/fullfillment', 'DashboardController@fullfillmentRate');
@@ -86,7 +90,6 @@ Route::group(array('prefix' => 'cyfe-dash'), function () {
   Route::match(['get', 'post'], '/breakdownbyfullfillmentstatus', 'CyfeDashboardController@fullfillmentStatusBreakdown');
   Route::match(['get', 'post'], '/breakdownbyfinancialstatus', 'CyfeDashboardController@financialStatusBreakdown');
   Route::match(['get', 'post'], '/untaggedsalesorderids', 'CyfeDashboardController@untaggedSalesOrderIds');
-  
   
   Route::match(['get', 'post'], '/test', 'CyfeDashboardController@test'); 
   

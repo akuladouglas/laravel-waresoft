@@ -213,6 +213,35 @@ class OrderController extends BaseController
         $url = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders.json?status='cancelled'&page=1&limit=250";
     }
 
+    
+    function syncOrderById() 
+    {
+      
+        $orders_missing_tags = Order::where("tags","")->where("tag_checked", 0)->take(50)->get();
+        
+        foreach ($orders_missing_tags as $key => $order_missing_tag) 
+        {
+          $get_url_timestamp = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders/{$order_missing_tag->id}.json";
+          
+          $contents = @file_get_contents($get_url_timestamp);
+          
+          $shopify_orders = json_decode($contents);
+          
+          if(is_object($shopify_orders->order)){
+            $this->updateSyncedOrders($shopify_orders);
+          }
+          
+          //update tag checked
+          
+          $order = Order::where("id", $order_missing_tag->id)->get()->first();
+          $order->tag_checked = 1;
+          $order->save();
+          
+        }
+      
+    }
+    
+    
     public function syncOrders()
     {
 
@@ -243,9 +272,17 @@ class OrderController extends BaseController
         $contents = file_get_contents($get_url_timestamp);
 
         $shopify_orders = json_decode($contents);
+        
+        $this->updateSyncedOrders($shopify_orders);
 
-
-        foreach ($shopify_orders->orders as $key => $shopify_order) {
+    }
+    
+    
+    function updateSyncedOrders($shopify_orders) {
+      
+      if(isset($shopify_orders->orders) && is_object($shopify_orders->orders)){
+        
+      foreach ($shopify_orders->orders as $key => $shopify_order) {
             //attempt to get order
 
             $order = Order::where("id", $shopify_order->id)->get()->first();
@@ -364,5 +401,8 @@ class OrderController extends BaseController
                 }
             }
         }
+      }
+      return true;
     }
+    
 }

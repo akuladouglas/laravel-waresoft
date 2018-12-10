@@ -31,12 +31,13 @@
                 <th>Delivered</th>
                 <th>Payment</th>
                 <th>Stock</th>
+                <th>Returns</th>
                 <th></th>
                 <th>Bulk</th>
               </tr>
             </thead>
             <tbody>
-              @foreach($deliveries as $order)
+              @foreach($deliveries as $key => $order)
               <tr>
                 <td> {{ date("y/m/d", strtotime($order->shopify_created_at)) }} </td>
                 <td> {{ date("y/m/d", strtotime($order->created_at)) }} </td>
@@ -51,11 +52,11 @@
                   <!--modal button-->
                   @if($order->rider_id)
                   <small style="font-size: 10px;"> {{ $riders_array[$order->rider_id] }} </small>
-                      <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#riderModal">
+                      <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#riderModal-{{ $order->order_id }}">
                         <small> Change Rider </small>
                       </button>                
                   @else
-                    <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#riderModal">
+                    <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#riderModal-{{ $order->order_id }}">
                        <small> Assign Rider </small>
                     </button>
                   @endif
@@ -66,9 +67,10 @@
                   
                   <!-- Modal -->
                   
-                    <div class="modal fade" id="riderModal" tabindex="-1" role="dialog" aria-labelledby="riderModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="riderModal-{{ $order->order_id }}" tabindex="-1" role="dialog" aria-labelledby="riderModalLabel" aria-hidden="true">
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
+                          
                           <div class="modal-header">
                             <h5 class="modal-title" id="riderModalLabel"> Assign Rider to this delivery </h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -153,6 +155,7 @@
                             </select>
                             
                           </div>
+                            
                           <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary"> Update Delivery Information </button>
@@ -170,7 +173,7 @@
                 <td> 
                   <!--modal button-->
                   @if(!$order->paid)
-                    <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#deliveryModal">
+                    <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#deliveryModal-{{ $key }}">
                       <small style="font-size: 10px;"> Update Payment </small>
                     </button>
                   @else
@@ -178,7 +181,7 @@
                   @endif
                   <!--end modal button-->
                   
-                    <div class="modal fade" id="deliveryModal" tabindex="-1" role="dialog" aria-labelledby="deliveryModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="deliveryModal-{{$key}}" tabindex="-1" role="dialog" aria-labelledby="deliveryModalLabel" aria-hidden="true">
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
@@ -191,10 +194,11 @@
                           <form action="{{ url("delivery/mark-paid") }}" method="post" enctype="multipart/form-data">
                             
                           <div class="modal-body">
+                            
                             @csrf
-                                
+                            
                             <input name="order_id" type="hidden" value="{{ $order->id }}">
-                                              
+                            
                             <select name="payment_method_id" id="rider_id" class="form-control">
                               <option value=""> -- select payment method below -- </option>
                               @foreach($payment_methods as $payment_method)
@@ -203,6 +207,7 @@
                             </select>
                             
                           </div>
+                            
                           <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary"> Save Payment method </button>
@@ -211,6 +216,7 @@
                           </form>
                           
                         </div>
+                        
                       </div>
                     </div>
                   <!--end modal-->
@@ -222,6 +228,10 @@
                   @else
                   <span> <small> <i class="material-icons" style="font-size: 12px;">check</i> </small> </span>
                   @endif
+                </td>
+                
+                <td>
+                  
                 </td>
                 
                 <td> 

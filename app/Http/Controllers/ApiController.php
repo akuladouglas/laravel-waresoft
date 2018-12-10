@@ -23,7 +23,7 @@ class ApiController extends BaseController
     $text = strtolower($_POST["text"]);
     $to = $_POST["to"];
     $id = $_POST["id"];
-    $date = Carbon::parse($_POST["date"])->format("Y-m-d h:m:s");
+    $date = Carbon::parse($_POST["date"])->format("Y-m-d h:i:s");
     $from = $_POST["from"];
     
     if (strpos($text, 'offers') !== false || strpos($text, 'offer') !== false || strpos($text, 'offering') !== false ) {
