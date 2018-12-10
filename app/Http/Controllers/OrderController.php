@@ -214,18 +214,26 @@ class OrderController extends BaseController
     }
 
     
-    function syncOrderById() 
+    public function syncOrderById() 
     {
       
-        $orders_missing_tags = Order::where("tags","")->where("tag_checked", 0)->take(50)->get();
+        $orders_missing_tags = Order::where("tags","")->where("number", 14071)->get(); //->where("tag_checked", 0)->take(50)->get();
+        
+//        dd($orders_missing_tags);
         
         foreach ($orders_missing_tags as $key => $order_missing_tag) 
         {
           $get_url_timestamp = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders/{$order_missing_tag->id}.json";
           
+          dump($get_url_timestamp);
+          
           $contents = @file_get_contents($get_url_timestamp);
           
+          dump($contents);
+          
           $shopify_orders = json_decode($contents);
+          
+          dd($shopify_orders);
           
           if(isset($shopify_orders->order) && is_object($shopify_orders->order)){
             $this->updateSyncedOrders($shopify_orders);

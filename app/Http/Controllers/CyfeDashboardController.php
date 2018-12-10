@@ -1173,12 +1173,12 @@ class CyfeDashboardController extends Controller
         $all_orders = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                                ->where("cancelled_at", null)
                                ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
-                               ->select(["number"])
+                               ->select(["name"])
                                ->get();
         $all_order_numbers = [];
         
         foreach ($all_orders as $order) {
-            array_push($all_order_numbers, $order->number);
+            array_push($all_order_numbers, $order->name);
         }
         
         foreach ($this->online_tags as $key => $tag) {          
@@ -1186,7 +1186,7 @@ class CyfeDashboardController extends Controller
                              ->where("tags", "like", "%$tag%")
                              ->where("cancelled_at", null)
                              ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
-                             ->select(["number"])
+                             ->select(["name"])
                              ->get();
         }
         
@@ -1194,7 +1194,7 @@ class CyfeDashboardController extends Controller
         
         foreach ($online_orders as $tag => $online_order_array) {
           foreach ($online_order_array as $key => $online_order) {
-            array_push($online_order_numbers, $online_order->number);
+            array_push($online_order_numbers, $online_order->name);
           }
         }
         
@@ -1205,13 +1205,13 @@ class CyfeDashboardController extends Controller
                              ->where("tags", "like", "%$tag%")
                              ->where("cancelled_at", null)
                              ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
-                             ->select(["number"])
+                             ->select(["name"])
                              ->get();
         }
         
         foreach ($offline_orders as $tag => $offline_order_array) {
           foreach ($offline_order_array as $key => $offline_order) {
-            array_push($offline_order_numbers, $offline_order->number);
+            array_push($offline_order_numbers, $offline_order->name);
           }
         }
         
