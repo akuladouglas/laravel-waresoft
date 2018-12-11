@@ -288,8 +288,6 @@ class OrderController extends BaseController
     
     function updateSyncedOrders($shopify_orders) {
       
-      if(isset($shopify_orders->orders) && is_object($shopify_orders->orders)){
-        
       foreach ($shopify_orders->orders as $key => $shopify_order) {
             //attempt to get order
 
@@ -409,7 +407,6 @@ class OrderController extends BaseController
                 }
             }
         }
-      }
       return true;
     }
     
