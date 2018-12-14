@@ -17,7 +17,7 @@ class CyfeDashboardController extends Controller
     
     public $today;
     
-    public $tags = ["faith","milly","barbara","doreen","walter","sharon","lydia","mahadia"];
+    public $tags = ["faith","milly","barbara","doreen","walter","sharon","lydia","mahadia","robert","sylvia"];
     
     public $online_tags = ["faith","milly","doreen","walter","sharon","lydia","mahadia"];
     
