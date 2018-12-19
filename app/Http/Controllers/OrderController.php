@@ -100,7 +100,7 @@ class OrderController extends BaseController
         $formatted_date = Carbon::parse($last_updated_order->shopify_updated_at)->format('Y-m-d\TH:i:s');
 
         $get_url_timestamp = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders.json?updated_at_min=$formatted_date";
-
+                        
         $contents = file_get_contents($get_url_timestamp);
 
         $shopify_orders = json_decode($contents);
@@ -268,10 +268,10 @@ class OrderController extends BaseController
         if ($last_created_order) {
             $originator_date = $last_created_order->shopify_created_at;
         } else {
-            $originator_date = "2018-07-31";
+            $originator_date = "2018-11-30";
         }
 
-        $originator_date = "2018-07-31";
+        $originator_date = "2018-11-30";
 
         $formatted_date = Carbon::parse($originator_date)->format('Y-m-d\TH:i:s');
 
