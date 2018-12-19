@@ -271,11 +271,11 @@ class OrderController extends BaseController
             $originator_date = "2018-11-30";
         }
 
-        $originator_date = "2018-11-30";
+        $originator_date = "2018-12-01";
 
         $formatted_date = Carbon::parse($originator_date)->format('Y-m-d\TH:i:s');
 
-        $get_url_timestamp = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders.json?status=any&updated_at_min=$formatted_date&page=1&limit=250";
+        $get_url_timestamp = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders.json?status=any&created_at_min=$formatted_date&page=1&limit=250";
 
         $contents = file_get_contents($get_url_timestamp);
 
