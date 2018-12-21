@@ -283,9 +283,9 @@ class OrderController extends BaseController
         
         dump($get_url_timestamp);
         
-        dump(sizeof($contents));
-        
         $shopify_orders = json_decode($contents);
+        
+        dump(sizeof($shopify_orders->orders));
         
         $this->updateSyncedOrders($shopify_orders);
 
