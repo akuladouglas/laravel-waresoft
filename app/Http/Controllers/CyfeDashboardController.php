@@ -69,20 +69,24 @@ class CyfeDashboardController extends Controller
         echo $data;
     }
     
-    public function testFunnel()
+    public function testFunnel($public_token = null, $start_date = null, $end_date = null)
     {
-        $domain = request()->getHost();
-        $domain2 = preg_replace('#^https?://#', '', request()->root());
+        
+        $private_token = "abcdefghijk"; //env("cyfe_token");
+        
+        if($public_token != $private_token){
+          print_r("Invalid access details");
+          exit();
+        }
         
         $data = "Type,Count
-                 $domain, 300000
-                 $domain2, 290000
-                 Visitors,15654
-                 Leads,4064
-                 Customers,1987
-                 Repeat Customers,976";
+                 Availability Requests,15654
+                 Book Now,4064
+                 Book Obligation,1987
+                 Booking Confirmation,976";
         
         echo $data;
+        
     }
     
     /**
