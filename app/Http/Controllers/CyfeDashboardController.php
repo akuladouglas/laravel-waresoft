@@ -72,7 +72,7 @@ class CyfeDashboardController extends Controller
     public function testFunnel()
     {
         $domain = request()->getHost();
-        $domain2 = preg_replace('#^https?://#', '', Request::root());
+        $domain2 = preg_replace('#^https?://#', '', request()->root());
         
         $data = "Type,Count
                  $domain, 300000
