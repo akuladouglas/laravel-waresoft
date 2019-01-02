@@ -71,7 +71,10 @@ class CyfeDashboardController extends Controller
     
     public function testFunnel()
     {
+        $domain = request()->getHost();
+        
         $data = "Type,Count
+                 $domain, 300
                  Visitors,15654
                  Leads,4064
                  Customers,1987
@@ -82,8 +85,8 @@ class CyfeDashboardController extends Controller
     
     /**
      * /fullfillment
-     * 
-     * @return 
+     *
+     * @return
      */
     public function fullfillmentRate()
     {
@@ -109,12 +112,12 @@ class CyfeDashboardController extends Controller
                                   ->count();
         
         $cancelled_orders = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
-                                  ->where("cancelled_at","!=",null)
+                                  ->where("cancelled_at", "!=", null)
                                   ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                                   ->count();
         
         $cood_non_cancelled = Order::where("tags", "like", "%COOD%")
-                                  ->where("cancelled_at",null)
+                                  ->where("cancelled_at", null)
                                   ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                                   ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                                   ->count();
@@ -132,7 +135,7 @@ class CyfeDashboardController extends Controller
     
     /**
      * paidsalesamount
-     * 
+     *
      */
     public function paidSalesAmount()
     {
@@ -161,11 +164,10 @@ class CyfeDashboardController extends Controller
                ";
         
         echo $data;
-        
     }
     
     /**
-     * 
+     *
      * averagebasket
      */
     
@@ -197,9 +199,9 @@ class CyfeDashboardController extends Controller
     }
     
     /**
-     * 
+     *
      * deliveredorders
-     * 
+     *
      */
     
     public function deliveredOrders()
@@ -226,7 +228,7 @@ class CyfeDashboardController extends Controller
         
         $order_total_tax = round($order_total_tax, 2);
         
-        $total_ex_vat = round(($order_total - $order_total_tax),2);
+        $total_ex_vat = round(($order_total - $order_total_tax), 2);
         
         $data = "As At,Number of orders, Total Inc VAT, Order Ex Vat Total
                {$this->today->format("d/m/y")},$order_count, $order_total, $total_ex_vat
@@ -259,12 +261,11 @@ class CyfeDashboardController extends Controller
     
     /**
      * offlinesales
-     * 
+     *
      */
     public function offlineSales()
     {
         foreach ($this->offline_tags as $key => $tag) {
-          
             $order_count[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                              ->where("tags", "like", "%$tag%")
                              ->where("cancelled_at", null)
@@ -282,7 +283,6 @@ class CyfeDashboardController extends Controller
                              ->where("cancelled_at", null)
                              ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                              ->sum("total_tax");
-            
         }
         
         $data = "As At, Number of orders, Total Inc Vat, Total ex Vat"."<br>";
@@ -296,16 +296,14 @@ class CyfeDashboardController extends Controller
         $data .= "{$this->today->format("d/m/y")},$order_count_summation, $order_total_summation, $ex_vat_total"."<br>";
         
         echo $data;
-        
     }
     
     /**
      * onlinesales
-     */    
+     */
     public function onlineSales()
-    {      
+    {
         foreach ($this->online_tags as $key => $tag) {
-          
             $order_count[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                              ->where("tags", "like", "%$tag%")
                              ->where("cancelled_at", null)
@@ -323,7 +321,6 @@ class CyfeDashboardController extends Controller
                              ->where("cancelled_at", null)
                              ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                              ->sum("total_tax");
-            
         }
         
         $data = "As At,Number of orders, Total, Total ex Vat"."<br>";
@@ -337,16 +334,15 @@ class CyfeDashboardController extends Controller
         $data .= "{$this->today->format("d/m/y")},$order_count_summation, $order_total_summation, $ex_vat_total"."<br>";
         
         echo $data;
-        
     }
     
     /**
      * untaggedsales
-     * 
+     *
      */
     
     public function untaggedSales()
-    {      
+    {
         //all numbers
         
         $all_order_count = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
@@ -365,7 +361,6 @@ class CyfeDashboardController extends Controller
                          ->sum("total_tax");
         
         foreach ($this->online_tags as $key => $tag) {
-          
             $online_order_count[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                              ->where("tags", "like", "%$tag%")
                              ->where("cancelled_at", null)
@@ -383,11 +378,9 @@ class CyfeDashboardController extends Controller
                              ->where("cancelled_at", null)
                              ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                              ->sum("total_tax");
-            
         }
         
         foreach ($this->offline_tags as $key => $tag) {
-          
             $offline_order_count[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                              ->where("tags", "like", "%$tag%")
                              ->where("cancelled_at", null)
@@ -405,7 +398,6 @@ class CyfeDashboardController extends Controller
                              ->where("cancelled_at", null)
                              ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                              ->sum("total_tax");
-            
         }
         
         $data = "As At,Number of orders, Total, Total ex Vat"."<br>";
@@ -427,47 +419,44 @@ class CyfeDashboardController extends Controller
         $data .= "{$this->today->format("d/m/y")},$order_count_summation, $order_total_summation, $ex_vat_total"."<br>";
         
         echo $data;
-        
     }
     
     /**
-     * 
+     *
      * pendingorders
      */
     
     public function pendingOrders()
     {
-      
         $order_count = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
-                           ->where("financial_status","pending")
+                           ->where("financial_status", "pending")
                            ->where("cancelled_at", null)
                            ->count();
       
         $order_total = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
-                           ->where("financial_status","pending")
+                           ->where("financial_status", "pending")
                            ->where("cancelled_at", null)
                            ->sum("total_price");
         
         $tax = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
-                           ->where("financial_status","pending")
+                           ->where("financial_status", "pending")
                            ->where("cancelled_at", null)
                            ->sum("total_tax");
         
-        $ex_vat_order_total = round(($order_total - $tax),2);
+        $ex_vat_order_total = round(($order_total - $tax), 2);
         
         $data = "As At, Number of Orders, Total Inc VAT, Total Ex VAT
               {$this->today->format("d/m/y")}, $order_count, $order_total, $ex_vat_order_total
              ";
         
         echo $data;
-        
     }
     
     /**
-     * 
+     *
      * pendingdeliveries
      */
     
@@ -487,17 +476,15 @@ class CyfeDashboardController extends Controller
                  {$this->today->format("d/m/y")}, $order_count, $order_total";
                  
         echo $data;
-        
     }
     
     /**
-     * 
+     *
      * salesperstaff
      */
     
     public function salesExVatPerStaff()
     {
-      
         $all_order_count = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                            ->where("fulfillment_status", "fulfilled")
@@ -522,7 +509,6 @@ class CyfeDashboardController extends Controller
         $all_order_total_ex_vat = ($all_order_total - $all_order_total_tax);
         
         foreach ($this->tags as $tag) {
-          
             $order_count[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                            ->where("fulfillment_status", "fulfilled")
@@ -546,29 +532,28 @@ class CyfeDashboardController extends Controller
                             ->where("cancelled_at", null)
                             ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                             ->sum("total_tax");
-            
         }
       
         $datax = "As At,Staff, Number of Orders, Total ex VAT"."<br>";
       
         foreach ($this->tags as $key => $tag) {
-            $ex_vat_amount[$tag] = round(($order_total[$tag] - $order_total_tax[$tag]),2);
+            $ex_vat_amount[$tag] = round(($order_total[$tag] - $order_total_tax[$tag]), 2);
             $data[$tag]["name"] = ucfirst($tag);
             $data[$tag]["order_count"] = $order_count[$tag];
             $data[$tag]["total_ex_vat"] = $ex_vat_amount[$tag];
         }
         
-        usort($data, function($a, $b){
-          return $a["total_ex_vat"] < $b["total_ex_vat"];
+        usort($data, function ($a, $b) {
+            return $a["total_ex_vat"] < $b["total_ex_vat"];
         });
         
         $combined_orders = 0;
         $combined_sales = 0;
         
         foreach ($data as $key => $data_item) {
-          $combined_orders += $data_item["order_count"];
-          $combined_sales += $data_item["total_ex_vat"];
-          $datax .= $this->today->format("d/m/y").",".$data_item["name"].",".$data_item["order_count"].",".$data_item["total_ex_vat"]."<br>";
+            $combined_orders += $data_item["order_count"];
+            $combined_sales += $data_item["total_ex_vat"];
+            $datax .= $this->today->format("d/m/y").",".$data_item["name"].",".$data_item["order_count"].",".$data_item["total_ex_vat"]."<br>";
         }
         
         $untagged_order_count = ($all_order_count - $combined_orders);
@@ -579,12 +564,11 @@ class CyfeDashboardController extends Controller
         $datax .= $this->today->format("d/m/y").", Total, $all_order_count, $all_order_total_ex_vat ";
         
         echo $datax;
-        
     }
     
     /**
      * orderstoday
-     * 
+     *
      */
     
     public function pendingDeliveriesExVatPerStaff()
@@ -592,68 +576,66 @@ class CyfeDashboardController extends Controller
         $all_order_count = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                            ->where("cancelled_at", null)
-                           ->where("financial_status","pending")
+                           ->where("financial_status", "pending")
                            ->count();
       
         $all_order_total = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                        ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                        ->where("cancelled_at", null)
-                       ->where("financial_status","pending")
+                       ->where("financial_status", "pending")
                        ->sum("total_price");
 
         $all_order_total_tax = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                           ->where("cancelled_at", null)
-                          ->where("financial_status","pending")
+                          ->where("financial_status", "pending")
                           ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                           ->sum("total_tax");
         
         $all_order_total_ex_vat = ($all_order_total - $all_order_total_tax);
         
         foreach ($this->tags as $tag) {
-          
             $order_count[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                            ->where("tags", "like", "%$tag%")
                            ->where("cancelled_at", null)
-                           ->where("financial_status","pending")
+                           ->where("financial_status", "pending")
                            ->count();
       
             $order_total[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                            ->where("tags", "like", "%$tag%")
                            ->where("cancelled_at", null)
-                           ->where("financial_status","pending")
+                           ->where("financial_status", "pending")
                            ->sum("total_price");
         
             $order_total_tax[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                               ->where("tags", "like", "%$tag%")
                               ->where("cancelled_at", null)
-                              ->where("financial_status","pending")
+                              ->where("financial_status", "pending")
                               ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                               ->sum("total_tax");
-            
         }
         
         $datax = "As At, Staff, Number of Orders, Total ex VAT"."<br>";
       
         foreach ($this->tags as $key => $tag) {
-            $ex_vat_amount[$tag] = round(($order_total[$tag] - $order_total_tax[$tag]),2);
+            $ex_vat_amount[$tag] = round(($order_total[$tag] - $order_total_tax[$tag]), 2);
             $data[$tag]["name"] = ucfirst($tag);
             $data[$tag]["order_count"] = $order_count[$tag];
             $data[$tag]["total_ex_vat"] = $ex_vat_amount[$tag];
         }
         
-        usort($data, function($a, $b){
-          return $a["total_ex_vat"] < $b["total_ex_vat"];
+        usort($data, function ($a, $b) {
+            return $a["total_ex_vat"] < $b["total_ex_vat"];
         });
         
         $combined_orders = 0;
         $combined_sales = 0;
         
         foreach ($data as $key => $data_item) {
-          $combined_orders += $data_item["order_count"];
-          $combined_sales += $data_item["total_ex_vat"];
-          $datax .= $this->today->format("d/m/y").",".$data_item["name"].",".$data_item["order_count"].",".$data_item["total_ex_vat"]."<br>";
+            $combined_orders += $data_item["order_count"];
+            $combined_sales += $data_item["total_ex_vat"];
+            $datax .= $this->today->format("d/m/y").",".$data_item["name"].",".$data_item["order_count"].",".$data_item["total_ex_vat"]."<br>";
         }
         
         $untagged_order_count = ($all_order_count - $combined_orders);
@@ -664,18 +646,15 @@ class CyfeDashboardController extends Controller
         $datax .= $this->today->format("d/m/y").", Total, $all_order_count, $all_order_total_ex_vat ";
         
         echo $datax;
-        
     }
     
     /**
      * cancelledorders
-     * 
+     *
      */
     public function cancelledOrders()
-    {   
-      
+    {
         foreach ($this->cancelled_tags as $tag) {
-            
             $order_count[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                            ->where("tags", "like", "%$tag%")
@@ -690,14 +669,13 @@ class CyfeDashboardController extends Controller
                               ->where("tags", "like", "%$tag%")
                               ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                               ->sum("total_tax");
-            
         }
       
         $data = " Cancelled Reason, As At, Number of Orders, Total ex VAT"."<br>";
         
         foreach ($this->cancelled_tags as $key => $tag) {
             $reason = $this->cancelled_reason_tags[$tag];
-            $ex_vat_amount = round(($order_total[$tag] - $order_total_tax[$tag]),2);
+            $ex_vat_amount = round(($order_total[$tag] - $order_total_tax[$tag]), 2);
             $data .= "$reason, {$this->today->format("d/m/y")}, $order_count[$tag], $ex_vat_amount"."<br>";
         }
       
@@ -705,7 +683,7 @@ class CyfeDashboardController extends Controller
     }
     
     /**
-     * 
+     *
      * orderstoday
      */
     
@@ -713,12 +691,12 @@ class CyfeDashboardController extends Controller
     {
         $order_count = Order::where("shopify_created_at", "like", $this->today->format("Y-m-d")."%")->count();
         $order_total = Order::where("shopify_created_at", "like", $this->today->format("Y-m-d")."%")->sum("total_price");
-        $order_count_paid = Order::where("financial_status","paid")->where("shopify_created_at", "like", $this->today->format("Y-m-d")."%")->count();
-        $paid_order_total = Order::where("financial_status","paid")->where("shopify_created_at", "like", $this->today->format("Y-m-d")."%")->sum("total_price");
-        $paid_tax = Order::where("financial_status","paid")->where("shopify_created_at", "like", $this->today->format("Y-m-d")."%")->sum("total_tax");
+        $order_count_paid = Order::where("financial_status", "paid")->where("shopify_created_at", "like", $this->today->format("Y-m-d")."%")->count();
+        $paid_order_total = Order::where("financial_status", "paid")->where("shopify_created_at", "like", $this->today->format("Y-m-d")."%")->sum("total_price");
+        $paid_tax = Order::where("financial_status", "paid")->where("shopify_created_at", "like", $this->today->format("Y-m-d")."%")->sum("total_tax");
         $discounts = Order::where("shopify_created_at", "like", $this->today->format("Y-m-d")."%")->sum("total_discounts");
           
-        $ex_vat_order_total = round(($paid_order_total - $paid_tax),2);
+        $ex_vat_order_total = round(($paid_order_total - $paid_tax), 2);
         
         $data = "All Orders, Gross Amount, Paid Orders,  Paid Total Inc Vat, Paid Total ex Vat
               $order_count, $order_total, $order_count_paid, $paid_order_total, $ex_vat_order_total 
@@ -742,11 +720,10 @@ class CyfeDashboardController extends Controller
               {$this->today->format("d/m/y")}, $order_count, $total_ex_vat ";
       
         echo $data;
-        
     }
     
     /**
-     * 
+     *
      * dailytransactionbreakdown
      */
     
@@ -755,15 +732,15 @@ class CyfeDashboardController extends Controller
         $date_range = $this->generateDateRange($this->start_date, $this->end_date);
         
         foreach ($date_range as $key => $date) {
-          $order_count[$date] = Order::where("shopify_created_at", "like", Carbon::parse($date)->format("Y-m-d")."%")
+            $order_count[$date] = Order::where("shopify_created_at", "like", Carbon::parse($date)->format("Y-m-d")."%")
                                        ->where("cancelled_at", null)
                                        ->count();
         
-          $order_total[$date] = Order::where("shopify_created_at", "like", Carbon::parse($date)->format("Y-m-d")."%")
+            $order_total[$date] = Order::where("shopify_created_at", "like", Carbon::parse($date)->format("Y-m-d")."%")
                                         ->where("cancelled_at", null)
                                         ->sum("total_price");
           
-          $order_total_tax[$date] = Order::where("shopify_created_at", "like", Carbon::parse($date)->format("Y-m-d")."%")
+            $order_total_tax[$date] = Order::where("shopify_created_at", "like", Carbon::parse($date)->format("Y-m-d")."%")
                                         ->where("cancelled_at", null)
                                         ->sum("total_tax");
         }
@@ -771,15 +748,15 @@ class CyfeDashboardController extends Controller
         $data = "Date, Number of Orders, Total Inc VAT, Total Ex VAT"."<br>";
         
         foreach ($date_range as $key => $date) {
-          $ex_vat_total[$date] = round(($order_total[$date] - $order_total_tax[$date]),2);
-          $data .= "$date, $order_count[$date], $order_total[$date], $ex_vat_total[$date]"."<br>";
+            $ex_vat_total[$date] = round(($order_total[$date] - $order_total_tax[$date]), 2);
+            $data .= "$date, $order_count[$date], $order_total[$date], $ex_vat_total[$date]"."<br>";
         }
         
         echo $data;
     }
     
     /**
-     * 
+     *
      * onlinesalesdailytransactionbreakdown
      */
     
@@ -788,51 +765,47 @@ class CyfeDashboardController extends Controller
         $date_range = $this->generateDateRange($this->start_date, $this->end_date);
         
         foreach ($date_range as $key => $date) {
-          
-          foreach ($this->online_tags as $tag) {
-            
-            $order_count[$date][$tag] = Order::where("shopify_created_at", "like", Carbon::parse($date)->format("Y-m-d")."%")
+            foreach ($this->online_tags as $tag) {
+                $order_count[$date][$tag] = Order::where("shopify_created_at", "like", Carbon::parse($date)->format("Y-m-d")."%")
                                          ->where("tags", "like", "%$tag%")
                                          ->where("cancelled_at", null)
                                          ->count();
             
-            $order_total[$date][$tag] = Order::where("shopify_created_at", "like", Carbon::parse($date)->format("Y-m-d")."%")
+                $order_total[$date][$tag] = Order::where("shopify_created_at", "like", Carbon::parse($date)->format("Y-m-d")."%")
                                           ->where("tags", "like", "%$tag%")
                                           ->where("cancelled_at", null)
                                           ->sum("total_price");
             
-            $order_total_tax[$date][$tag] = Order::where("shopify_created_at", "like", Carbon::parse($date)->format("Y-m-d")."%")
+                $order_total_tax[$date][$tag] = Order::where("shopify_created_at", "like", Carbon::parse($date)->format("Y-m-d")."%")
                                             ->where("tags", "like", "%$tag%")
                                             ->where("cancelled_at", null)
                                             ->sum("total_tax");
-            
-          }
-          
+            }
         }
         
-        foreach ($date_range as $key => $date) {          
-          $aggregate_order_count[$date] = array_sum($order_count[$date]);
-          $aggregate_order_total[$date] = array_sum($order_total[$date]);
-          $aggregate_order_total_tax[$date] = array_sum($order_total_tax[$date]);          
+        foreach ($date_range as $key => $date) {
+            $aggregate_order_count[$date] = array_sum($order_count[$date]);
+            $aggregate_order_total[$date] = array_sum($order_total[$date]);
+            $aggregate_order_total_tax[$date] = array_sum($order_total_tax[$date]);
         }
         
         $data = "Date, Number of Orders, Total Inc VAT, Total Ex VAT"."<br>";
         
         foreach ($date_range as $key => $date) {
-          $ex_vat_total[$date] = round(($aggregate_order_total[$date] - $aggregate_order_total_tax[$date]),2);
-          $data .= "$date, $aggregate_order_count[$date], $aggregate_order_total[$date], $ex_vat_total[$date]"."<br>";
+            $ex_vat_total[$date] = round(($aggregate_order_total[$date] - $aggregate_order_total_tax[$date]), 2);
+            $data .= "$date, $aggregate_order_count[$date], $aggregate_order_total[$date], $ex_vat_total[$date]"."<br>";
         }
         
         echo $data;
     }
     
     /**
-     * 
+     *
      * @param Carbon $start_date
      * @param Carbon $end_date
      * @param type $minimal
      * @return type
-     * 
+     *
      */
     
     private function generateDateRange(Carbon $start_date, Carbon $end_date, $minimal = false)
@@ -852,61 +825,59 @@ class CyfeDashboardController extends Controller
     }
     
     /**
-     * 
+     *
      * breakdownbyvendor
      */
     
-    public function breakdownByVendor() {
-      
-       $products = Lineitems::join("orders","orders.id","=","line_items.order_id")
+    public function breakdownByVendor()
+    {
+        $products = Lineitems::join("orders", "orders.id", "=", "line_items.order_id")
                             ->select("line_items.vendor", DB::raw('sum(line_items.quantity) as total'), DB::raw('sum(line_items.price*line_items.quantity) as item_price'))
                             ->groupBy("line_items.vendor")
                             ->where("orders.shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                             ->where("orders.shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
-                            ->orderBy("total", "desc")                            
-                            ->get();       
+                            ->orderBy("total", "desc")
+                            ->get();
       
-      $data = "Vendor, As At, Number of Items, Total Item Sales"."<br>";
+        $data = "Vendor, As At, Number of Items, Total Item Sales"."<br>";
       
-      foreach ($products as $key => $product) {
-        $data .= "$product->vendor, {$this->today->format("d/m/y")}, $product->total, $product->item_price"."<br>";
-      }
+        foreach ($products as $key => $product) {
+            $data .= "$product->vendor, {$this->today->format("d/m/y")}, $product->total, $product->item_price"."<br>";
+        }
       
-      echo $data;
-      
+        echo $data;
     }
     
     /**
      * dailybreakdownbyvendor
      */
     
-    public function dailyBreakdownByVendor() {
-      
-       $products = Lineitems::join("orders","orders.id","=","line_items.order_id")
+    public function dailyBreakdownByVendor()
+    {
+        $products = Lineitems::join("orders", "orders.id", "=", "line_items.order_id")
                             ->select("line_items.vendor", DB::raw('sum(line_items.quantity) as total'), DB::raw('sum(line_items.price*line_items.quantity) as item_price'))
                             ->groupBy("line_items.vendor")
                             ->where("orders.shopify_created_at", "like", $this->today->format("Y-m-d")."%")
-                            ->orderBy("total", "desc")                            
-                            ->get();       
+                            ->orderBy("total", "desc")
+                            ->get();
       
-      $data = "Vendor, As At, Number of Items, Total Item Sales"."<br>";
+        $data = "Vendor, As At, Number of Items, Total Item Sales"."<br>";
       
-      foreach ($products as $key => $product) {
-        $data .= "$product->vendor, {$this->today->format("d/m/y")}, $product->total, $product->item_price"."<br>";
-      }
+        foreach ($products as $key => $product) {
+            $data .= "$product->vendor, {$this->today->format("d/m/y")}, $product->total, $product->item_price"."<br>";
+        }
       
-      echo $data;
-      
+        echo $data;
     }
     
     /**
      * breakdownbyproduct
-     * 
+     *
      */
     
-    public function breakdownByProduct() {
-      
-      $products = Lineitems::join("orders","orders.id","=","line_items.order_id")
+    public function breakdownByProduct()
+    {
+        $products = Lineitems::join("orders", "orders.id", "=", "line_items.order_id")
                             ->select("line_items.title", DB::raw('count(*) as total'), DB::raw('sum(line_items.price*line_items.quantity) as item_price'))
                             ->groupBy("line_items.title")
                             ->where("orders.shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
@@ -915,24 +886,23 @@ class CyfeDashboardController extends Controller
                             ->limit(30)
                             ->get();
       
-      $data = "Product, As At, Number of Products, Total Sales"."<br>";
+        $data = "Product, As At, Number of Products, Total Sales"."<br>";
       
-      foreach ($products as $key => $product) {
-        $data .= " $product->title, {$this->today->format("d/m/y")}, $product->total, $product->item_price"."<br>";
-      }
+        foreach ($products as $key => $product) {
+            $data .= " $product->title, {$this->today->format("d/m/y")}, $product->total, $product->item_price"."<br>";
+        }
       
-      echo $data;
-      
+        echo $data;
     }
     
     /**
      * dailybreakdownbyproduct
-     * 
+     *
      */
     
-    public function dailyBreakdownByProduct() {
-      
-      $products = Lineitems::join("orders","orders.id","=","line_items.order_id")
+    public function dailyBreakdownByProduct()
+    {
+        $products = Lineitems::join("orders", "orders.id", "=", "line_items.order_id")
                             ->select("line_items.title", DB::raw('count(*) as total'), DB::raw('sum(line_items.price*line_items.quantity) as item_price'))
                             ->groupBy("line_items.title")
                             ->where("orders.shopify_created_at", "like", $this->today->format("Y-m-d")."%")
@@ -940,24 +910,23 @@ class CyfeDashboardController extends Controller
                             ->limit(30)
                             ->get();
       
-      $data = "Product, As At, Number of Products, Total Sales"."<br>";
+        $data = "Product, As At, Number of Products, Total Sales"."<br>";
       
-      foreach ($products as $key => $product) {
-        $data .= " $product->title, {$this->today->format("d/m/y")}, $product->total, $product->item_price"."<br>";
-      }
+        foreach ($products as $key => $product) {
+            $data .= " $product->title, {$this->today->format("d/m/y")}, $product->total, $product->item_price"."<br>";
+        }
       
-      echo $data;
-      
+        echo $data;
     }
     
     /**
      * breakdownbysku
-     * 
+     *
      */
     
-    public function breakdownBySku() {
-      
-      $products = Lineitems::join("orders","orders.id","=","line_items.order_id")
+    public function breakdownBySku()
+    {
+        $products = Lineitems::join("orders", "orders.id", "=", "line_items.order_id")
                             ->select("line_items.sku", DB::raw('count(*) as total'), DB::raw('sum(line_items.price*line_items.quantity) as item_price'))
                             ->groupBy("line_items.sku")
                             ->where("orders.shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
@@ -966,24 +935,23 @@ class CyfeDashboardController extends Controller
                             ->limit(30)
                             ->get();
       
-      $data = "SKU, As At, Number of Items, Total Item Sales"."<br>";
+        $data = "SKU, As At, Number of Items, Total Item Sales"."<br>";
       
-      foreach ($products as $key => $product) {
-        $data .= "$product->sku, {$this->today->format("d/m/y")},  $product->total, $product->item_price"."<br>";
-      }
+        foreach ($products as $key => $product) {
+            $data .= "$product->sku, {$this->today->format("d/m/y")},  $product->total, $product->item_price"."<br>";
+        }
       
-      echo $data;
-      
+        echo $data;
     }
     
     /**
-     * 
+     *
      * dailybreakdownbysku
      */
     
-    public function dailyBreakdownBySku() {
-      
-      $products = Lineitems::join("orders","orders.id","=","line_items.order_id")
+    public function dailyBreakdownBySku()
+    {
+        $products = Lineitems::join("orders", "orders.id", "=", "line_items.order_id")
                             ->select("line_items.sku", DB::raw('count(*) as total'), DB::raw('sum(line_items.price*line_items.quantity) as item_price'))
                             ->groupBy("line_items.sku")
                             ->where("orders.shopify_created_at", "like", $this->today->format("Y-m-d")."%")
@@ -991,68 +959,64 @@ class CyfeDashboardController extends Controller
                             ->limit(30)
                             ->get();
       
-      $data = "SKU, As At, Number of Items, Total Sales"."<br>";
+        $data = "SKU, As At, Number of Items, Total Sales"."<br>";
       
-      foreach ($products as $key => $product) {
-        $data .= "$product->sku, {$this->today->format("d/m/y")},  $product->total, $product->item_price"."<br>";
-      }
+        foreach ($products as $key => $product) {
+            $data .= "$product->sku, {$this->today->format("d/m/y")},  $product->total, $product->item_price"."<br>";
+        }
       
-      echo $data;
-      
+        echo $data;
     }
     
     /**
-     * 
+     *
      * returningvsnew
-     */    
+     */
     
-    public function breakdownReturningVsNew() {
-      
-      
-      $all_customer_orders = Order::select("customer_id")
+    public function breakdownReturningVsNew()
+    {
+        $all_customer_orders = Order::select("customer_id")
                            ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
-                           ->where("financial_status","paid")
+                           ->where("financial_status", "paid")
                            ->groupBy("customer_id")
                            ->get();
       
-      foreach ($all_customer_orders as $key => $customer) {
-        $orders_made[$customer->customer_id] = Order::where("financial_status","paid")->where("customer_id",$customer->customer_id)->count();
-      }
-      
-      $new_customer_array = [];
-      $returning_customer_array = [];
-      
-      foreach ($orders_made as $customer_id => $order_made) {
-        if($order_made == 1){
-          array_push($new_customer_array, $customer_id);
-        } else{
-          array_push($returning_customer_array, $customer_id);
+        foreach ($all_customer_orders as $key => $customer) {
+            $orders_made[$customer->customer_id] = Order::where("financial_status", "paid")->where("customer_id", $customer->customer_id)->count();
         }
-      }
       
-      $new_customers = count($new_customer_array);
-      $returning_customers = count($returning_customer_array);
-      $all_customers = count($all_customer_orders);
+        $new_customer_array = [];
+        $returning_customer_array = [];
       
-      $data = "As At, All Customers, New Customers, Returning Customers"."<br>";
+        foreach ($orders_made as $customer_id => $order_made) {
+            if ($order_made == 1) {
+                array_push($new_customer_array, $customer_id);
+            } else {
+                array_push($returning_customer_array, $customer_id);
+            }
+        }
       
-      $data .= "{$this->today->format("d/m/y")} , $all_customers, $new_customers, $returning_customers"."<br>";
+        $new_customers = count($new_customer_array);
+        $returning_customers = count($returning_customer_array);
+        $all_customers = count($all_customer_orders);
       
-      echo $data;
+        $data = "As At, All Customers, New Customers, Returning Customers"."<br>";
       
+        $data .= "{$this->today->format("d/m/y")} , $all_customers, $new_customers, $returning_customers"."<br>";
+      
+        echo $data;
     }
     
     /**
-     * 
+     *
      * breakdownbyfullfillmentstatus
      */
     
     
-    function fullfillmentStatusBreakdown() {
-        
+    public function fullfillmentStatusBreakdown()
+    {
         foreach ($this->fullfillment_status as $key => $status) {
-          
             $order_count[$status] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                              ->where("fulfillment_status", $status)
                              ->where("cancelled_at", null)
@@ -1070,51 +1034,48 @@ class CyfeDashboardController extends Controller
                              ->where("cancelled_at", null)
                              ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                              ->sum("total_tax");
-            
         }
         
         $datax = "As At, Fulfillment, Number of Orders, Total ex VAT"."<br>";
       
         foreach ($this->fullfillment_status as $key => $status) {
-          if(($order_count[$status]) > 0){
-            $ex_vat_amount[$status] = round(($order_total[$status] - $order_total_tax[$status]),2);
-            $data[$status]["name"] = ucfirst($status);
-              if(empty($data[$status]["name"])){
-                $data[$status]["name"] = "Not Fulfilled";
-              }
-            $data[$status]["order_count"] = $order_count[$status];
-            $data[$status]["total_ex_vat"] = $ex_vat_amount[$status];
-          }
+            if (($order_count[$status]) > 0) {
+                $ex_vat_amount[$status] = round(($order_total[$status] - $order_total_tax[$status]), 2);
+                $data[$status]["name"] = ucfirst($status);
+                if (empty($data[$status]["name"])) {
+                    $data[$status]["name"] = "Not Fulfilled";
+                }
+                $data[$status]["order_count"] = $order_count[$status];
+                $data[$status]["total_ex_vat"] = $ex_vat_amount[$status];
+            }
         }
         
-        usort($data, function($a, $b){
-          return $a["total_ex_vat"] < $b["total_ex_vat"];
+        usort($data, function ($a, $b) {
+            return $a["total_ex_vat"] < $b["total_ex_vat"];
         });
         
         $combined_orders = 0;
         $combined_sales = 0;
         
         foreach ($data as $key => $data_item) {
-          $combined_orders += $data_item["order_count"];
-          $combined_sales += $data_item["total_ex_vat"];
-          $datax .= $this->today->format("d/m/y").",".$data_item["name"].",".$data_item["order_count"].",".$data_item["total_ex_vat"]."<br>";
+            $combined_orders += $data_item["order_count"];
+            $combined_sales += $data_item["total_ex_vat"];
+            $datax .= $this->today->format("d/m/y").",".$data_item["name"].",".$data_item["order_count"].",".$data_item["total_ex_vat"]."<br>";
         }
         
         $datax .= $this->today->format("d/m/y").", Total Sales, $combined_orders, $combined_sales ";
         
         echo $datax;
-        
     }
     
     /**
-     * 
+     *
      * breakdownbyfinancialstatus
      */
     
-    function financialStatusBreakdown() {
-      
+    public function financialStatusBreakdown()
+    {
         foreach ($this->financial_status as $key => $status) {
-          
             $order_count[$status] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                              ->where("financial_status", $status)
                              ->where("cancelled_at", null)
@@ -1132,40 +1093,38 @@ class CyfeDashboardController extends Controller
                              ->where("cancelled_at", null)
                              ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                              ->sum("total_tax");
-            
         }
         
         $datax = "As At, Financial, Number of Orders, Total ex VAT"."<br>";
         
         foreach ($this->financial_status as $key => $status) {
-          if(($order_count[$status]) > 0){
-            $ex_vat_amount[$status] = round(($order_total[$status] - $order_total_tax[$status]),2);
-            $data[$status]["name"] = ucfirst($status);
-            if(empty($data[$status]["name"])){
-              $data[$status]["name"] = "Null";
+            if (($order_count[$status]) > 0) {
+                $ex_vat_amount[$status] = round(($order_total[$status] - $order_total_tax[$status]), 2);
+                $data[$status]["name"] = ucfirst($status);
+                if (empty($data[$status]["name"])) {
+                    $data[$status]["name"] = "Null";
+                }
+                $data[$status]["order_count"] = $order_count[$status];
+                $data[$status]["total_ex_vat"] = $ex_vat_amount[$status];
             }
-            $data[$status]["order_count"] = $order_count[$status];
-            $data[$status]["total_ex_vat"] = $ex_vat_amount[$status];
-          }
         }
         
-        usort($data, function($a, $b){
-          return $a["total_ex_vat"] < $b["total_ex_vat"];
+        usort($data, function ($a, $b) {
+            return $a["total_ex_vat"] < $b["total_ex_vat"];
         });
         
         $combined_orders = 0;
         $combined_sales = 0;
         
         foreach ($data as $key => $data_item) {
-          $combined_orders += $data_item["order_count"];
-          $combined_sales += $data_item["total_ex_vat"];
-          $datax .= $this->today->format("d/m/y").",".$data_item["name"].",".$data_item["order_count"].",".$data_item["total_ex_vat"]."<br>";
+            $combined_orders += $data_item["order_count"];
+            $combined_sales += $data_item["total_ex_vat"];
+            $datax .= $this->today->format("d/m/y").",".$data_item["name"].",".$data_item["order_count"].",".$data_item["total_ex_vat"]."<br>";
         }
         
         $datax .= $this->today->format("d/m/y").", All Sales, $combined_orders, $combined_sales ";
         
         echo $datax;
-      
     }
     
     /*
@@ -1173,7 +1132,7 @@ class CyfeDashboardController extends Controller
      */
     
     public function untaggedSalesOrderIds()
-    {      
+    {
         //all numbers
         
         $all_orders = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
@@ -1187,7 +1146,7 @@ class CyfeDashboardController extends Controller
             array_push($all_order_numbers, $order->name);
         }
         
-        foreach ($this->online_tags as $key => $tag) {          
+        foreach ($this->online_tags as $key => $tag) {
             $online_orders[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                              ->where("tags", "like", "%$tag%")
                              ->where("cancelled_at", null)
@@ -1199,9 +1158,9 @@ class CyfeDashboardController extends Controller
         $online_order_numbers = [];
         
         foreach ($online_orders as $tag => $online_order_array) {
-          foreach ($online_order_array as $key => $online_order) {
-            array_push($online_order_numbers, $online_order->name);
-          }
+            foreach ($online_order_array as $key => $online_order) {
+                array_push($online_order_numbers, $online_order->name);
+            }
         }
         
         $offline_order_numbers = [];
@@ -1216,9 +1175,9 @@ class CyfeDashboardController extends Controller
         }
         
         foreach ($offline_orders as $tag => $offline_order_array) {
-          foreach ($offline_order_array as $key => $offline_order) {
-            array_push($offline_order_numbers, $offline_order->name);
-          }
+            foreach ($offline_order_array as $key => $offline_order) {
+                array_push($offline_order_numbers, $offline_order->name);
+            }
         }
         
         $combined_offline_online = array_merge($online_order_numbers, $offline_order_numbers);
@@ -1228,18 +1187,14 @@ class CyfeDashboardController extends Controller
         $datax = "Order Ids"."<br>";
         
         foreach ($difference as $key => $diff) {
-          $datax .= $diff."<br>";
+            $datax .= $diff."<br>";
         }
         
         echo $datax;
-        
     }
     
-    function getPaymentPost($postdata) {
-      
-      mail("akulad19@gmail.com", "Test", $postdata);
-      
+    public function getPaymentPost($postdata)
+    {
+        mail("akulad19@gmail.com", "Test", $postdata);
     }
-    
-    
 }
