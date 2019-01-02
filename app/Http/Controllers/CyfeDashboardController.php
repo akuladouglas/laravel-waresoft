@@ -52,11 +52,9 @@ class CyfeDashboardController extends Controller
      */
     public function __construct()
     {
-        
-        $this->start_date = Carbon::parse("2018-12-01");
-        $this->end_date = Carbon::parse("2018-12-31");
+        $this->start_date = Carbon::parse("2019-01-01");
+        $this->end_date = Carbon::parse("2019-01-31");
         $this->today = Carbon::now();
-        
     }
     
     public function test()
@@ -67,6 +65,17 @@ class CyfeDashboardController extends Controller
               Doreen,103420,54
               Faith,105413,21
               Walter,100200,1";
+      
+        echo $data;
+    }
+    
+    public function testFunnel()
+    {
+        $data = "Type,Count
+                 Visitors,15654
+                 Leads,4064
+                 Customers,1987
+                 Repeat Customers,976";
       
         echo $data;
     }

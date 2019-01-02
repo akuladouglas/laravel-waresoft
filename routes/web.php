@@ -92,6 +92,7 @@ Route::group(array('prefix' => 'cyfe-dash'), function () {
   Route::match(['get', 'post'], '/untaggedsalesorderids', 'CyfeDashboardController@untaggedSalesOrderIds');
   
   Route::match(['get', 'post'], '/test', 'CyfeDashboardController@test'); 
+  Route::match(['get', 'post'], '/testFunnel', 'CyfeDashboardController@testFunnel'); 
   
 });
 
