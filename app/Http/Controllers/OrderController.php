@@ -270,7 +270,7 @@ class OrderController extends BaseController
         
         $formatted_date = Carbon::parse($originator_date)->format('Y-m-d\TH:i:s');
 
-        for ($page = 1; $page <= 12; $page++) {
+        for ($page = 1; $page <= 8; $page++) {
             dump($page);
           
             ini_set('max_execution_time', 300);
