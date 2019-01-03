@@ -27,7 +27,7 @@ class OrderController extends BaseController
 
     public function deliverys()
     {
-        $data["orders"] = Order::where("scheduled_delivery",null)
+        $data["orders"] = Order::where("scheduled_delivery", null)
                                 ->where("financial_status", "pending")
                                 ->where("fulfillment_status", null)
                                 ->orderBy("id", "desc")
@@ -36,16 +36,15 @@ class OrderController extends BaseController
         return view("order/deliverys", $data);
     }
     
-    public function undoForDelivery($order_id, Request $request) {
+    public function undoForDelivery($order_id, Request $request)
+    {
+        $order = Order::where("id", $order_id)->get()->first();
+        $order->scheduled_delivery = null;
+        $order->save();
       
-      $order = Order::where("id",$order_id)->get()->first();
-      $order->scheduled_delivery = null;
-      $order->save();
+        $request->session()->flash("success", "Delivery send back to scheduled section");
       
-      $request->session()->flash("success","Delivery send back to scheduled section");
-      
-      return redirect(url("order/deliverys"));
-      
+        return redirect(url("order/deliverys"));
     }
     
     public function viewOrder($order_id)
@@ -214,39 +213,35 @@ class OrderController extends BaseController
     }
 
     
-    public function syncOrderById() 
+    public function syncOrderById()
     {
-      
-        $orders_missing_tags = Order::where("tags","")->where("number", 14071)->get(); //->where("tag_checked", 0)->take(50)->get();
+        $orders_missing_tags = Order::where("tags", "")->where("number", 14071)->get(); //->where("tag_checked", 0)->take(50)->get();
         
-//        dd($orders_missing_tags);
+        //        dd($orders_missing_tags);
         
-        foreach ($orders_missing_tags as $key => $order_missing_tag) 
-        {
-          $get_url_timestamp = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders/{$order_missing_tag->id}.json";
+        foreach ($orders_missing_tags as $key => $order_missing_tag) {
+            $get_url_timestamp = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders/{$order_missing_tag->id}.json";
           
-          dump($get_url_timestamp);
+            dump($get_url_timestamp);
           
-          $contents = @file_get_contents($get_url_timestamp);
+            $contents = @file_get_contents($get_url_timestamp);
           
-          dump($contents);
+            dump($contents);
           
-          $shopify_orders = json_decode($contents);
+            $shopify_orders = json_decode($contents);
           
-          dd($shopify_orders);
+            dd($shopify_orders);
           
-          if(isset($shopify_orders->order) && is_object($shopify_orders->order)){
-            $this->updateSyncedOrders($shopify_orders);
-          }
+            if (isset($shopify_orders->order) && is_object($shopify_orders->order)) {
+                $this->updateSyncedOrders($shopify_orders);
+            }
           
-          //update tag checked
+            //update tag checked
           
-          $order = Order::where("id", $order_missing_tag->id)->get()->first();
-          $order->tag_checked = 1;
-          $order->save();
-          
+            $order = Order::where("id", $order_missing_tag->id)->get()->first();
+            $order->tag_checked = 1;
+            $order->save();
         }
-      
     }
     
     
@@ -269,40 +264,37 @@ class OrderController extends BaseController
             $originator_date = $last_created_order->shopify_created_at;
         } else {
             $originator_date = "2018-12-31";
-        }       
+        }
         
-        $originator_date = "2018-12-31";
+        $originator_date = "2018-05-31";
         
         $formatted_date = Carbon::parse($originator_date)->format('Y-m-d\TH:i:s');
 
-        for ($page = 1; $page <= 8; $page++) {
+        for ($page = 1; $page <= 12; $page++) {
+            dump($page);
           
-          dump($page);
+            ini_set('max_execution_time', 300);
           
-          ini_set('max_execution_time', 300);
-          
-          $get_url_timestamp = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders.json?status=any&created_at_min=$formatted_date&page=$page&limit=250";
+            $get_url_timestamp = "https://f79e3def682b671af1591e83c38ce094:c46734f74bad05ed2a7d9a621ce9cf7b@beautyclickke.myshopify.com/admin/orders.json?status=any&created_at_min=$formatted_date&page=$page&limit=250";
         
-          $contents = file_get_contents($get_url_timestamp);
+            $contents = file_get_contents($get_url_timestamp);
 
-          dump($originator_date);
+            dump($originator_date);
 
-          dump($get_url_timestamp);
+            dump($get_url_timestamp);
 
-          $shopify_orders = json_decode($contents);
+            $shopify_orders = json_decode($contents);
 
-          dump(sizeof($shopify_orders->orders));
+            dump(sizeof($shopify_orders->orders));
 
-          $this->updateSyncedOrders($shopify_orders);
-          
+            $this->updateSyncedOrders($shopify_orders);
         }
-        
     }
     
     
-    function updateSyncedOrders($shopify_orders) {
-      
-      foreach ($shopify_orders->orders as $key => $shopify_order) {
+    public function updateSyncedOrders($shopify_orders)
+    {
+        foreach ($shopify_orders->orders as $key => $shopify_order) {
             //attempt to get order
 
             $order = Order::where("id", $shopify_order->id)->get()->first();
@@ -421,7 +413,6 @@ class OrderController extends BaseController
                 }
             }
         }
-      return true;
+        return true;
     }
-    
 }
