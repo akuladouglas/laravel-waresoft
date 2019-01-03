@@ -495,8 +495,10 @@ class CyfeDashboardController extends Controller
         
         $ex_vat_order_total = round(($order_total - $tax), 2);
         
+        $as_at = $this->start_date->format("d/m/y").":->".$this->end_date->format("d/m/y");
+        
         $data = "As At, Number of Orders, Total Inc VAT, Total Ex VAT
-              {$this->today->format("d/m/y")}, $order_count, $order_total, $ex_vat_order_total
+              {$as_at}, $order_count, $order_total, $ex_vat_order_total
              ";
         
         echo $data;
