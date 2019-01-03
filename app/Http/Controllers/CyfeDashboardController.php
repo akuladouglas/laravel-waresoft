@@ -94,8 +94,13 @@ class CyfeDashboardController extends Controller
      *
      * @return
      */
-    public function fullfillmentRate()
+    public function fullfillmentRate($start_date, $end_date)
     {
+      
+        $this->start_date = Carbon::parse($start_date); 
+        
+        $this->end_date = Carbon::parse($end_date);
+        
         $all_orders = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                            ->count();
@@ -111,7 +116,6 @@ class CyfeDashboardController extends Controller
                                   ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                                   ->count();
         
-          
         $cood_orders = Order::where("tags", "like", "%COOD%")
                                   ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                                   ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
