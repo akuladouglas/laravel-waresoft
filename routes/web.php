@@ -73,7 +73,7 @@ Route::group(array('prefix' => 'cyfe-dash'), function () {
   Route::match(['get', 'post'], '/pendingorders/{start_date}/{end_date}', 'CyfeDashboardController@pendingOrders');
   Route::match(['get', 'post'], '/pendingdeliveries/{start_date}/{end_date}', 'CyfeDashboardController@pendingDeliveries');
   Route::match(['get', 'post'], '/salesperstaff/{start_date}/{end_date}', 'CyfeDashboardController@salesExVatPerStaff');
-  Route::match(['get', 'post'], '/orderstoday/{start_date}/{end_date}', 'CyfeDashboardController@numberOfOrdersToday');
+  Route::match(['get', 'post'], '/orderstoday', 'CyfeDashboardController@numberOfOrdersToday');
   Route::match(['get', 'post'], '/salestoday/{start_date}/{end_date}', 'CyfeDashboardController@salesTodayExVat');
   Route::match(['get', 'post'], '/pendingDeliveriesStaff/{start_date}/{end_date}', 'CyfeDashboardController@pendingDeliveriesExVatPerStaff');
   Route::match(['get', 'post'], '/dailytransactionbreakdown/{start_date}/{end_date}', 'CyfeDashboardController@dailyTransactionBreakdown');      

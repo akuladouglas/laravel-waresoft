@@ -753,12 +753,8 @@ class CyfeDashboardController extends Controller
      * orderstoday
      */
     
-    public function numberOfOrdersToday($start_date, $end_date)
+    public function numberOfOrdersToday()
     {
-      
-        $this->start_date = Carbon::parse($start_date); 
-        
-        $this->end_date = Carbon::parse($end_date);
       
         $order_count = Order::where("shopify_created_at", "like", $this->today->format("Y-m-d")."%")->count();
         $order_total = Order::where("shopify_created_at", "like", $this->today->format("Y-m-d")."%")->sum("total_price");
