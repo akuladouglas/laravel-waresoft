@@ -148,8 +148,13 @@ class CyfeDashboardController extends Controller
      * paidsalesamount
      *
      */
-    public function paidSalesAmount()
+    public function paidSalesAmount($start_date, $end_date)
     {
+      
+        $this->start_date = Carbon::parse($start_date); 
+        
+        $this->end_date = Carbon::parse($end_date);
+      
         $paid_sales_count = Order::where("financial_status", "paid")
                                  ->where("cancelled_at", null)
                                  ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
@@ -182,8 +187,13 @@ class CyfeDashboardController extends Controller
      * averagebasket
      */
     
-    public function averageBasketExVat()
+    public function averageBasketExVat($start_date, $end_date)
     {
+      
+        $this->start_date = Carbon::parse($start_date); 
+        
+        $this->end_date = Carbon::parse($end_date);
+      
         $orders_total = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                              ->where("cancelled_at", null)
                              ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
@@ -215,8 +225,13 @@ class CyfeDashboardController extends Controller
      *
      */
     
-    public function deliveredOrders()
+    public function deliveredOrders($start_date, $end_date)
     {
+      
+        $this->start_date = Carbon::parse($start_date); 
+        
+        $this->end_date = Carbon::parse($end_date);
+      
         $order_count = Order::where("fulfillment_status", "fulfilled")
                            ->where("cancelled_at", null)
                            ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
@@ -251,8 +266,13 @@ class CyfeDashboardController extends Controller
     /**
      * revenuedeliveredorders
      */
-    public function revenueDeliveredOrdersExVat()
+    public function revenueDeliveredOrdersExVat($start_date, $end_date)
     {
+        
+        $this->start_date = Carbon::parse($start_date); 
+        
+        $this->end_date = Carbon::parse($end_date);         
+      
         $order_count = Order::where("fulfillment_status", "fulfilled")
                            ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
@@ -274,8 +294,13 @@ class CyfeDashboardController extends Controller
      * offlinesales
      *
      */
-    public function offlineSales()
+    public function offlineSales($start_date, $end_date)
     {
+      
+        $this->start_date = Carbon::parse($start_date); 
+        
+        $this->end_date = Carbon::parse($end_date);
+      
         foreach ($this->offline_tags as $key => $tag) {
             $order_count[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                              ->where("tags", "like", "%$tag%")
@@ -312,8 +337,12 @@ class CyfeDashboardController extends Controller
     /**
      * onlinesales
      */
-    public function onlineSales()
+    public function onlineSales($start_date, $end_date)
     {
+        $this->start_date = Carbon::parse($start_date); 
+        
+        $this->end_date = Carbon::parse($end_date);      
+      
         foreach ($this->online_tags as $key => $tag) {
             $order_count[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                              ->where("tags", "like", "%$tag%")
@@ -352,9 +381,12 @@ class CyfeDashboardController extends Controller
      *
      */
     
-    public function untaggedSales()
+    public function untaggedSales($start_date, $end_date)
     {
         //all numbers
+        $this->start_date = Carbon::parse($start_date); 
+        
+        $this->end_date = Carbon::parse($end_date);
         
         $all_order_count = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                                ->where("cancelled_at", null)
@@ -437,8 +469,12 @@ class CyfeDashboardController extends Controller
      * pendingorders
      */
     
-    public function pendingOrders()
+    public function pendingOrders($start_date, $end_date)
     {
+        $this->start_date = Carbon::parse($start_date); 
+        
+        $this->end_date = Carbon::parse($end_date);      
+      
         $order_count = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                            ->where("financial_status", "pending")
@@ -471,8 +507,13 @@ class CyfeDashboardController extends Controller
      * pendingdeliveries
      */
     
-    public function pendingDeliveries()
+    public function pendingDeliveries($start_date, $end_date)
     {
+      
+        $this->start_date = Carbon::parse($start_date); 
+        
+        $this->end_date = Carbon::parse($end_date);
+      
         $order_count = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                            ->where("cancelled_at", null)
@@ -494,8 +535,13 @@ class CyfeDashboardController extends Controller
      * salesperstaff
      */
     
-    public function salesExVatPerStaff()
+    public function salesExVatPerStaff($start_date, $end_date)
     {
+      
+        $this->start_date = Carbon::parse($start_date); 
+        
+        $this->end_date = Carbon::parse($end_date);
+      
         $all_order_count = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                            ->where("fulfillment_status", "fulfilled")
@@ -582,8 +628,13 @@ class CyfeDashboardController extends Controller
      *
      */
     
-    public function pendingDeliveriesExVatPerStaff()
+    public function pendingDeliveriesExVatPerStaff($start_date, $end_date)
     {
+      
+        $this->start_date = Carbon::parse($start_date); 
+        
+        $this->end_date = Carbon::parse($end_date);
+      
         $all_order_count = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                            ->where("cancelled_at", null)
@@ -663,8 +714,12 @@ class CyfeDashboardController extends Controller
      * cancelledorders
      *
      */
-    public function cancelledOrders()
+    public function cancelledOrders($start_date, $end_date)
     {
+        $this->start_date = Carbon::parse($start_date); 
+        
+        $this->end_date = Carbon::parse($end_date);    
+      
         foreach ($this->cancelled_tags as $tag) {
             $order_count[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
@@ -698,8 +753,13 @@ class CyfeDashboardController extends Controller
      * orderstoday
      */
     
-    public function numberOfOrdersToday()
+    public function numberOfOrdersToday($start_date, $end_date)
     {
+      
+        $this->start_date = Carbon::parse($start_date); 
+        
+        $this->end_date = Carbon::parse($end_date);
+      
         $order_count = Order::where("shopify_created_at", "like", $this->today->format("Y-m-d")."%")->count();
         $order_total = Order::where("shopify_created_at", "like", $this->today->format("Y-m-d")."%")->sum("total_price");
         $order_count_paid = Order::where("financial_status", "paid")->where("shopify_created_at", "like", $this->today->format("Y-m-d")."%")->count();
@@ -720,8 +780,13 @@ class CyfeDashboardController extends Controller
      * salestoday
      */
     
-    public function salesTodayExVat()
+    public function salesTodayExVat($start_date, $end_date)
     {
+      
+        $this->start_date = Carbon::parse($start_date); 
+        
+        $this->end_date = Carbon::parse($end_date);
+      
         $order_count = Order::where("shopify_created_at", "like", Carbon::now()->format("Y-m-d")."%")->count();
         $order_total = Order::where("shopify_created_at", "like", Carbon::now()->format("Y-m-d")."%")->sum("total_price");
         $order_total_tax = Order::where("shopify_created_at", "like", Carbon::now()->format("Y-m-d")."%")->sum("total_tax");
@@ -738,8 +803,13 @@ class CyfeDashboardController extends Controller
      * dailytransactionbreakdown
      */
     
-    public function dailyTransactionBreakdown()
+    public function dailyTransactionBreakdown($start_date, $end_date)
     {
+      
+        $this->start_date = Carbon::parse($start_date); 
+        
+        $this->end_date = Carbon::parse($end_date);
+      
         $date_range = $this->generateDateRange($this->start_date, $this->end_date);
         
         foreach ($date_range as $key => $date) {
@@ -771,8 +841,13 @@ class CyfeDashboardController extends Controller
      * onlinesalesdailytransactionbreakdown
      */
     
-    public function onelineSalesDailyTransactionBreakdown()
+    public function onelineSalesDailyTransactionBreakdown($start_date, $end_date)
     {
+      
+        $this->start_date = Carbon::parse($start_date); 
+        
+        $this->end_date = Carbon::parse($end_date);
+      
         $date_range = $this->generateDateRange($this->start_date, $this->end_date);
         
         foreach ($date_range as $key => $date) {
@@ -840,8 +915,13 @@ class CyfeDashboardController extends Controller
      * breakdownbyvendor
      */
     
-    public function breakdownByVendor()
+    public function breakdownByVendor($start_date, $end_date)
     {
+      
+        $this->start_date = Carbon::parse($start_date); 
+        
+        $this->end_date = Carbon::parse($end_date);
+      
         $products = Lineitems::join("orders", "orders.id", "=", "line_items.order_id")
                             ->select("line_items.vendor", DB::raw('sum(line_items.quantity) as total'), DB::raw('sum(line_items.price*line_items.quantity) as item_price'))
                             ->groupBy("line_items.vendor")
@@ -863,8 +943,13 @@ class CyfeDashboardController extends Controller
      * dailybreakdownbyvendor
      */
     
-    public function dailyBreakdownByVendor()
+    public function dailyBreakdownByVendor($start_date, $end_date)
     {
+      
+        $this->start_date = Carbon::parse($start_date); 
+        
+        $this->end_date = Carbon::parse($end_date);
+      
         $products = Lineitems::join("orders", "orders.id", "=", "line_items.order_id")
                             ->select("line_items.vendor", DB::raw('sum(line_items.quantity) as total'), DB::raw('sum(line_items.price*line_items.quantity) as item_price'))
                             ->groupBy("line_items.vendor")
@@ -886,8 +971,13 @@ class CyfeDashboardController extends Controller
      *
      */
     
-    public function breakdownByProduct()
+    public function breakdownByProduct($start_date, $end_date)
     {
+      
+        $this->start_date = Carbon::parse($start_date); 
+        
+        $this->end_date = Carbon::parse($end_date);
+      
         $products = Lineitems::join("orders", "orders.id", "=", "line_items.order_id")
                             ->select("line_items.title", DB::raw('count(*) as total'), DB::raw('sum(line_items.price*line_items.quantity) as item_price'))
                             ->groupBy("line_items.title")
@@ -911,8 +1001,12 @@ class CyfeDashboardController extends Controller
      *
      */
     
-    public function dailyBreakdownByProduct()
+    public function dailyBreakdownByProduct($start_date, $end_date)
     {
+        $this->start_date = Carbon::parse($start_date); 
+        
+        $this->end_date = Carbon::parse($end_date);
+      
         $products = Lineitems::join("orders", "orders.id", "=", "line_items.order_id")
                             ->select("line_items.title", DB::raw('count(*) as total'), DB::raw('sum(line_items.price*line_items.quantity) as item_price'))
                             ->groupBy("line_items.title")
@@ -935,8 +1029,12 @@ class CyfeDashboardController extends Controller
      *
      */
     
-    public function breakdownBySku()
+    public function breakdownBySku($start_date, $end_date)
     {
+        $this->start_date = Carbon::parse($start_date); 
+        
+        $this->end_date = Carbon::parse($end_date);
+      
         $products = Lineitems::join("orders", "orders.id", "=", "line_items.order_id")
                             ->select("line_items.sku", DB::raw('count(*) as total'), DB::raw('sum(line_items.price*line_items.quantity) as item_price'))
                             ->groupBy("line_items.sku")
@@ -984,8 +1082,12 @@ class CyfeDashboardController extends Controller
      * returningvsnew
      */
     
-    public function breakdownReturningVsNew()
+    public function breakdownReturningVsNew($start_date, $end_date)
     {
+        $this->start_date = Carbon::parse($start_date); 
+        
+        $this->end_date = Carbon::parse($end_date);
+      
         $all_customer_orders = Order::select("customer_id")
                            ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
@@ -1025,8 +1127,12 @@ class CyfeDashboardController extends Controller
      */
     
     
-    public function fullfillmentStatusBreakdown()
+    public function fullfillmentStatusBreakdown($start_date, $end_date)
     {
+        $this->start_date = Carbon::parse($start_date); 
+        
+        $this->end_date = Carbon::parse($end_date);
+      
         foreach ($this->fullfillment_status as $key => $status) {
             $order_count[$status] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                              ->where("fulfillment_status", $status)
@@ -1084,8 +1190,12 @@ class CyfeDashboardController extends Controller
      * breakdownbyfinancialstatus
      */
     
-    public function financialStatusBreakdown()
+    public function financialStatusBreakdown($start_date, $end_date)
     {
+        $this->start_date = Carbon::parse($start_date); 
+        
+        $this->end_date = Carbon::parse($end_date);
+      
         foreach ($this->financial_status as $key => $status) {
             $order_count[$status] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                              ->where("financial_status", $status)
@@ -1142,10 +1252,13 @@ class CyfeDashboardController extends Controller
      * untaggedsalesorderids
      */
     
-    public function untaggedSalesOrderIds()
+    public function untaggedSalesOrderIds($start_date, $end_date)
     {
-        //all numbers
+        $this->start_date = Carbon::parse($start_date); 
         
+        $this->end_date = Carbon::parse($end_date);
+      
+        //all numbers        
         $all_orders = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                                ->where("cancelled_at", null)
                                ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
