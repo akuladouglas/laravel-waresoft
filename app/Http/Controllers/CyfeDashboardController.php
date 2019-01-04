@@ -72,7 +72,7 @@ class CyfeDashboardController extends Controller
     public function testFunnel($public_token = null, $start_date = null, $end_date = null)
     {
         
-        $private_token = "abcdefghijk"; //env("cyfe_token");
+        $private_token = "5dfac39f71ad4d35a153ba4fc12d943a0e178e6a"; //env("cyfe_token");
         
         if($public_token != $private_token){
           print_r("Invalid access details");

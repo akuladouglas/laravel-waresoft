@@ -14,6 +14,7 @@
       <div class="body">
         <div class="">
           <form action="{{url('payment/suregifts')}}" method="POST">
+            @csrf
             <div class="form-group">
               <div class="form-line">
                 <input type="text" name="voucher_code" class="form-control" placeholder="Voucher Code" required />

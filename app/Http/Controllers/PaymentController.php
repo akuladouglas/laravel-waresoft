@@ -41,11 +41,130 @@ class PaymentController extends Controller
       if($request->has("voucher_code")){
         
         
-//        $request->flash("success", "voucher does not exist");
+        $request->flash("success", "voucher does not exist");
         return view("payment/suregifts", $data);
       }
       
       return view("payment/suregifts", $data);
+  }
+  
+  
+   /* custom codes added for beautyclick */
+
+  
+  public function getValidationUrl($country, $mode) {
+    $_validationUrl = array(
+      'KEN' => array('test' => "http://kenyastaging.oms-suregifts.com/api/voucherredemption", "live" => "http://kenya.oms-suregifts.com/api/voucherredemption"),
+      'NGR' => array('test' => "http://sandbox.oms-suregifts.com/api/voucherredemption", "live" => "https://oms-suregifts.com/api/voucherredemption")
+    );
+    return $_validationUrl[$country][$mode == "1" ? "test" : "live"];
+  }
+  
+  public function processSuregiftsCode($suregift_code = false) {
+
+    $success = false;
+    $amount_to_use = 0;
+    $errors = array();
+
+    if ($suregift_code) {
+
+      $username = "beautyclick_api";
+      $password = "@fl8tiket123#";
+      $website_host = "https://beautyclick.co.ke";
+      $mode = (int) 0;
+      $country = "KEN";
+      $auth = $username . ':' . $password;
+      $validationUrl = $this->getValidationUrl($country, $mode);
+      
+      $ch = curl_init($validationUrl . '?vouchercode=' . $suregift_code);
+      curl_setopt($ch, CURLOPT_POST, false);
+      curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);
+      curl_setopt($ch, CURLOPT_FRESH_CONNECT, 1);
+      if ($username != '') {
+        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+          "Authorization: Basic " . base64_encode($auth),
+          )
+        );
+      }
+
+      $resp = curl_exec($ch);
+      $response_info = array();
+      curl_close($ch);
+      $response_info = json_decode($resp, true);
+      
+      dd($response_info);
+      
+      if (isset($response_info['AmountToUse']) && (float) $response_info['AmountToUse']) {
+        $success = true;
+        $amount_to_use = $response_info['AmountToUse'];
+//        if (!Db::getInstance()->executeS('SELECT * FROM ' . _DB_PREFIX_ . 'cart_suregifts WHERE suregifts_card="' . $suregift_code . '"'))
+//          Db::getInstance()->execute('INSERT INTO ' . _DB_PREFIX_ . 'cart_suregifts (id_cart_suregifts,id_cart,suregifts_card,suregifts_value) values("","' . (int) $this->context->cart->id . '","' . $suregift_code . '","' . (float) $response_info['AmountToUse'] . '")');
+//        else
+//          $errors[] = 'The SureGifts Voucher has already been used!';
+      }
+      else {
+        $errors[] = 'The SureGifts Voucher is invalid or has already been used!';
+      }
+    }
+    
+    return array(
+      'success' => $success,
+      'amount_to_use' => $amount_to_use,
+      'errors' => $errors
+    );
+  }
+  
+  public function redeemSuregiftsCode($suregift_code = false, $amount_to_use = 0) {
+    
+    $success = false;
+    $errors = [];
+    
+    $post_parameters = array(
+      "AmountToUse" => $amount_to_use,
+      "VoucherCode" => $suregift_code,
+      "WebsiteHost" => "https://beautyclick.co.ke"
+    );
+    
+    $content = json_encode($post_parameters);
+    
+    if ($suregift_code) {
+      
+      $username = "beautyclick_api";
+      $password = "@fl8tiket123#";
+      $website_host = "https://beautyclick.co.ke";
+      $mode = (int) 0;
+      $country = "KEN";
+      $auth = $username . ':' . $password;
+      $validationUrl = $this->getValidationUrl($country, $mode);
+      $ch = curl_init($validationUrl);
+      curl_setopt($ch, CURLOPT_POST, true);
+      curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
+      curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);
+      curl_setopt($ch, CURLOPT_FRESH_CONNECT, 1);
+      if ($username != '') {
+        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+          "Authorization: Basic " . base64_encode($auth),
+          "Content-type: application/json"
+          )
+        );
+      }
+
+      $resp = curl_exec($ch);
+      $response_info = array();
+      curl_close($ch);
+      $response_info = json_decode($resp, true);
+    }
+    
+    dd($response_info);
+    
+    return true;
+    
   }
   
   public function mpesaPushStats()
