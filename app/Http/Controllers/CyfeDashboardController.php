@@ -17,11 +17,11 @@ class CyfeDashboardController extends Controller
     
     public $today;
     
-    public $tags = ["faith","milly","barbara","doreen","walter","sharon","lydia","mahadia","robert","sylvia"];
+    public $tags = ["faith","milly","barbara","doreen","walter","sharon","lydia","mahadia","robert","sylvia", "dorcus"];
     
     public $online_tags = ["faith","milly","doreen","walter","sharon","lydia","mahadia"];
     
-    public $offline_tags = ["barbara","robert","sylvia"];
+    public $offline_tags = ["barbara","robert","sylvia","dorcus"];
     
     public $cancelled_tags = ["COOD","NR","DD","DTU","RUD","PLO","IPLO","SO","CNLI"];
     
