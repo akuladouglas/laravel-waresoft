@@ -25,7 +25,6 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-
 Route::group(array('prefix' => 'order'), function () {
   
   Route::match(['get', 'post'], '/', 'OrderController@getOrders');
