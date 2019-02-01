@@ -154,8 +154,8 @@ class CyfeDashboardController extends Controller
         
         $fullfillment_rate = round((($paid_fullfilled_orders / ($aggregate_all_orders - ($cood_non_cancelled + $cood_orders)))*100), 2);
         
-        $data = "All Orders, Cancelled, CooD, CooD Not Cancelled, Paid Fullfilled Orders, Fullfillment Rate (%)
-               $aggregate_all_orders, $cancelled_orders, $cood_orders, $cood_non_cancelled, $paid_fullfilled_orders,$fullfillment_rate
+        $data = "All Orders, Cancelled, CooD, CooD Not Cancelled, Offline Sales, Unpaid Wholesale Sales, Paid Fullfilled Orders, Fullfillment Rate (%)
+               $all_orders, $cancelled_orders, $cood_orders, $cood_non_cancelled, $offline_order_summation,$wholesale_unpaid_orders, $paid_fullfilled_orders, $fullfillment_rate
                ";
         
         echo $data;
