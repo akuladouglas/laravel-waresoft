@@ -133,15 +133,75 @@ class CyfeDashboardController extends Controller
                                   ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                                   ->count();
         
-        $fullfillment_rate = round((($paid_fullfilled_orders / ($all_orders - ($cood_non_cancelled + $cood_orders)))*100), 2);
+        $wholesale_unpaid_orders = Order::where("tags", "like", "%wholesale%")
+                                  ->where("financial_status", "!=", "paid")
+                                  ->where("cancelled_at", null)
+                                  ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                                  ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                                  ->count();
         
-        $aggregate_all_orders = (($all_orders));
+        foreach ($this->offline_tags as $key => $offline_tag) {
+            $offline_orders[$offline_tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                             ->where("tags", "like", "%$offline_tag%")
+                             ->where("cancelled_at", null)
+                             ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                             ->count();
+        }
+        
+        $offline_order_summation = array_sum($offline_orders);
+        
+        $aggregate_all_orders = (($all_orders - ($offline_order_summation + $wholesale_unpaid_orders)));
+        
+        $fullfillment_rate = round((($paid_fullfilled_orders / ($aggregate_all_orders - ($cood_non_cancelled + $cood_orders)))*100), 2);
         
         $data = "All Orders, Cancelled, CooD, CooD Not Cancelled, Paid Fullfilled Orders, Fullfillment Rate (%)
                $aggregate_all_orders, $cancelled_orders, $cood_orders, $cood_non_cancelled, $paid_fullfilled_orders,$fullfillment_rate
                ";
-      
+        
         echo $data;
+    }
+    
+    /**
+     * 
+     */
+    public function wholesaleAgentSales($start_date, $end_date) {
+      
+      $this->start_date = Carbon::parse($start_date); 
+        
+      $this->end_date = Carbon::parse($end_date);
+      
+      $sales_count = Order::where("tags", "like", "%wholesale%")
+                        ->where("cancelled_at", null)
+                        ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                        ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                        ->count();
+      
+      $paid_orders = Order::where("tags", "like", "%wholesale%")
+                        ->where("financial_status", "paid")
+                        ->where("cancelled_at", null)
+                        ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                        ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                        ->count();
+      
+      $paid_sales_amount = Order::where("tags", "like", "%wholesale%")
+                        ->where("cancelled_at", null)
+                        ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                        ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                        ->sum("total_price");
+      
+      $paid_sales_amount_tax = Order::where("tags", "like", "%wholesale%")
+                        ->where("cancelled_at", null)
+                        ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                        ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                        ->sum("total_tax");
+      
+      $ex_vat_total = ($paid_sales_amount - $paid_sales_amount_tax);
+      
+      $data = "Number of Orders, Paid Orders, Total Sales Inc VAT, Total Sales Ex VAT
+                 $sales_count, $paid_orders, $paid_sales_amount ,$ex_vat_total
+               ";
+        
+      echo $data;
     }
     
     /**
