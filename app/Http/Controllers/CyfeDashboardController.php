@@ -1320,6 +1320,7 @@ class CyfeDashboardController extends Controller
                                ->where("cancelled_at", null)
                                ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                                ->select(["name"])
+                               ->orderBy("name", "desc")
                                ->get();
         $all_order_numbers = [];
         
@@ -1333,6 +1334,7 @@ class CyfeDashboardController extends Controller
                              ->where("cancelled_at", null)
                              ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                              ->select(["name"])
+                             ->orderBy("name", "desc")
                              ->get();
         }
         
@@ -1352,6 +1354,7 @@ class CyfeDashboardController extends Controller
                              ->where("cancelled_at", null)
                              ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                              ->select(["name"])
+                             ->orderBy("name", "desc")
                              ->get();
         }
         
