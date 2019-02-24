@@ -20,11 +20,11 @@ class OrderReportService
     
     public $today;
     
-    public $tags = ["faith","milly","barbara","doreen","walter","sharon","lydia","mahadia"];
+    public $tags = ["faith","milly","barbara","doreen","walter","sharon","Lynn","mahadia","dorcas"];
     
-    public $online_tags = ["milly","doreen","walter","sharon","lydia","mahadia"];
+    public $online_tags = ["faith","milly","doreen","Lynn","walter","sharon","mahadia"];
     
-    public $offline_tags = ["faith","barbara"];
+    public $offline_tags = ["barbara","dorcas"];
     
     public $cancelled_tags = ["COOD","NR","DD","DTU","RUD","PLO","IPLO","SO","CNLI"];
     
@@ -111,15 +111,32 @@ class OrderReportService
                                   ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                                   ->count();
         
-        $fullfillment_rate = round(@(($paid_fullfilled_orders / @($all_orders - $cood_non_cancelled))*100), 2);
+        $wholesale_unpaid_orders = Order::where("tags", "like", "%wholesale%")
+                                  ->where("financial_status", "!=", "paid")
+                                  ->where("cancelled_at", null)
+                                  ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                                  ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                                  ->count();
         
+        foreach ($this->offline_tags as $key => $offline_tag) {
+            $offline_orders[$offline_tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                             ->where("tags", "like", "%$offline_tag%")
+                             ->where("cancelled_at", null)
+                             ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                             ->count();
+        }
         
+        $offline_order_summation = array_sum($offline_orders);
+        
+        $aggregate_all_orders = (($all_orders - ($offline_order_summation + $wholesale_unpaid_orders)));
+        
+        $fullfillment_rate = round((($paid_fullfilled_orders / ($aggregate_all_orders - ($cood_non_cancelled + $cood_orders)))*100), 2);
+        
+//        $fullfillment_rate = round(@(($paid_fullfilled_orders / @($all_orders - $cood_non_cancelled))*100), 2);
         
         if(is_nan($fullfillment_rate)){
           $fullfillment_rate = 0;
         }
-        
-        $aggregate_all_orders = (($all_orders));
         
         $data = "All Orders,           Cancelled,        CooD,         CooD Not Cancelled,  Paid Fullfilled Orders, Fullfillment Rate (%)
                $aggregate_all_orders, $cancelled_orders, $cood_orders, $cood_non_cancelled, $paid_fullfilled_orders, $fullfillment_rate
