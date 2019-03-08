@@ -263,10 +263,10 @@ class OrderController extends BaseController
         if ($last_created_order) {
             $originator_date = $last_created_order->shopify_created_at;
         } else {
-            $originator_date = "2018-12-31";
+            $originator_date = "2019-01-31";
         }
         
-        $originator_date = "2018-12-31";
+        $originator_date = "2019-01-31";
         
         $formatted_date = Carbon::parse($originator_date)->format('Y-m-d\TH:i:s');
 
