@@ -116,7 +116,6 @@ class CyfeDashboardController extends Controller
                                   ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                                   ->count();
         
-          
         $cood_orders = Order::where("tags", "like", "%COOD%")
                                   ->where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                                   ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
@@ -771,6 +770,96 @@ class CyfeDashboardController extends Controller
         
         echo $datax;
     }
+    
+    
+    public function pendingPaidUnfullfilledExVatPerStaff($start_date, $end_date)
+    {
+      
+        $this->start_date = Carbon::parse($start_date); 
+        
+        $this->end_date = Carbon::parse($end_date);
+      
+        $all_order_count = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                           ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                           ->where("cancelled_at", null)
+                           ->where("financial_status", "paid")
+                           ->where("fulfillment_status", "unfulfilled")
+                           ->count();
+      
+        $all_order_total = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                       ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                       ->where("cancelled_at", null)
+                       ->where("financial_status", "paid")
+                       ->where("fulfillment_status", "unfulfilled")
+                       ->sum("total_price");
+
+        $all_order_total_tax = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                          ->where("cancelled_at", null)
+                          ->where("financial_status", "paid")
+                          ->where("fulfillment_status", "unfulfilled")
+                          ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                          ->sum("total_tax");
+        
+        $all_order_total_ex_vat = ($all_order_total - $all_order_total_tax);
+        
+        foreach ($this->tags as $tag) {
+            $order_count[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                           ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                           ->where("tags", "like", "%$tag%")
+                           ->where("cancelled_at", null)
+                           ->where("financial_status", "paid")
+                           ->where("fulfillment_status", "unfulfilled")
+                           ->count();
+      
+            $order_total[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                           ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                           ->where("tags", "like", "%$tag%")
+                           ->where("cancelled_at", null)
+                           ->where("financial_status", "paid")
+                           ->where("fulfillment_status", "unfulfilled")
+                           ->sum("total_price");
+        
+            $order_total_tax[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
+                              ->where("tags", "like", "%$tag%")
+                              ->where("cancelled_at", null)
+                              ->where("financial_status", "paid")
+                              ->where("fulfillment_status", "unfulfilled")
+                              ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
+                              ->sum("total_tax");
+        }
+        
+        $datax = "Staff, Number of Orders, Total ex VAT"."<br>";
+      
+        foreach ($this->tags as $key => $tag) {
+            $ex_vat_amount[$tag] = round(($order_total[$tag] - $order_total_tax[$tag]), 2);
+            $data[$tag]["name"] = ucfirst($tag);
+            $data[$tag]["order_count"] = $order_count[$tag];
+            $data[$tag]["total_ex_vat"] = $ex_vat_amount[$tag];
+        }
+        
+        usort($data, function ($a, $b) {
+            return $a["total_ex_vat"] < $b["total_ex_vat"];
+        });
+        
+        $combined_orders = 0;
+        $combined_sales = 0;
+        
+        foreach ($data as $key => $data_item) {
+            $combined_orders += $data_item["order_count"];
+            $combined_sales += $data_item["total_ex_vat"];
+            $datax .= $data_item["name"].",".$data_item["order_count"].",".$data_item["total_ex_vat"]."<br>";
+        }
+        
+        $untagged_order_count = ($all_order_count - $combined_orders);
+        $untagged_order_total = ($all_order_total_ex_vat - $combined_sales);
+        
+        $datax .= "Untaged, $untagged_order_count, - "."<br>";
+        
+        $datax .= "Total, $all_order_count, $all_order_total_ex_vat ";
+        
+        echo $datax;
+    }
+    
     
     /**
      * cancelledorders
