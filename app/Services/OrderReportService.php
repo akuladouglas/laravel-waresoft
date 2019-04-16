@@ -20,11 +20,11 @@ class OrderReportService
     
     public $today;
     
-    public $tags = ["faith","milly","barbara","doreen","walter","sharon","Lynn","mahadia","dorcas","beryl"];
+    public $tags = ["faith","milly","doreen","walter","sharon","Lynn","mahadia","dorcas","beryl","dan"];
     
     public $online_tags = ["faith","milly","doreen","Lynn","walter","sharon","mahadia","beryl"];
     
-    public $offline_tags = ["barbara","dorcas"];
+    public $offline_tags = ["dorcas","dan"];
     
     public $cancelled_tags = ["COOD","NR","DD","DTU","RUD","PLO","IPLO","SO","CNLI"];
     
