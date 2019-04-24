@@ -512,11 +512,11 @@ class CyfeDashboardController extends Controller
         $online_order_total_tax_summation = (array_sum($online_order_total_tax));
         $online_order_count_summation = (array_sum($online_order_count));
         
-        $order_total_summation = $all_order_total - ($offline_order_total_summation + $online_order_total_summation);
+        $order_total_summation = round(($all_order_total - ($offline_order_total_summation + $online_order_total_summation)),2);
         $order_total_tax_summation = $all_order_total_tax - ($offline_order_total_tax_summation + $online_order_total_tax_summation);
-        $order_count_summation = $all_order_count - ($offline_order_count_summation + $online_order_count_summation);
+        $order_count_summation = round($all_order_count - ($offline_order_count_summation + $online_order_count_summation));
         
-        $ex_vat_total = ($order_total_summation - $order_total_tax_summation);
+        $ex_vat_total = round(($order_total_summation - $order_total_tax_summation),2);
         
         $data .= "$order_count_summation, $order_total_summation, $ex_vat_total"."<br>";
         
@@ -957,6 +957,7 @@ class CyfeDashboardController extends Controller
         $this->end_date = Carbon::parse($end_date);    
       
         foreach ($this->cancelled_tags as $tag) {
+          
             $order_count[$tag] = Order::where("shopify_created_at", ">=", $this->start_date->format("Y-m-d"))
                            ->where("shopify_created_at", "<=", $this->end_date->endOfDay()->format("Y-m-d H:i"))
                            ->where("tags", "like", "%$tag%")
